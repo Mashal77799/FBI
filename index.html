@@ -5,81 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FBI</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: black;
-  color: gray;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
-}
-
-input, button, textarea {
-  padding: 10px;
-  margin: 5px;
-  background: #111;
-  border: 1px solid gray;
-  color: gray;
-}
-
-button:hover {
-  background: gray;
-  color: black;
-  cursor: pointer;
-}
-
-.hidden { display: none; }
-
-.title {
-  text-align: center;
-  font-size: 40px;
-}
-
-.line {
-  width: 200px;
-  height: 2px;
-  background: gray;
-  margin: 10px auto;
-}
-
-.files {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  padding: 20px;
-}
-
-.file {
-  border: 1px solid gray;
-  padding: 20px;
-  text-align: center;
-}
+body {margin:0;font-family:Arial;background:black;color:gray;}
+.center {display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;}
+input, button, textarea {padding:10px;margin:5px;background:#111;border:1px solid gray;color:gray;}
+button:hover {background:gray;color:black;cursor:pointer;}
+.hidden { display:none; }
+.title {text-align:center;font-size:40px;}
+.line {width:200px;height:2px;background:gray;margin:10px auto;}
+.files {display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:20px;}
+.file {border:1px solid gray;padding:20px;text-align:center;}
+.small-link {position:absolute;bottom:10px;right:10px;font-size:12px;cursor:pointer;}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login" class="center">
-  <h1 style="color: gray;">FBI SYSTEM ACCESS</h1>
-  <input type="password" id="mainPass" placeholder="ادخل كلمة السر">
+  <h1>FBI SYSTEM ACCESS</h1>
+  <input type="password" id="mainPass" placeholder="كلمة السر">
   <button onclick="login()">دخول</button>
+  <div class="small-link" onclick="openAdmin()">قيادات!!</div>
 </div>
 
 <!-- MAIN -->
 <div id="main" class="hidden">
   <div class="title">FBI</div>
   <div class="line"></div>
-
   <div class="files" id="files"></div>
-  <div style="text-align:center; font-size:12px; margin-top:40px; color:gray;">
-    جميع حقوق الموقع محفوظة لدى جهاز الفيدرالي
-  </div>
+  <div style="text-align:center;font-size:12px;margin-top:40px;">جميع حقوق الموقع محفوظة لدى جهاز الفيدرالي</div>
 </div>
 
 <!-- FILE PAGE -->
@@ -87,66 +40,112 @@ button:hover {
   <h2 id="fileTitle"></h2>
   <input type="password" id="filePass" placeholder="رمز الملف">
   <button onclick="openFile()">فتح</button>
-  <textarea id="content" class="hidden" rows="20" cols="80" oninput="saveData()" placeholder="اكتب هنا... يتم الحفظ تلقائياً"></textarea>
+  <textarea id="content" class="hidden" rows="20" cols="80" oninput="saveData()"></textarea>
   <button onclick="saveData()">حفظ</button>
   <button onclick="back()">رجوع</button>
 </div>
 
-<script>
-const SITE_PASSWORD = "1234"; // غيرها
-let currentFile = null;
+<!-- ADMIN -->
+<div id="admin" class="hidden center">
+  <h2>لوحة القيادات</h2>
+  <input type="password" id="adminPass" placeholder="كلمة مرور القيادات">
+  <button onclick="adminLogin()">دخول</button>
+  <div id="adminPanel" class="hidden">
+    <button onclick="addFile()">إضافة ملف</button>
+  </div>
+</div>
 
-function login() {
-  const pass = document.getElementById('mainPass').value;
-  if(pass === SITE_PASSWORD) {
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('main').classList.remove('hidden');
-  } else {
-    alert('كلمة السر غلط');
+<script>
+const SITE_PASSWORD = "1234";
+const ADMIN_PASSWORD = "r3d";
+let currentFile = null;
+let isAdmin = false;
+let fileCount = 10;
+
+function login(){
+  if(document.getElementById('mainPass').value===SITE_PASSWORD){
+    loginHide();showMain();
+  } else alert('خطأ');
+}
+
+function openAdmin(){
+  loginHide();
+  document.getElementById('admin').classList.remove('hidden');
+}
+
+function adminLogin(){
+  if(document.getElementById('adminPass').value===ADMIN_PASSWORD){
+    isAdmin=true;
+    document.getElementById('adminPanel').classList.remove('hidden');
+    showMain();
+  } else alert('خطأ');
+}
+
+function loginHide(){
+  document.getElementById('login').classList.add('hidden');
+}
+
+function showMain(){
+  document.getElementById('admin').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+  renderFiles();
+}
+
+function renderFiles(){
+  const container=document.getElementById('files');
+  container.innerHTML='';
+  for(let i=1;i<=fileCount;i++){
+    const div=document.createElement('div');
+    div.className='file';
+    div.innerText='ملف '+i;
+    div.onclick=()=>openFilePage(i);
+    container.appendChild(div);
   }
 }
 
-const filesContainer = document.getElementById('files');
-
-for(let i=1;i<=10;i++){
-  const div = document.createElement('div');
-  div.className = 'file';
-  div.innerText = 'ملف ' + i;
-  div.onclick = () => openFilePage(i);
-  filesContainer.appendChild(div);
+function addFile(){
+  fileCount++;
+  localStorage.setItem('fileCount',fileCount);
+  renderFiles();
 }
 
 function openFilePage(num){
-  currentFile = num;
+  currentFile=num;
   document.getElementById('main').classList.add('hidden');
   document.getElementById('filePage').classList.remove('hidden');
-  document.getElementById('fileTitle').innerText = 'ملف ' + num;
+  document.getElementById('fileTitle').innerText='ملف '+num;
 }
 
 function openFile(){
-  const pass = document.getElementById('filePass').value;
-  const savedPass = localStorage.getItem('filePass'+currentFile);
-
-  if(!savedPass){
-    localStorage.setItem('filePass'+currentFile, pass);
+  if(isAdmin){
+    loadData();return;
   }
+  const pass=document.getElementById('filePass').value;
+  const saved=localStorage.getItem('pass'+currentFile);
+  if(!saved){localStorage.setItem('pass'+currentFile,pass);} 
+  if(pass===localStorage.getItem('pass'+currentFile)){
+    loadData();
+  } else alert('خطأ');
+}
 
-  if(pass === localStorage.getItem('filePass'+currentFile)){
-    document.getElementById('content').classList.remove('hidden');
-    document.getElementById('content').value = localStorage.getItem('fileData'+currentFile) || '';
-  } else {
-    alert('رمز غلط');
-  }
+function loadData(){
+  const area=document.getElementById('content');
+  area.classList.remove('hidden');
+  area.value=localStorage.getItem('data'+currentFile)||'';
 }
 
 function saveData(){
-  const text = document.getElementById('content').value;
-  localStorage.setItem('fileData'+currentFile, text);
+  localStorage.setItem('data'+currentFile,document.getElementById('content').value);
 }
 
 function back(){
   document.getElementById('filePage').classList.add('hidden');
   document.getElementById('main').classList.remove('hidden');
+}
+
+window.onload=()=>{
+  const saved=localStorage.getItem('fileCount');
+  if(saved) fileCount=parseInt(saved);
 }
 </script>
 
