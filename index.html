@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FBI Panel</title>
+<title>Secure Panel</title>
 
 <style>
 body{
@@ -11,6 +11,18 @@ body{
     font-family:Arial;
     background:black;
     color:gray;
+}
+
+/* BACK */
+#back{
+    position:fixed;
+    top:10px;
+    right:10px;
+    padding:8px 12px;
+    border:1px solid gray;
+    background:#111;
+    cursor:pointer;
+    display:none;
 }
 
 /* LOGIN */
@@ -22,20 +34,12 @@ body{
     align-items:center;
 }
 
-.logo{
-    font-size:60px;
-    letter-spacing:8px;
-    color:gray;
-    margin-bottom:20px;
-}
-
 input{
-    padding:10px;
     margin:5px;
+    padding:10px;
     background:#111;
     border:1px solid gray;
     color:white;
-    width:220px;
 }
 
 button{
@@ -46,26 +50,13 @@ button{
     cursor:pointer;
 }
 
-/* MAIN */
-#app{display:none;}
-
-.header{
-    text-align:center;
-    font-size:26px;
-    margin-top:20px;
-    border-bottom:1px solid gray;
-    width:80%;
-    margin:auto;
-    padding-bottom:10px;
-}
-
 /* FILES */
 .files{
     display:grid;
     grid-template-columns:repeat(5,1fr);
     gap:10px;
     width:90%;
-    margin:30px auto;
+    margin:60px auto;
 }
 
 .file{
@@ -76,10 +67,10 @@ button{
 }
 
 /* EDITOR */
-.editor{
+#editor{
+    display:none;
     width:80%;
     margin:auto;
-    display:none;
 }
 
 textarea{
@@ -88,226 +79,127 @@ textarea{
     background:#111;
     color:white;
     border:1px solid gray;
-    font-size:16px;
-}
-
-/* ADMIN */
-.admin{
-    width:80%;
-    margin:20px auto;
-    border:1px solid gray;
-    padding:10px;
-    display:none;
-}
-
-.small{
-    font-size:12px;
-    cursor:pointer;
-    margin-top:10px;
-}
-
-.logs{
-    font-size:12px;
-    margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
+<button id="back" onclick="back()">رجوع</button>
+
 <!-- LOGIN -->
 <div id="login">
-    <div class="logo">FBI</div>
-
-    <input id="user" placeholder="Username">
+    <h2>LOGIN</h2>
+    <input id="user" placeholder="Name">
     <input id="pass" type="password" placeholder="Password">
-
-    <button onclick="login()">Login</button>
-
-    <div class="small" onclick="adminLogin()">القيادات</div>
+    <button onclick="login()">Enter</button>
+    <p onclick="adminLogin()" style="cursor:pointer;font-size:12px">Admin</p>
 </div>
 
 <!-- APP -->
-<div id="app">
-
-<div class="header">Dashboard</div>
+<div id="app" style="display:none;">
 
 <div class="files" id="files"></div>
 
-<div class="editor" id="editor">
+<div id="editor">
     <h3 id="title"></h3>
     <textarea id="text"></textarea><br><br>
     <button onclick="save()">حفظ</button>
-</div>
-
-<div class="admin" id="admin">
-    <h3>Admin Control</h3>
-    <button onclick="addFile()">إضافة ملف</button>
-    <button onclick="deleteFile()">حذف ملف</button>
-    <button onclick="renameFile()">تعديل اسم الملف</button>
-
-    <hr>
-
-    <h4>المستخدمين (للقيادات فقط)</h4>
-    <div id="users"></div>
-
-    <hr>
-
-    <h4>سجل الدخول</h4>
-    <div id="logs"></div>
 </div>
 
 </div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")||"[]");
-let files = JSON.parse(localStorage.getItem("files")||"[]");
-let logs  = JSON.parse(localStorage.getItem("logs")||"[]");
-
 let currentUser=null;
 let currentFile=null;
+let isAdmin=false;
 
-/* INIT FILES */
-if(files.length===0){
-    for(let i=1;i<=10;i++){
-        files.push({
-            name:"File "+i,
-            content:"",
-            password:"1234"
-        });
-    }
-    localStorage.setItem("files",JSON.stringify(files));
-}
+/* EMPTY FILES (ADMIN CREATES) */
+let files=JSON.parse(localStorage.getItem("files")||"[]");
 
 /* LOGIN */
 function login(){
-
     let u=document.getElementById("user").value;
-    let p=document.getElementById("pass").value;
 
-    if(!u||!p) return alert("اكتب البيانات");
+    if(!u) return;
 
-    let user={user:u,pass:p,role:"user"};
+    currentUser=u;
 
-    users.push(user);
-    localStorage.setItem("users",JSON.stringify(users));
-
-    currentUser=user;
-
-    logs.push({
-        user:u,
-        time:new Date().toLocaleString()
-    });
-
+    let logs=JSON.parse(localStorage.getItem("logs")||"[]");
+    logs.push({user:u,time:new Date().toLocaleString()});
     localStorage.setItem("logs",JSON.stringify(logs));
 
-    document.getElementById("login").style.display="none";
-    document.getElementById("app").style.display="block";
-
-    render();
+    start();
 }
 
 /* ADMIN */
 function adminLogin(){
     let p=prompt("Admin Password");
     if(p==="r3d"){
-        currentUser={role:"admin"};
-
-        document.getElementById("login").style.display="none";
-        document.getElementById("app").style.display="block";
-        document.getElementById("admin").style.display="block";
-
-        render();
-        renderUsers();
-        renderLogs();
-    }else{
-        alert("Wrong");
+        isAdmin=true;
+        start();
     }
 }
 
-/* FILES */
+/* START */
+function start(){
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+    document.getElementById("back").style.display="block";
+
+    render();
+}
+
+/* BACK */
+function back(){
+    document.getElementById("login").style.display="flex";
+    document.getElementById("app").style.display="none";
+    document.getElementById("back").style.display="none";
+}
+
+/* RENDER */
 function render(){
     let box=document.getElementById("files");
     box.innerHTML="";
 
     files.forEach((f,i)=>{
-        let div=document.createElement("div");
-        div.className="file";
-        div.innerText=f.name;
-        div.onclick=()=>openFile(i);
-        box.appendChild(div);
+        let d=document.createElement("div");
+        d.className="file";
+        d.innerText=f.name;
+        d.onclick=()=>open(i);
+        box.appendChild(d);
     });
+
+    if(isAdmin){
+        let add=document.createElement("div");
+        add.className="file";
+        add.innerText="+ Add File";
+        add.onclick=addFile;
+        box.appendChild(add);
+    }
 }
 
-function openFile(i){
-
-    let pass = prompt("File Password:");
-
-    if(currentUser.role!=="admin" && pass!==files[i].password){
-        return alert("Wrong password");
-    }
-
+/* OPEN FILE */
+function open(i){
     currentFile=i;
-
     document.getElementById("editor").style.display="block";
     document.getElementById("title").innerText=files[i].name;
-    document.getElementById("text").value=files[i].content;
+    document.getElementById("text").value=files[i].text||"";
 }
 
+/* SAVE */
 function save(){
-    files[currentFile].content=document.getElementById("text").value;
+    files[currentFile].text=document.getElementById("text").value;
     localStorage.setItem("files",JSON.stringify(files));
 }
 
-/* ADMIN FILE CONTROL */
+/* ADD FILE */
 function addFile(){
-    files.push({
-        name:"File "+(files.length+1),
-        content:"",
-        password:"1234"
-    });
+    let name="File "+(files.length+1);
+    files.push({name:name,text:""});
     localStorage.setItem("files",JSON.stringify(files));
     render();
-}
-
-function deleteFile(){
-    files.pop();
-    localStorage.setItem("files",JSON.stringify(files));
-    render();
-}
-
-function renameFile(){
-    let n=prompt("New name:");
-    if(n){
-        files[currentFile].name=n;
-        localStorage.setItem("files",JSON.stringify(files));
-        render();
-    }
-}
-
-/* USERS */
-function renderUsers(){
-    let box=document.getElementById("users");
-    box.innerHTML="";
-
-    users.forEach(u=>{
-        let d=document.createElement("div");
-        d.innerText=u.user;
-        box.appendChild(d);
-    });
-}
-
-/* LOGS */
-function renderLogs(){
-    let box=document.getElementById("logs");
-    box.innerHTML="";
-
-    logs.forEach(l=>{
-        let d=document.createElement("div");
-        d.innerText=l.user+" - "+l.time;
-        box.appendChild(d);
-    });
 }
 
 </script>
