@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure System</title>
+<title>Secure Panel</title>
 
 <style>
 body{
@@ -13,24 +13,24 @@ body{
     color:gray;
 }
 
-/* login */
-#loginBox{
+/* LOGIN */
+#login{
+    height:100vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    height:100vh;
 }
 
-.title{
-    font-size:40px;
-    letter-spacing:5px;
+.logo{
+    font-size:50px;
+    letter-spacing:10px;
+    color:gray;
     margin-bottom:20px;
 }
 
 input{
     padding:10px;
-    width:200px;
     margin:5px;
     background:#111;
     border:1px solid gray;
@@ -40,25 +40,22 @@ input{
 button{
     padding:10px;
     background:#222;
-    color:gray;
     border:1px solid gray;
+    color:gray;
     cursor:pointer;
 }
 
-/* main */
-#app{
-    display:none;
-}
+/* APP */
+#app{display:none;}
 
 .header{
     text-align:center;
-    font-size:28px;
+    font-size:26px;
     margin-top:20px;
     border-bottom:1px solid gray;
-    padding-bottom:10px;
     width:80%;
-    margin-left:auto;
-    margin-right:auto;
+    margin:auto;
+    padding-bottom:10px;
 }
 
 .files{
@@ -77,26 +74,32 @@ button{
 }
 
 .editor{
-    display:none;
     width:80%;
-    margin:20px auto;
+    margin:auto;
+    display:none;
 }
 
 textarea{
     width:100%;
-    height:200px;
+    height:250px;
     background:#111;
     color:white;
     border:1px solid gray;
     font-size:16px;
 }
 
-.adminPanel{
-    display:none;
+.admin{
     width:80%;
     margin:20px auto;
     border:1px solid gray;
     padding:10px;
+    display:none;
+}
+
+.small{
+    font-size:12px;
+    cursor:pointer;
+    margin-top:10px;
 }
 </style>
 </head>
@@ -104,71 +107,106 @@ textarea{
 <body>
 
 <!-- LOGIN -->
-<div id="loginBox">
-    <div class="title">SECURE</div>
+<div id="login">
+    <div class="logo">SYSTEM</div>
 
-    <input type="password" id="pass" placeholder="Password">
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
     <button onclick="login()">Login</button>
 
-    <p style="font-size:12px;cursor:pointer" onclick="adminLogin()">القيادات</p>
+    <div class="small" onclick="adminLogin()">القيادات</div>
 </div>
 
 <!-- APP -->
 <div id="app">
 
-    <div class="header">Dashboard</div>
+<div class="header">Dashboard</div>
 
-    <div class="files" id="files"></div>
+<div class="files" id="files"></div>
 
-    <div class="editor" id="editor">
-        <h3 id="fileTitle"></h3>
-        <textarea id="text"></textarea>
-        <button onclick="saveFile()">حفظ</button>
-    </div>
+<div class="editor" id="editor">
+    <h3 id="title"></h3>
+    <textarea id="text"></textarea>
+    <br><br>
+    <button onclick="save()">حفظ</button>
+</div>
 
-    <div class="adminPanel" id="admin">
-        <h3>Admin Panel</h3>
-        <button onclick="addFile()">إضافة ملف</button>
-        <button onclick="deleteFile()">حذف آخر ملف</button>
-    </div>
+<div class="admin" id="admin">
+    <h3>Admin Panel</h3>
+    <button onclick="addFile()">إضافة ملف</button>
+    <button onclick="deleteFile()">حذف ملف</button>
+    <button onclick="renameFile()">تغيير اسم ملف</button>
+    <hr>
+    <h4>المستخدمين</h4>
+    <div id="users"></div>
+</div>
 
 </div>
 
 <script>
-let masterPassword = "1234";
-let adminPassword = "r3d";
+
+let users = JSON.parse(localStorage.getItem("users")||"[]");
+let files = JSON.parse(localStorage.getItem("files")||"[]");
+
+let currentUser = null;
 let currentFile = null;
 
-let data = JSON.parse(localStorage.getItem("files") || "[]");
-
+/* LOGIN */
 function login(){
+
+    let u = document.getElementById("user").value;
     let p = document.getElementById("pass").value;
-    if(p === masterPassword){
-        document.getElementById("loginBox").style.display="none";
-        document.getElementById("app").style.display="block";
-        renderFiles();
-    }else{
-        alert("خطأ في كلمة المرور");
+
+    if(!u || !p) return alert("اكتب البيانات");
+
+    let found = users.find(x=>x.user===u && x.pass===p);
+
+    if(!found){
+        found = {user:u,pass:p,role:"user"};
+        users.push(found);
+        localStorage.setItem("users",JSON.stringify(users));
     }
+
+    currentUser = found;
+
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    if(files.length===0){
+        for(let i=1;i<=10;i++){
+            files.push({name:"File "+i,content:""});
+        }
+        localStorage.setItem("files",JSON.stringify(files));
+    }
+
+    render();
 }
 
+/* ADMIN LOGIN */
 function adminLogin(){
-    let p = prompt("ادخل كلمة سر القيادات");
-    if(p === adminPassword){
-        document.getElementById("loginBox").style.display="none";
+    let p = prompt("Password");
+    if(p==="r3d"){
+        currentUser = {role:"admin"};
+        document.getElementById("login").style.display="none";
         document.getElementById("app").style.display="block";
         document.getElementById("admin").style.display="block";
-        renderFiles();
+        renderUsers();
+        render();
+    }else{
+        alert("Wrong");
     }
 }
 
-function renderFiles(){
+/* RENDER FILES */
+function render(){
     let box = document.getElementById("files");
     box.innerHTML="";
-    data.forEach((f,i)=>{
+
+    files.forEach((f,i)=>{
         let div=document.createElement("div");
         div.className="file";
-        div.innerText="File "+(i+1);
+        div.innerText=f.name;
         div.onclick=()=>openFile(i);
         box.appendChild(div);
     });
@@ -177,25 +215,47 @@ function renderFiles(){
 function openFile(i){
     currentFile=i;
     document.getElementById("editor").style.display="block";
-    document.getElementById("fileTitle").innerText="File "+(i+1);
-    document.getElementById("text").value=data[i] || "";
+    document.getElementById("title").innerText=files[i].name;
+    document.getElementById("text").value=files[i].content;
 }
 
-function saveFile(){
-    data[currentFile]=document.getElementById("text").value;
-    localStorage.setItem("files",JSON.stringify(data));
-    alert("تم الحفظ");
+function save(){
+    files[currentFile].content=document.getElementById("text").value;
+    localStorage.setItem("files",JSON.stringify(files));
 }
 
+/* ADMIN FEATURES */
 function addFile(){
-    data.push("");
-    renderFiles();
+    files.push({name:"New File",content:""});
+    localStorage.setItem("files",JSON.stringify(files));
+    render();
 }
 
 function deleteFile(){
-    data.pop();
-    renderFiles();
+    files.pop();
+    localStorage.setItem("files",JSON.stringify(files));
+    render();
 }
+
+function renameFile(){
+    let n = prompt("New name");
+    if(n){
+        files[currentFile].name=n;
+        localStorage.setItem("files",JSON.stringify(files));
+        render();
+    }
+}
+
+function renderUsers(){
+    let box=document.getElementById("users");
+    box.innerHTML="";
+    users.forEach(u=>{
+        let d=document.createElement("div");
+        d.innerText=u.user+" ("+u.role+")";
+        box.appendChild(d);
+    });
+}
+
 </script>
 
 </body>
