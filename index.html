@@ -77,6 +77,9 @@ button:hover {
   <div class="line"></div>
 
   <div class="files" id="files"></div>
+  <div style="text-align:center; font-size:12px; margin-top:40px; color:gray;">
+    جميع حقوق الموقع محفوظة لدى جهاز الفيدرالي
+  </div>
 </div>
 
 <!-- FILE PAGE -->
@@ -84,7 +87,8 @@ button:hover {
   <h2 id="fileTitle"></h2>
   <input type="password" id="filePass" placeholder="رمز الملف">
   <button onclick="openFile()">فتح</button>
-  <textarea id="content" class="hidden" rows="10" cols="30" oninput="saveData()"></textarea>
+  <textarea id="content" class="hidden" rows="20" cols="80" oninput="saveData()" placeholder="اكتب هنا... يتم الحفظ تلقائياً"></textarea>
+  <button onclick="saveData()">حفظ</button>
   <button onclick="back()">رجوع</button>
 </div>
 
