@@ -1,1 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FBI</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: black;
+  color: gray;
+}
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+input, button, textarea {
+  padding: 10px;
+  margin: 5px;
+  background: #111;
+  border: 1px solid gray;
+  color: gray;
+}
+
+button:hover {
+  background: gray;
+  color: black;
+  cursor: pointer;
+}
+
+.hidden { display: none; }
+
+.title {
+  text-align: center;
+  font-size: 40px;
+}
+
+.line {
+  width: 200px;
+  height: 2px;
+  background: gray;
+  margin: 10px auto;
+}
+
+.files {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+
+.file {
+  border: 1px solid gray;
+  padding: 20px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="center">
+  <h1 style="color: gray;">FBI SYSTEM ACCESS</h1>
+  <input type="password" id="mainPass" placeholder="ادخل كلمة السر">
+  <button onclick="login()">دخول</button>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="hidden">
+  <div class="title">FBI</div>
+  <div class="line"></div>
+
+  <div class="files" id="files"></div>
+</div>
+
+<!-- FILE PAGE -->
+<div id="filePage" class="hidden center">
+  <h2 id="fileTitle"></h2>
+  <input type="password" id="filePass" placeholder="رمز الملف">
+  <button onclick="openFile()">فتح</button>
+  <textarea id="content" class="hidden" rows="10" cols="30" oninput="saveData()"></textarea>
+  <button onclick="back()">رجوع</button>
+</div>
+
+<script>
+const SITE_PASSWORD = "1234"; // غيرها
+let currentFile = null;
+
+function login() {
+  const pass = document.getElementById('mainPass').value;
+  if(pass === SITE_PASSWORD) {
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+  } else {
+    alert('كلمة السر غلط');
+  }
+}
+
+const filesContainer = document.getElementById('files');
+
+for(let i=1;i<=10;i++){
+  const div = document.createElement('div');
+  div.className = 'file';
+  div.innerText = 'ملف ' + i;
+  div.onclick = () => openFilePage(i);
+  filesContainer.appendChild(div);
+}
+
+function openFilePage(num){
+  currentFile = num;
+  document.getElementById('main').classList.add('hidden');
+  document.getElementById('filePage').classList.remove('hidden');
+  document.getElementById('fileTitle').innerText = 'ملف ' + num;
+}
+
+function openFile(){
+  const pass = document.getElementById('filePass').value;
+  const savedPass = localStorage.getItem('filePass'+currentFile);
+
+  if(!savedPass){
+    localStorage.setItem('filePass'+currentFile, pass);
+  }
+
+  if(pass === localStorage.getItem('filePass'+currentFile)){
+    document.getElementById('content').classList.remove('hidden');
+    document.getElementById('content').value = localStorage.getItem('fileData'+currentFile) || '';
+  } else {
+    alert('رمز غلط');
+  }
+}
+
+function saveData(){
+  const text = document.getElementById('content').value;
+  localStorage.setItem('fileData'+currentFile, text);
+}
+
+function back(){
+  document.getElementById('filePage').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
