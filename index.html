@@ -1,435 +1,263 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>نظام الوكيل السري</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Tahoma", sans-serif;
-    }
+<meta charset="UTF-8">
+<title>نظام الوكيل السري</title>
 
-    body {
-      background: #000;
-      color: #fff;
-      direction: rtl;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Tahoma}
+body{background:#000;color:#fff}
 
-    .screen {
-      display: none;
-      width: 100vw;
-      height: 100vh;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-    }
+/* الشاشات */
+.screen{display:none;width:100vw;height:100vh;justify-content:center;align-items:center}
+.active-screen{display:flex}
+.hidden{display:none}
 
-    .active-screen {
-      display: flex;
-    }
+/* صندوق */
+.center-box{border:2px solid #fff;padding:30px;width:400px;text-align:center}
 
-    .hidden {
-      display: none !important;
-    }
+/* عناصر */
+input,select,textarea{
+width:100%;padding:8px;margin:8px 0;background:#000;border:1px solid #fff;color:#fff
+}
+button{padding:8px 15px;background:#fff;color:#000;border:none;cursor:pointer}
+button:hover{background:#ccc}
 
-    .center-box {
-      background: #000;
-      border: 2px solid #fff;
-      padding: 30px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-    }
+.top-bar{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #fff}
+.main{display:flex;height:calc(100vh - 50px)}
+.sidebar{width:200px;border-left:1px solid #fff}
+.sidebar li{padding:10px;border-bottom:1px solid #222;cursor:pointer}
+.sidebar li:hover{background:#111}
+.active{background:#fff;color:#000}
 
-    h1, h2, h3 {
-      margin-bottom: 15px;
-      color: #fff;
-    }
+.content{flex:1;padding:10px}
+.panel{display:none}
+.active-panel{display:block}
 
-    p, label {
-      color: #ddd;
-      margin-bottom: 10px;
-      display: block;
-    }
+.box{border:1px solid #fff;padding:10px;margin:5px}
+.data-table{width:100%;border-collapse:collapse}
+.data-table td,.data-table th{border:1px solid #fff;padding:5px;text-align:center}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 8px 10px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      background: #000;
-      border: 1px solid #fff;
-      color: #fff;
-    }
+/* كاميرات */
+.camera-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.camera-box{border:1px solid #fff;height:120px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-    button {
-      padding: 8px 16px;
-      background: #fff;
-      color: #000;
-      border: none;
-      cursor: pointer;
-      margin-top: 5px;
-      transition: 0.3s;
-    }
+/* خريطة */
+.fake-map{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.map-cell{height:40px;border:1px solid #222;cursor:pointer}
+.map-point{width:6px;height:6px;background:#fff;border-radius:50%;margin:auto;margin-top:15px}
 
-    button:hover {
-      background: #ccc;
-    }
+/* رسائل */
+.messages-list{height:250px;overflow:auto;border:1px solid #fff;padding:5px}
+.message-item{border-bottom:1px solid #222;padding:4px}
 
-    .message {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #f88;
-      min-height: 18px;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      border-bottom: 1px solid #fff;
-      background: #000;
-    }
-
-    .logo {
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-
-    .status-area span {
-      margin-left: 15px;
-      font-size: 13px;
-    }
-
-    .main-layout {
-      display: flex;
-      height: calc(100vh - 50px);
-    }
-
-    .sidebar {
-      width: 220px;
-      border-left: 1px solid #fff;
-      background: #000;
-    }
-
-    .sidebar ul {
-      list-style: none;
-    }
-
-    .sidebar li {
-      padding: 12px 15px;
-      border-bottom: 1px solid #222;
-      cursor: pointer;
-      font-size: 14px;
-      color: #ddd;
-    }
-
-    .sidebar li:hover {
-      background: #111;
-    }
-
-    .sidebar .active {
-      background: #fff;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .content {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
-
-    .panel {
-      display: none;
-    }
-
-    .active-panel {
-      display: block;
-    }
-
-    .panel-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .box {
-      border: 1px solid #fff;
-      padding: 10px;
-      background: #000;
-    }
-
-    .half {
-      width: calc(50% - 10px);
-    }
-
-    .full {
-      width: 100%;
-    }
-
-    .third {
-      width: calc(33.33% - 10px);
-    }
-
-    .two-third {
-      width: calc(66.66% - 10px);
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    .data-table th, .data-table td {
-      border: 1px solid #fff;
-      padding: 5px 8px;
-      text-align: center;
-    }
-
-    .data-table th {
-      background: #111;
-    }
-
-    .logs-container {
-      height: 300px;
-      overflow-y: auto;
-      background: #000;
-      border: 1px solid #fff;
-      padding: 8px;
-      font-size: 13px;
-      white-space: pre-line;
-    }
-
-    .camera-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      max-height: 320px;
-      overflow-y: auto;
-    }
-
-    .camera-box {
-      border: 1px solid #fff;
-      height: 140px;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .fake-map {
-      border: 1px solid #fff;
-      height: 320px;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: repeat(6, 1fr);
-      gap: 2px;
-    }
-
-    .map-cell {
-      border: 1px solid #222;
-      background: #000;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .map-point {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #fff;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .messages-list {
-      border: 1px solid #fff;
-      height: 300px;
-      overflow-y: auto;
-      padding: 8px;
-      font-size: 13px;
-    }
-
-    .message-item {
-      border-bottom: 1px solid #222;
-      padding: 4px 0;
-    }
-
-    .status-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .system-status {
-      margin-top: 10px;
-      font-size: 13px;
-    }
-
-    .quick-commands {
-      list-style: none;
-      font-size: 13px;
-    }
-
-    .quick-commands li {
-      margin-bottom: 5px;
-    }
-
-    .alerts-container {
-      margin-top: 10px;
-      max-height: 200px;
-      overflow-y: auto;
-      font-size: 13px;
-    }
-
-    #session-timer {
-      color: #ccc;
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <!-- مباشرة إلى تسجيل الدخول -->
-  <div id="login-screen" class="screen active-screen">
-    <div class="center-box">
-      <h1>تسجيل دخول الوكيل</h1>
-      <div class="login-row">
-        <label for="username">اسم المستخدم</label>
-        <input type="text" id="username" placeholder="ادخل اسم المستخدم" />
-      </div>
-      <div class="login-row">
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" placeholder="ادخل كلمة المرور" />
-      </div>
-      <button id="login-btn">دخول</button>
-      <div id="login-message" class="message"></div>
-    </div>
-  </div>
 
-  <div id="dashboard-screen" class="screen hidden">
-    <header class="top-bar">
-      <div class="logo">NSS Control System</div>
-      <div class="status-area">
-        <span id="agent-greeting">مرحبا يا ايها الاجنت</span>
-        <span id="session-timer">مدة الجلسة: 00:00</span>
-      </div>
-    </header>
+<!-- تسجيل دخول -->
+<div id="login-screen" class="screen active-screen">
+<div class="center-box">
+<h2>تسجيل دخول</h2>
+<input id="username" placeholder="اسم المستخدم">
+<input id="password" type="password" placeholder="كلمة المرور">
+<button id="login-btn">دخول</button>
+<div id="login-message"></div>
+</div>
+</div>
 
-    <div class="main-layout">
-      <nav class="sidebar">
-        <ul>
-          <li class="nav-item active" data-target="files-panel">إدارة الملفات</li>
-          <li class="nav-item" data-target="cameras-panel">سجل الكاميرات</li>
-          <li class="nav-item" data-target="logs-panel">سجل العمليات</li>
-          <li class="nav-item" data-target="wanted-panel">قائمة المطلوبين</li>
-          <li class="nav-item" data-target="map-panel">الخريطة الوهمية</li>
-          <li class="nav-item" data-target="messages-panel">رسائل القيادة</li>
-          <li class="nav-item" data-target="command-panel">لوحة تحكم القيادة</li>
-        </ul>
-      </nav>
+<!-- لوحة التحكم -->
+<div id="dashboard-screen" class="screen hidden">
 
-      <section class="content">
-        <div id="files-panel" class="panel active-panel">
-          <h2>إدارة الملفات</h2>
-          <div class="panel-row">
-            <div class="box half">
-              <h3>قائمة الملفات السرية</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>رقم</th>
-                    <th>اسم الملف</th>
-                    <th>التصنيف</th>
-                    <th>الحالة</th>
-                  </tr>
-                </thead>
-                <tbody id="files-table-body"></tbody>
-              </table>
-            </div>
-            <div class="box half">
-              <h3>إضافة ملف وهمي</h3>
-              <div class="form-row">
-                <label>اسم الملف</label>
-                <input type="text" id="file-name" />
-              </div>
-              <div class="form-row">
-                <label>التصنيف</label>
-                <select id="file-level">
-                  <option value="سري">سري</option>
-                  <option value="سري للغاية">سري للغاية</option>
-                  <option value="محدود">محدود</option>
-                </select>
-              </div>
-              <button id="add-file-btn">إضافة ملف وهمي</button>
-              <div id="file-action-message" class="message"></div>
-            </div>
-          </div>
-        </div>
+<div class="top-bar">
+<div>NSS SYSTEM</div>
+<div id="timer">00:00</div>
+</div>
 
-        <div id="cameras-panel" class="panel hidden">
-          <h2>سجل الكاميرات</h2>
-          <div class="panel-row">
-            <div class="box half camera-grid" id="camera-grid"></div>
-            <div class="box half">
-              <h3>تفاصيل الكاميرا</h3>
-              <div id="camera-details">اختر كاميرا لعرض التفاصيل</div>
-            </div>
-          </div>
-        </div>
+<div class="main">
 
-        <div id="logs-panel" class="panel hidden">
-          <h2>سجل العمليات</h2>
-          <div class="box full">
-            <div id="logs-container" class="logs-container"></div>
-          </div>
-        </div>
+<!-- القائمة -->
+<ul class="sidebar">
+<li class="nav active" data-target="files">الملفات</li>
+<li class="nav" data-target="cams">الكاميرات</li>
+<li class="nav" data-target="map">الخريطة</li>
+<li class="nav" data-target="messages">الرسائل</li>
+<li class="nav" data-target="logs">السجل</li>
+</ul>
 
-        <div id="wanted-panel" class="panel hidden">
-          <h2>قائمة المطلوبين</h2>
-          <div class="box full">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>الرمز</th>
-                  <th>مستوى الخطورة</th>
-                  <th>آخر ظهور</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody id="wanted-table-body"></tbody>
-            </table>
-          </div>
-        </div>
+<!-- المحتوى -->
+<div class="content">
 
-        <div id="map-panel" class="panel hidden">
-          <h2>الخريطة الوهمية للعمليات</h2>
-          <div class="panel-row">
-            <div class="box two-third">
-              <div id="fake-map" class="fake-map"></div>
-            </div>
-            <div class="box third">
-              <h3>تفاصيل الموقع</h3>
-              <div id="map-details">اختر نقطة على الخريطة الوهمية.</div>
-            </div>
-          </div>
-        </div>
+<!-- الملفات -->
+<div id="files" class="panel active-panel">
+<h3>الملفات</h3>
 
-        <div id="messages-panel" class="panel hidden">
-          <h2>رسائل القيادة</h2>
-          <div class="panel-row">
-            <div class="box two-third">
-              <div id="messages-list" class="messages-list"></div>
-            </div>
-            <div class="box third">
-              <h3>إرسال رسالة وهمية</h3>
-              <textarea id="fake-message-input" rows="5" placeholder="اكتب رسالة وهمية 
+<table class="data-table">
+<thead>
+<tr><th>#</th><th>اسم</th><th>تصنيف</th></tr>
+</thead>
+<tbody id="files-body"></tbody>
+</table>
+
+<input id="file-name" placeholder="اسم الملف">
+<select id="file-level">
+<option>سري</option>
+<option>سري جدا</option>
+</select>
+<button id="add-file">إضافة</button>
+</div>
+
+<!-- الكاميرات -->
+<div id="cams" class="panel">
+<h3>الكاميرات</h3>
+<div class="camera-grid" id="cams-grid"></div>
+<div id="cam-details"></div>
+</div>
+
+<!-- الخريطة -->
+<div id="map" class="panel">
+<h3>الخريطة</h3>
+<div class="fake-map" id="map-grid"></div>
+<div id="map-info"></div>
+</div>
+
+<!-- الرسائل -->
+<div id="messages" class="panel">
+<h3>الرسائل</h3>
+<div class="messages-list" id="messages-list"></div>
+<textarea id="msg-input"></textarea>
+<button id="send-msg">إرسال</button>
+</div>
+
+<!-- السجل -->
+<div id="logs" class="panel">
+<h3>السجل</h3>
+<div id="logs-box"></div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+/* تسجيل الدخول */
+document.getElementById("login-btn").onclick = ()=>{
+let u = username.value
+let p = password.value
+
+if(u==="agent" && p==="1234"){
+login-screen.classList.add("hidden")
+dashboard-screen.classList.remove("hidden")
+init()
+}else{
+login-message.innerText="خطأ"
+}
+}
+
+/* التنقل */
+document.querySelectorAll(".nav").forEach(n=>{
+n.onclick=()=>{
+document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"))
+n.classList.add("active")
+
+document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active-panel"))
+document.getElementById(n.dataset.target).classList.add("active-panel")
+}
+})
+
+/* بيانات */
+let files=[]
+let logs=[]
+let messages=[]
+
+/* تشغيل */
+function init(){
+renderFiles()
+renderCams()
+renderMap()
+startTimer()
+}
+
+/* ملفات */
+add-file.onclick=()=>{
+if(file-name.value=="")return
+files.push({name:file-name.value,level:file-level.value})
+renderFiles()
+log("تم إضافة ملف")
+file-name.value=""
+}
+
+function renderFiles(){
+files-body.innerHTML=""
+files.forEach((f,i)=>{
+files-body.innerHTML+=`<tr><td>${i+1}</td><td>${f.name}</td><td>${f.level}</td></tr>`
+})
+}
+
+/* كاميرات */
+function renderCams(){
+for(let i=1;i<=4;i++){
+let div=document.createElement("div")
+div.className="camera-box"
+div.innerText="كاميرا "+i
+div.onclick=()=>cam-details.innerText="تفاصيل الكاميرا "+i
+cams-grid.appendChild(div)
+}
+}
+
+/* خريطة */
+function renderMap(){
+for(let i=0;i<60;i++){
+let cell=document.createElement("div")
+cell.className="map-cell"
+
+if(Math.random()>0.8){
+let p=document.createElement("div")
+p.className="map-point"
+cell.appendChild(p)
+cell.onclick=()=>map-info.innerText="موقع مشبوه"
+}
+
+map-grid.appendChild(cell)
+}
+}
+
+/* رسائل */
+send-msg.onclick=()=>{
+if(msg-input.value=="")return
+messages.push(msg-input.value)
+renderMessages()
+log("تم إرسال رسالة")
+msg-input.value=""
+}
+
+function renderMessages(){
+messages-list.innerHTML=""
+messages.forEach(m=>{
+messages-list.innerHTML+=`<div class="message-item">${m}</div>`
+})
+}
+
+/* سجل */
+function log(t){
+logs.push(t)
+logs-box.innerHTML=logs.join("<br>")
+}
+
+/* مؤقت */
+function startTimer(){
+let s=0
+setInterval(()=>{
+s++
+let m=Math.floor(s/60)
+let sec=s%60
+timer.innerText=`${m}:${sec<10?"0":""}${sec}`
+},1000)
+}
+
+</script>
+
+</body>
+</html>
