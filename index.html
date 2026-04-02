@@ -54,25 +54,6 @@
       display: block;
     }
 
-    #fingerprint-area {
-      margin: 20px auto 0;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 3px dashed #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s;
-      color: #fff;
-    }
-
-    #fingerprint-area:hover {
-      background: #111;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-    }
-
     input, select, textarea {
       width: 100%;
       padding: 8px 10px;
@@ -317,15 +298,8 @@
   </style>
 </head>
 <body>
-  <div id="fingerprint-screen" class="screen active-screen">
-    <div class="center-box">
-      <h1>نظام الدخول ببصمة الوكيل</h1>
-      <p>اضغط على منطقة البصمة لبدء التحقق</p>
-      <div id="fingerprint-area">ضع بصمتك هنا</div>
-    </div>
-  </div>
-
-  <div id="login-screen" class="screen hidden">
+  <!-- مباشرة إلى تسجيل الدخول -->
+  <div id="login-screen" class="screen active-screen">
     <div class="center-box">
       <h1>تسجيل دخول الوكيل</h1>
       <div class="login-row">
@@ -442,4 +416,20 @@
           <div class="panel-row">
             <div class="box two-third">
               <div id="fake-map" class="fake-map"></div>
-      
+            </div>
+            <div class="box third">
+              <h3>تفاصيل الموقع</h3>
+              <div id="map-details">اختر نقطة على الخريطة الوهمية.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="messages-panel" class="panel hidden">
+          <h2>رسائل القيادة</h2>
+          <div class="panel-row">
+            <div class="box two-third">
+              <div id="messages-list" class="messages-list"></div>
+            </div>
+            <div class="box third">
+              <h3>إرسال رسالة وهمية</h3>
+              <textarea id="fake-message-input" rows="5" placeholder="اكتب رسالة وهمية 
