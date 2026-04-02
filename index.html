@@ -5,84 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FBI Ultimate RP System</title>
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:#0a0a0a;
-    color:white;
-}
-body::before{
-    content:"";
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:url('https://images.unsplash.com/photo-1523961131990-5ea7c61b2107') no-repeat center/cover;
-    opacity:0.15;
-}
-
-/* تسجيل */
-#login{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(255,255,255,0.05);
-    padding:35px;
-    border-radius:15px;
-    backdrop-filter:blur(10px);
-    text-align:center;
-    box-shadow:0 0 30px rgba(255,255,255,0.2);
-}
-input{
-    padding:12px;
-    margin:10px;
-    width:260px;
-    border-radius:8px;
-    border:none;
-    background:rgba(255,255,255,0.1);
-    color:white;
-}
-button{
-    padding:12px;
-    width:260px;
-    border:none;
-    border-radius:8px;
-    background:white;
-    color:black;
-    font-weight:bold;
-    cursor:pointer;
-    margin:5px 0;
-}
+body{margin:0;font-family:Arial;background:#0a0a0a;color:white;}
+body::before{content:"";position:fixed;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1523961131990-5ea7c61b2107') no-repeat center/cover;opacity:0.15;}
+#login{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.05);padding:35px;border-radius:15px;backdrop-filter:blur(10px);text-align:center;box-shadow:0 0 30px rgba(255,255,255,0.2);}
+input{padding:12px;margin:10px;width:260px;border-radius:8px;border:none;background:rgba(255,255,255,0.1);color:white;}
+button{padding:12px;width:260px;border:none;border-radius:8px;background:white;color:black;font-weight:bold;cursor:pointer;margin:5px 0;}
 button:hover{transform:scale(1.05);}
-#fingerprint{
-    margin-top:15px;
-    padding:20px;
-    border:2px dashed white;
-    border-radius:10px;
-    cursor:pointer;
-    transition:0.3s;
-}
+#fingerprint{margin-top:15px;padding:20px;border:2px dashed white;border-radius:10px;cursor:pointer;transition:0.3s;}
 #fingerprint:hover{background:white;color:black;}
-
-/* لوحة */
 #panel{display:none;padding:20px;}
 .nav button{margin:5px;}
 .card{background:rgba(255,255,255,0.05);padding:15px;margin:10px 0;border-radius:10px;}
-
-/* كاميرات */
-.cam{
-    width:30%;
-    height:120px;
-    background:black;
-    display:inline-block;
-    margin:5px;
-    text-align:center;
-    font-size:12px;
-    border-radius:8px;
-    padding:5px;
-}
-
-/* خريطة */
+.cam{width:30%;height:120px;background:black;display:inline-block;margin:5px;text-align:center;font-size:12px;border-radius:8px;padding:5px;}
 #map{height:250px;background:black;padding:10px;border-radius:10px;font-size:12px;overflow:auto;}
 .screen{height:200px;overflow:auto;background:black;padding:10px;border-radius:10px;font-size:12px;}
 </style>
@@ -93,18 +27,18 @@ button:hover{transform:scale(1.05);}
 <h2>FBI ACCESS SYSTEM</h2>
 <input id="user" placeholder="Username"><br>
 <input id="pass" type="password" placeholder="Password"><br>
-<button onclick="login()">ENTER</button>
-<div id="fingerprint" onclick="finger()">👆 Scan Fingerprint</div>
+<button onclick="loginSystem()">ENTER</button>
+<div id="fingerprint" onclick="fingerprintScan()">👆 Scan Fingerprint</div>
 </div>
 
 <div id="panel">
 <div class="nav">
-<button onclick="tab('dash')">Dashboard</button>
-<button onclick="tab('cases')">Cases</button>
-<button onclick="tab('agents')">Agents</button>
-<button onclick="tab('cams')">Cameras</button>
-<button onclick="tab('mapTab')">Map</button>
-<button onclick="tab('wanted')">Wanted</button>
+<button onclick="switchTab('dash')">Dashboard</button>
+<button onclick="switchTab('cases')">Cases</button>
+<button onclick="switchTab('agents')">Agents</button>
+<button onclick="switchTab('cams')">Cameras</button>
+<button onclick="switchTab('mapTab')">Map</button>
+<button onclick="switchTab('wanted')">Wanted</button>
 <button onclick="logout()">Logout</button>
 </div>
 
@@ -145,61 +79,69 @@ button:hover{transform:scale(1.05);}
 <div id="wantedList"></div>
 </div>
 
-</div>
-
 <script>
-let cases=[],agents=[],wanted=[];
+let cases=[], agents=[], wanted=[];
 
-/* تسجيل دخول مضبوط */
-function login(){
-    if(user.value==="Abu3zh" && pass.value==="1234"){start();}
-    else alert("❌ Invalid Credentials");
-}
-function finger(){
-    start();
-}
-
-function start(){
-    login.style.display="none";
-    panel.style.display="block";
-    welcome.innerHTML="<div class='card'>🔥 مرحباً يا أبو عزه 🔥</div>";
-    soundEnter();
+/* تسجيل دخول مضمون */
+function loginSystem(){
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+    if(u==="Abu3zh" && p==="1234"){
+        enterSystem();
+    } else {alert("❌ Invalid Credentials");}
 }
 
-/* الأصوات */
-function soundEnter(){
-    let audio=new Audio("https://www.soundjay.com/button/sounds/button-3.mp3");
+/* بصمة متقدمة */
+function fingerprintScan(){
+    const box = document.getElementById("fingerprint");
+    box.innerHTML = "🔍 Scanning...";
+    setTimeout(()=>{box.innerHTML="✅ Verified"; enterSystem();},1500);
+}
+
+/* فتح النظام */
+function enterSystem(){
+    document.getElementById("login").style.display="none";
+    document.getElementById("panel").style.display="block";
+    document.getElementById("welcome").innerHTML="<div class='card'>🔥 مرحباً يا أبو عزه 🔥</div>";
+    playSound();
+}
+
+/* صوت الدخول */
+function playSound(){
+    const audio = new Audio("https://www.soundjay.com/button/sounds/button-3.mp3");
     audio.play();
 }
 
-/* تنقل */
-function tab(t){
-["dash","cases","agents","cams","mapTab","wanted"].forEach(x=>document.getElementById(x).style.display="none");
-document.getElementById(t).style.display="block";
+/* تنقل بين التابات */
+function switchTab(tab){
+    ["dash","cases","agents","cams","mapTab","wanted"].forEach(x=>document.getElementById(x).style.display="none");
+    document.getElementById(tab).style.display="block";
 }
 
-/* إدارة قضايا */
+/* إدارة */
 function addCase(){if(caseInput.value){cases.push(caseInput.value);render();caseInput.value="";}}
 function addAgent(){if(agentInput.value){agents.push(agentInput.value);render();agentInput.value="";}}
 function addWanted(){if(wantedInput.value){wanted.push(wantedInput.value);render();wantedInput.value="";}}
 
 function render(){
-caseList.innerHTML=cases.map(c=>`<div class="card">${c}</div>`).join("");
-agentList.innerHTML=agents.map(a=>`<div class="card">${a}</div>`).join("");
-wantedList.innerHTML=wanted.map(w=>`<div class="card">🚨 ${w}</div>`).join("");
+    caseList.innerHTML = cases.map(c=>`<div class="card">${c}</div>`).join("");
+    agentList.innerHTML = agents.map(a=>`<div class="card">${a}</div>`).join("");
+    wantedList.innerHTML = wanted.map(w=>`<div class="card">🚨 ${w}</div>`).join("");
 }
 
 /* خريطة RP وهمية */
 setInterval(()=>{
-if(map){map.innerHTML+="📍 New target detected<br>";map.scrollTop=map.scrollHeight;}
+    const mapDiv = document.getElementById("map");
+    if(mapDiv){mapDiv.innerHTML+="📍 New target detected<br>"; mapDiv.scrollTop = mapDiv.scrollHeight;}
 },2000);
 
-/* كاميرات وهمية تتحرك */
+/* كاميرات وهمية متحركة */
 setInterval(()=>{
-let cams=document.querySelectorAll('.cam');
-cams.forEach((c,i)=>{c.innerHTML=`📷 CAM ${i+1} LIVE 🔴 ${new Date().toLocaleTimeString()}`;});
+    const cams = document.querySelectorAll('.cam');
+    cams.forEach((c,i)=>{c.innerHTML=`📷 CAM ${i+1} LIVE 🔴 ${new Date().toLocaleTimeString()}`;});
 },3000);
 
+/* خروج */
 function logout(){location.reload();}
 </script>
 
