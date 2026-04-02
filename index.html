@@ -2,174 +2,256 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>FBI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FBI Federal System</title>
+
 <style>
-body {
-    background:black;
-    color:gray;
+body{
+    margin:0;
     font-family:Arial;
-    text-align:center;
+    background:black;
+    color:#00ffcc;
 }
-h1 {
-    font-size:50px;
+
+/* خلفية */
+body::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d') no-repeat center/cover;
+    opacity:0.15;
 }
-.container {
-    margin-top:100px;
-}
-input, textarea {
-    padding:10px;
-    margin:5px;
-    width:250px;
-}
-button {
-    padding:10px 20px;
-    margin:5px;
-}
-.file {
-    border:1px solid gray;
-    padding:10px;
-    margin:5px;
-}
-.top {
+
+/* تسجيل */
+#login{
     position:absolute;
-    right:20px;
-    top:20px;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:#111;
+    padding:30px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 0 25px #00ffcc;
+}
+
+input{
+    padding:10px;
+    margin:5px;
+    background:black;
+    border:1px solid #00ffcc;
+    color:#00ffcc;
+}
+
+button{
+    padding:10px;
+    background:#00ffcc;
+    border:none;
+    cursor:pointer;
+    margin:5px;
+}
+
+/* لوحة */
+#panel{
+    display:none;
+    padding:20px;
+}
+
+.nav{
+    background:#111;
+    padding:10px;
+}
+
+/* كروت */
+.card{
+    background:#111;
+    padding:10px;
+    margin:10px 0;
+}
+
+/* تنبيه */
+.alert{color:red;}
+
+/* شاشة */
+.screen{
+    background:black;
+    border:1px solid #00ffcc;
+    padding:10px;
+    height:200px;
+    overflow:auto;
 }
 </style>
 </head>
 
 <body>
 
-<div id="login" class="container">
-    <h1>FBI</h1>
-    <input id="name" placeholder="اسمك"><br>
-    <input id="pass" type="password" placeholder="كلمة السر"><br>
-    <button onclick="login()">دخول</button><br>
-    <small onclick="leaderLogin()">القيادات</small>
+<!-- تسجيل -->
+<div id="login">
+    <h2>FEDERAL ACCESS</h2>
+    <input id="user" placeholder="Username"><br>
+    <input id="pass" type="password" placeholder="Password"><br>
+    <button onclick="login()">LOGIN</button>
+
+    <div onclick="fingerprint()" style="margin-top:10px;cursor:pointer;">
+        👆 Scan Fingerprint
+    </div>
 </div>
 
-<div id="main" style="display:none;">
-    <div class="top">
-        <button onclick="logout()">رجوع</button>
-    </div>
+<!-- لوحة -->
+<div id="panel">
 
-    <h2 id="welcome"></h2>
+<div class="nav">
+<button onclick="tab('dash')">Dashboard</button>
+<button onclick="tab('cases')">Cases</button>
+<button onclick="tab('agents')">Agents</button>
+<button onclick="tab('alerts')">Alerts</button>
+<button onclick="tab('monitor')">Monitor</button>
+<button onclick="logout()">Logout</button>
+</div>
 
-    <div id="files"></div>
+<div id="clock"></div>
 
-    <textarea id="editor" rows="10" cols="50"></textarea><br>
-    <button onclick="saveFile()">حفظ</button>
+<!-- داش -->
+<div id="dash">
+<div class="card">👤 Agent: Abu3zh</div>
+<div class="card">🔐 Rank: Commander</div>
+<div class="card">📡 Status: ACTIVE</div>
+</div>
 
-    <div id="leaderPanel" style="display:none;">
-        <h3>لوحة القيادات</h3>
-        <button onclick="addFile()">إضافة ملف</button>
-        <button onclick="viewUsers()">عرض المستخدمين</button>
-    </div>
+<!-- قضايا -->
+<div id="cases" style="display:none;">
+<input id="caseInput" placeholder="Add Case">
+<button onclick="addCase()">Add</button>
+<input id="search" placeholder="Search" onkeyup="searchCase()">
 
-    <div id="usersList"></div>
+<div id="caseList"></div>
+</div>
+
+<!-- عملاء -->
+<div id="agents" style="display:none;">
+<input id="agentInput" placeholder="Add Agent">
+<button onclick="addAgent()">Add</button>
+<div id="agentList"></div>
+</div>
+
+<!-- تنبيهات -->
+<div id="alerts" style="display:none;">
+<div class="alert">⚠ محاولة اختراق</div>
+<div class="alert">⚠ نشاط مشبوه</div>
+</div>
+
+<!-- مراقبة -->
+<div id="monitor" style="display:none;">
+<div class="screen" id="log"></div>
+</div>
+
 </div>
 
 <script>
-let currentUser = "";
-let isLeader = false;
-let currentFile = null;
+let cases = JSON.parse(localStorage.getItem("cases")) || [];
+let agents = JSON.parse(localStorage.getItem("agents")) || [];
 
-function login() {
-    let name = document.getElementById("name").value;
-    let pass = document.getElementById("pass").value;
-
-    if(pass !== "soso") return alert("كلمة السر غلط");
-
-    currentUser = name;
-    saveUser(name);
-
-    start();
-}
-
-function leaderLogin(){
-    let pass = prompt("ادخل كلمة القيادات");
-    if(pass === "r3d"){
-        isLeader = true;
-        currentUser = "قيادة";
-        start();
-    } else {
-        alert("خطأ");
+/* تسجيل */
+function login(){
+    if(user.value=="admin" && pass.value=="1234"){
+        start("مرحباً يا معالي القائد");
+    }else{
+        alert("ACCESS DENIED");
     }
 }
 
-function start(){
-    document.getElementById("login").style.display="none";
-    document.getElementById("main").style.display="block";
+function fingerprint(){
+    start("تم التعرف على البصمة");
+}
 
-    document.getElementById("welcome").innerText = "👆 مرحبا " + currentUser;
+function start(msg){
+    alert(msg);
+    login.style.display="none";
+    panel.style.display="block";
+    sound();
+    updateClock();
+    render();
+}
 
-    if(isLeader){
-        document.getElementById("leaderPanel").style.display="block";
+/* صوت */
+function sound(){
+    let audio = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+    audio.play();
+}
+
+/* وقت */
+function updateClock(){
+    setInterval(()=>{
+        clock.innerText="🕒 "+new Date().toLocaleTimeString();
+    },1000);
+}
+
+/* تنقل */
+function tab(t){
+    ["dash","cases","agents","alerts","monitor"].forEach(x=>{
+        document.getElementById(x).style.display="none";
+    });
+    document.getElementById(t).style.display="block";
+}
+
+/* قضايا */
+function addCase(){
+    cases.push(caseInput.value);
+    localStorage.setItem("cases",JSON.stringify(cases));
+    render();
+}
+
+function render(){
+    caseList.innerHTML="";
+    cases.forEach((c,i)=>{
+        caseList.innerHTML+=`<div class="card">${c} <button onclick="delCase(${i})">X</button></div>`;
+    });
+
+    agentList.innerHTML="";
+    agents.forEach((a,i)=>{
+        agentList.innerHTML+=`<div class="card">${a} <button onclick="delAgent(${i})">X</button></div>`;
+    });
+}
+
+function delCase(i){
+    cases.splice(i,1);
+    localStorage.setItem("cases",JSON.stringify(cases));
+    render();
+}
+
+/* بحث */
+function searchCase(){
+    let val = search.value.toLowerCase();
+    caseList.innerHTML="";
+    cases.filter(c=>c.toLowerCase().includes(val))
+    .forEach(c=>{
+        caseList.innerHTML+=`<div class="card">${c}</div>`;
+    });
+}
+
+/* عملاء */
+function addAgent(){
+    agents.push(agentInput.value);
+    localStorage.setItem("agents",JSON.stringify(agents));
+    render();
+}
+
+function delAgent(i){
+    agents.splice(i,1);
+    localStorage.setItem("agents",JSON.stringify(agents));
+    render();
+}
+
+/* مراقبة */
+setInterval(()=>{
+    if(document.getElementById("log")){
+        log.innerHTML+="📡 اتصال جديد<br>";
+        log.scrollTop=log.scrollHeight;
     }
+},3000);
 
-    loadFiles();
-}
-
-function logout(){
-    location.reload();
-}
-
-function saveUser(name){
-    let users = JSON.parse(localStorage.getItem("users")||"[]");
-    users.push({name:name,date:new Date().toLocaleString()});
-    localStorage.setItem("users", JSON.stringify(users));
-}
-
-function viewUsers(){
-    let users = JSON.parse(localStorage.getItem("users")||"[]");
-    let html="";
-    users.forEach(u=>{
-        html+= `<div>${u.name} - ${u.date}</div>`;
-    });
-    document.getElementById("usersList").innerHTML = html;
-}
-
-function loadFiles(){
-    let files = JSON.parse(localStorage.getItem("files")||"[]");
-    let html="";
-
-    files.forEach((f,i)=>{
-        html+= `<div class="file">
-        <span onclick="openFile(${i})">${f.name}</span>
-        ${isLeader ? `<button onclick="deleteFile(${i})">حذف</button>`:""}
-        </div>`;
-    });
-
-    document.getElementById("files").innerHTML = html;
-}
-
-function addFile(){
-    let files = JSON.parse(localStorage.getItem("files")||"[]");
-    let name = "ملف " + (files.length+1);
-    files.push({name:name,content:""});
-    localStorage.setItem("files", JSON.stringify(files));
-    loadFiles();
-}
-
-function deleteFile(i){
-    let files = JSON.parse(localStorage.getItem("files"));
-    files.splice(i,1);
-    localStorage.setItem("files", JSON.stringify(files));
-    loadFiles();
-}
-
-function openFile(i){
-    let files = JSON.parse(localStorage.getItem("files"));
-    currentFile = i;
-    document.getElementById("editor").value = files[i].content;
-}
-
-function saveFile(){
-    let files = JSON.parse(localStorage.getItem("files"));
-    files[currentFile].content = document.getElementById("editor").value;
-    localStorage.setItem("files", JSON.stringify(files));
-    alert("تم الحفظ");
-}
+function logout(){location.reload();}
 </script>
 
 </body>
