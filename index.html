@@ -1,168 +1,176 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Panel FBI</title><style>
-body{margin:0;font-family:Arial;background:black;color:gray}
-#back{position:fixed;top:10px;right:10px;padding:8px 12px;border:1px solid gray;background:#111;cursor:pointer;display:none}
-#login{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
-input{margin:5px;padding:10px;background:#111;border:1px solid gray;color:white}
-button{padding:10px;background:#222;border:1px solid gray;color:gray;cursor:pointer}
-.files{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:90%;margin:60px auto}
-.file{border:1px solid gray;padding:20px;text-align:center;cursor:pointer;transition:.3s}
-.file:hover{background:#222;transform:scale(1.05)}
-#editor{display:none;width:80%;margin:auto}
-textarea{width:100%;height:300px;background:#111;color:white;border:1px solid gray}
-#fingerprint-box{text-align:center;margin-top:40px}
-#fingerprint{width:120px;height:120px;margin:auto;border-radius:20px;background:#0f172a;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s}
-#fingerprint:hover{transform:scale(1.1)}
-#welcome-text{margin-top:15px;color:white;font-size:18px}
-</style></head><body>
-<button id="back" onclick="logout()">تسجيل خروج</button><!-- LOGIN --><div id="login">
-<h2>LOGIN</h2>
-<input id="user" placeholder="Name">
-<input id="pass" type="password" placeholder="Password">
-<button onclick="login()">Enter</button>
-<p onclick="adminLogin()" style="cursor:pointer;font-size:12px">Admin</p>
-</div><!-- APP --><div id="app" style="display:none;"><div id="fingerprint-box">
-<div id="fingerprint">
-<img src="https://cdn-icons-png.flaticon.com/512/709/709722.png" width="60">
+<title>FBI</title>
+<style>
+body {
+    background:black;
+    color:gray;
+    font-family:Arial;
+    text-align:center;
+}
+h1 {
+    font-size:50px;
+}
+.container {
+    margin-top:100px;
+}
+input, textarea {
+    padding:10px;
+    margin:5px;
+    width:250px;
+}
+button {
+    padding:10px 20px;
+    margin:5px;
+}
+.file {
+    border:1px solid gray;
+    padding:10px;
+    margin:5px;
+}
+.top {
+    position:absolute;
+    right:20px;
+    top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="login" class="container">
+    <h1>FBI</h1>
+    <input id="name" placeholder="اسمك"><br>
+    <input id="pass" type="password" placeholder="كلمة السر"><br>
+    <button onclick="login()">دخول</button><br>
+    <small onclick="leaderLogin()">القيادات</small>
 </div>
-<p id="welcome-text"></p>
-</div><div class="files" id="files"></div><div id="editor">
-<h3 id="title"></h3>
-<textarea id="text"></textarea><br><br>
-<button onclick="save()">حفظ</button>
-<button onclick="deleteFile()" style="margin-top:10px;background:#400">حذف الملف</button>
-</div></div><script>
-let currentUser=null;
-let currentFile=null;
-let isAdmin=false;
 
-// USERS SYSTEM
-let users=JSON.parse(localStorage.getItem("users")||"{}");
-function hash(str){return btoa(str).substring(0,10)}
-const adminHash="cjNk"; // r3d
+<div id="main" style="display:none;">
+    <div class="top">
+        <button onclick="logout()">رجوع</button>
+    </div>
 
-function login(){
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
+    <h2 id="welcome"></h2>
 
-if(!u||!p) return alert("اكتب البيانات");
+    <div id="files"></div>
 
-if(!users[u]){
-users[u]=hash(p);
-localStorage.setItem("users",JSON.stringify(users));
-}else{
-if(users[u]!==hash(p)) return alert("كلمة المرور غلط");
+    <textarea id="editor" rows="10" cols="50"></textarea><br>
+    <button onclick="saveFile()">حفظ</button>
+
+    <div id="leaderPanel" style="display:none;">
+        <h3>لوحة القيادات</h3>
+        <button onclick="addFile()">إضافة ملف</button>
+        <button onclick="viewUsers()">عرض المستخدمين</button>
+    </div>
+
+    <div id="usersList"></div>
+</div>
+
+<script>
+let currentUser = "";
+let isLeader = false;
+let currentFile = null;
+
+function login() {
+    let name = document.getElementById("name").value;
+    let pass = document.getElementById("pass").value;
+
+    if(pass !== "soso") return alert("كلمة السر غلط");
+
+    currentUser = name;
+    saveUser(name);
+
+    start();
 }
 
-currentUser=u;
-localStorage.setItem("username", u);
-
-let logs=JSON.parse(localStorage.getItem("logs")||"[]");
-logs.push({user:u,time:new Date().toLocaleString()});
-localStorage.setItem("logs",JSON.stringify(logs));
-
-start();
-}
-
-function adminLogin(){
-let p=prompt("Admin Password");
-if(hash(p)===adminHash){
-isAdmin=true;
-currentUser="ADMIN";
-localStorage.setItem("username","ADMIN");
-start();
-}else alert("خطأ");
+function leaderLogin(){
+    let pass = prompt("ادخل كلمة القيادات");
+    if(pass === "r3d"){
+        isLeader = true;
+        currentUser = "قيادة";
+        start();
+    } else {
+        alert("خطأ");
+    }
 }
 
 function start(){
-document.getElementById("login").style.display="none";
-document.getElementById("app").style.display="block";
-document.getElementById("back").style.display="block";
-setupFingerprint();
-loadFiles();
-render();
+    document.getElementById("login").style.display="none";
+    document.getElementById("main").style.display="block";
+
+    document.getElementById("welcome").innerText = "👆 مرحبا " + currentUser;
+
+    if(isLeader){
+        document.getElementById("leaderPanel").style.display="block";
+    }
+
+    loadFiles();
 }
 
-// بصمة
-function setupFingerprint(){
-let username = localStorage.getItem("username") || "User";
-const fingerprint = document.getElementById("fingerprint");
-const text = document.getElementById("welcome-text");
-
-fingerprint.addEventListener("mouseenter",()=>{
-text.innerText = "مرحباً " + username + " 👋";
-});
-
-fingerprint.addEventListener("click",()=>{
-text.innerText = "تم التحقق من الهوية 🔒";
-});
+function logout(){
+    location.reload();
 }
 
-function logout(){location.reload()}
+function saveUser(name){
+    let users = JSON.parse(localStorage.getItem("users")||"[]");
+    users.push({name:name,date:new Date().toLocaleString()});
+    localStorage.setItem("users", JSON.stringify(users));
+}
 
-// FILES PER USER
+function viewUsers(){
+    let users = JSON.parse(localStorage.getItem("users")||"[]");
+    let html="";
+    users.forEach(u=>{
+        html+= `<div>${u.name} - ${u.date}</div>`;
+    });
+    document.getElementById("usersList").innerHTML = html;
+}
+
 function loadFiles(){
-window.files=JSON.parse(localStorage.getItem("files_"+currentUser)||"[]");
-}
+    let files = JSON.parse(localStorage.getItem("files")||"[]");
+    let html="";
 
-function saveFiles(){
-localStorage.setItem("files_"+currentUser,JSON.stringify(files));
-}
+    files.forEach((f,i)=>{
+        html+= `<div class="file">
+        <span onclick="openFile(${i})">${f.name}</span>
+        ${isLeader ? `<button onclick="deleteFile(${i})">حذف</button>`:""}
+        </div>`;
+    });
 
-function render(){
-let box=document.getElementById("files");
-box.innerHTML="";
-
-files.forEach((f,i)=>{
-let d=document.createElement("div");
-d.className="file";
-d.innerText=f.name;
-d.onclick=()=>openFile(i);
-box.appendChild(d);
-});
-
-if(isAdmin){
-let add=document.createElement("div");
-add.className="file";
-add.innerText="+ Add File";
-add.onclick=addFile;
-box.appendChild(add);
-}
-}
-
-function openFile(i){
-currentFile=i;
-document.getElementById("editor").style.display="block";
-document.getElementById("title").innerText=files[i].name;
-document.getElementById("text").value=files[i].text||"";
-}
-
-function save(){
-files[currentFile].text=document.getElementById("text").value;
-saveFiles();
-alert("تم الحفظ");
-}
-
-// حذف ملف
-function deleteFile(){
-if(currentFile===null) return;
-if(confirm("متأكد تحذف الملف؟")){
-files.splice(currentFile,1);
-saveFiles();
-render();
-document.getElementById("editor").style.display="none";
-}
+    document.getElementById("files").innerHTML = html;
 }
 
 function addFile(){
-let name="File "+(files.length+1);
-files.push({name:name,text:""});
-saveFiles();
-render();
+    let files = JSON.parse(localStorage.getItem("files")||"[]");
+    let name = "ملف " + (files.length+1);
+    files.push({name:name,content:""});
+    localStorage.setItem("files", JSON.stringify(files));
+    loadFiles();
 }
 
-</script></body>
+function deleteFile(i){
+    let files = JSON.parse(localStorage.getItem("files"));
+    files.splice(i,1);
+    localStorage.setItem("files", JSON.stringify(files));
+    loadFiles();
+}
+
+function openFile(i){
+    let files = JSON.parse(localStorage.getItem("files"));
+    currentFile = i;
+    document.getElementById("editor").value = files[i].content;
+}
+
+function saveFile(){
+    let files = JSON.parse(localStorage.getItem("files"));
+    files[currentFile].content = document.getElementById("editor").value;
+    localStorage.setItem("files", JSON.stringify(files));
+    alert("تم الحفظ");
+}
+</script>
+
+</body>
 </html>
