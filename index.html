@@ -1,1053 +1,445 @@
-
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FBI Portal</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: #0a0a0a;
-    color: #cccccc;
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-  }
-
-  /* LOGIN */
-  #loginPage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0a0a0a;
-  }
-
-  .login-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-    width: 360px;
-  }
-
-  .fbi-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 110px;
-    color: #666666;
-    letter-spacing: 14px;
-    line-height: 1;
-    user-select: none;
-  }
-
-  .login-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .login-form input {
-    width: 100%;
-    background: #141414;
-    border: 1px solid #2e2e2e;
-    color: #dddddd;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 14px;
-    padding: 13px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .login-form input:focus { border-color: #666; }
-  .login-form input::placeholder { color: #444; }
-
-  .login-btn {
-    width: 100%;
-    background: #161616;
-    border: 1px solid #3a3a3a;
-    color: #aaaaaa;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 3px;
-    padding: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .login-btn:hover { background: #202020; border-color: #666; color: #ddd; }
-
-  .login-error {
-    color: #cc4444;
-    font-size: 12px;
-    text-align: center;
-    letter-spacing: 1px;
-    min-height: 16px;
-  }
-
-  .admin-link {
-    color: #3a3a3a;
-    font-size: 11px;
-    cursor: pointer;
-    letter-spacing: 2px;
-    transition: color 0.2s;
-    margin-top: 4px;
-  }
-
-  .admin-link:hover { color: #777; }
-
-  /* FINGERPRINT */
-  .fingerprint-wrap { position: relative; cursor: pointer; }
-
-  .fingerprint-svg {
-    width: 72px; height: 72px;
-    opacity: 0.3;
-    transition: opacity 0.3s;
-  }
-
-  .fingerprint-wrap:hover .fingerprint-svg { opacity: 0.7; }
-
-  .fingerprint-tooltip {
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #161616;
-    border: 1px solid #333;
-    color: #aaa;
-    font-size: 11px;
-    padding: 6px 14px;
-    white-space: nowrap;
-    letter-spacing: 1px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .fingerprint-wrap:hover .fingerprint-tooltip { opacity: 1; }
-
-  /* BACK BTN */
-  .back-btn {
-    position: fixed;
-    top: 18px;
-    left: 20px;
-    background: #111;
-    border: 1px solid #2a2a2a;
-    color: #666;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    z-index: 100;
-  }
-
-  .back-btn:hover { border-color: #666; color: #bbb; }
-
-  /* MAIN PAGE */
-  #mainPage {
-    display: none;
-    min-height: 100vh;
-    background: #0a0a0a;
-    padding: 50px 40px 40px;
-  }
-
-  .page-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: #666;
-    letter-spacing: 10px;
-    text-align: center;
-  }
-
-  .title-divider {
-    width: 100%;
-    height: 1px;
-    background: #222;
-    margin: 14px 0 36px;
-  }
-
-  .files-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    max-width: 860px;
-    margin: 0 auto;
-    border: 1px solid #1e1e1e;
-    padding: 24px;
-    background: #0d0d0d;
-  }
-
-  .file-card {
-    background: #111111;
-    border: 1px solid #222;
-    padding: 18px 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .file-card:hover { border-color: #555; background: #181818; }
-
-  .file-icon { font-size: 20px; }
-  .file-name { font-size: 11px; color: #888; letter-spacing: 1px; }
-  .file-lock { font-size: 10px; color: #444; }
-
-  /* FILE PAGE */
-  #filePage {
-    display: none;
-    min-height: 100vh;
-    background: #0a0a0a;
-    padding: 50px 40px 40px;
-  }
-
-  .file-page-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 34px;
-    color: #666;
-    letter-spacing: 6px;
-    margin-bottom: 14px;
-  }
-
-  .file-divider { width: 100%; height: 1px; background: #222; margin-bottom: 28px; }
-
-  .file-content-wrap { max-width: 780px; margin: 0 auto; }
-
-  .file-textarea {
-    width: 100%;
-    min-height: 400px;
-    background: #111;
-    border: 1px solid #222;
-    color: #cccccc;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 14px;
-    line-height: 1.8;
-    padding: 22px;
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .file-textarea:focus { border-color: #444; }
-
-  .file-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 14px;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .save-btn {
-    background: #131313;
-    border: 1px solid #2e2e2e;
-    color: #888;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 10px 22px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .save-btn:hover { border-color: #555; color: #ccc; }
-
-  .save-status { font-size: 11px; color: #444; letter-spacing: 1px; }
-  .save-status.saved { color: #44bb77; }
-
-  /* MODALS */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.93);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-overlay.active { display: flex; }
-
-  .modal-box {
-    background: #0f0f0f;
-    border: 1px solid #2a2a2a;
-    padding: 36px;
-    width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    align-items: center;
-  }
-
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    color: #666;
-    letter-spacing: 4px;
-  }
-
-  .modal-subtitle { font-size: 11px; color: #555; letter-spacing: 1px; text-align: center; }
-
-  .modal-input {
-    width: 100%;
-    background: #141414;
-    border: 1px solid #2a2a2a;
-    color: #ccc;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 14px;
-    padding: 11px 14px;
-    outline: none;
-    text-align: center;
-    letter-spacing: 4px;
-  }
-
-  .modal-input:focus { border-color: #555; }
-
-  .modal-btns { display: flex; gap: 10px; width: 100%; }
-
-  .modal-btn {
-    flex: 1;
-    background: #111;
-    border: 1px solid #2a2a2a;
-    color: #777;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .modal-btn:hover { border-color: #555; color: #bbb; }
-  .modal-btn.cancel { color: #444; }
-  .modal-btn.cancel:hover { color: #888; }
-  .modal-error { color: #cc4444; font-size: 11px; letter-spacing: 1px; min-height: 14px; }
-
-  /* ADMIN PAGE */
-  #adminPage {
-    display: none;
-    min-height: 100vh;
-    background: #0a0a0a;
-    padding: 50px 40px 40px;
-  }
-
-  .admin-header {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: #666;
-    letter-spacing: 10px;
-    text-align: center;
-  }
-
-  .admin-tabs {
-    display: flex;
-    gap: 2px;
-    max-width: 940px;
-    margin: 28px auto 0;
-    border-bottom: 1px solid #222;
-  }
-
-  .admin-tab {
-    background: transparent;
-    border: 1px solid transparent;
-    border-bottom: none;
-    color: #444;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 9px 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .admin-tab.active { border-color: #2a2a2a; color: #999; background: #111; }
-  .admin-tab:hover:not(.active) { color: #777; }
-
-  .admin-panel { display: none; max-width: 940px; margin: 0 auto; padding-top: 26px; }
-  .admin-panel.active { display: block; }
-
-  .section-label { font-size: 10px; color: #444; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
-
-  .files-list-admin { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-
-  .file-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #111;
-    border: 1px solid #1e1e1e;
-    padding: 11px 16px;
-  }
-
-  .file-row-name { flex: 1; }
-
-  .file-row-name input {
-    background: transparent;
-    border: none;
-    color: #999;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    width: 100%;
-    outline: none;
-  }
-
-  .file-row-name input:focus { color: #ddd; border-bottom: 1px solid #444; }
-  .file-row-pin { color: #555; font-size: 11px; letter-spacing: 1px; min-width: 80px; }
-
-  .file-row-btn {
-    background: transparent;
-    border: 1px solid #252525;
-    color: #666;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 5px 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .file-row-btn:hover { border-color: #555; color: #bbb; }
-  .file-row-btn.danger:hover { border-color: #cc4444; color: #cc4444; }
-
-  .add-file-btn {
-    background: #0d0d0d;
-    border: 1px dashed #2a2a2a;
-    color: #555;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-    text-transform: uppercase;
-  }
-
-  .add-file-btn:hover { border-color: #555; color: #999; }
-
-  /* ADMIN FILE VIEWER */
-  .admin-files-viewer { display: flex; gap: 14px; }
-
-  .admin-files-sidebar {
-    width: 190px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .admin-file-item {
-    background: #111;
-    border: 1px solid #1e1e1e;
-    padding: 9px 13px;
-    font-size: 11px;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-  }
-
-  .admin-file-item:hover, .admin-file-item.active { border-color: #444; color: #bbb; background: #181818; }
-
-  .admin-view-file-textarea {
-    width: 100%;
-    min-height: 360px;
-    background: #111;
-    border: 1px solid #1e1e1e;
-    color: #cccccc;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    line-height: 1.8;
-    padding: 18px;
-    resize: vertical;
-    outline: none;
-  }
-
-  .admin-view-file-textarea:focus { border-color: #444; }
-
-  /* USERS TABLE */
-  .users-table { width: 100%; border-collapse: collapse; }
-
-  .users-table th {
-    font-size: 10px;
-    color: #555;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 10px 14px;
-    text-align: right;
-    border-bottom: 1px solid #1e1e1e;
-    background: #0d0d0d;
-  }
-
-  .users-table td {
-    font-size: 12px;
-    color: #888;
-    padding: 11px 14px;
-    border-bottom: 1px solid #161616;
-  }
-
-  .users-table tr:hover td { background: #111; color: #bbb; }
-
-  /* NOTIF */
-  .notif {
-    position: fixed;
-    bottom: 22px;
-    right: 22px;
-    background: #111;
-    border: 1px solid #2a2a2a;
-    color: #999;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 11px 18px;
-    z-index: 9999;
-    transform: translateY(80px);
-    transition: transform 0.3s;
-    pointer-events: none;
-  }
-
-  .notif.show { transform: translateY(0); }
-  .notif.green { border-color: #1a3a28; color: #44bb77; }
-  .notif.red { border-color: #3a1a1a; color: #cc4444; }
-</style>
+  <meta charset="UTF-8" />
+  <title>نظام الوكيل السري</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Tahoma", sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      direction: rtl;
+    }
+
+    .screen {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+
+    .active-screen {
+      display: flex;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .center-box {
+      background: #000;
+      border: 2px solid #fff;
+      padding: 30px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    p, label {
+      color: #ddd;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #fingerprint-area {
+      margin: 20px auto 0;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 3px dashed #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #fff;
+    }
+
+    #fingerprint-area:hover {
+      background: #111;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      background: #000;
+      border: 1px solid #fff;
+      color: #fff;
+    }
+
+    button {
+      padding: 8px 16px;
+      background: #fff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ccc;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #f88;
+      min-height: 18px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid #fff;
+      background: #000;
+    }
+
+    .logo {
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .status-area span {
+      margin-left: 15px;
+      font-size: 13px;
+    }
+
+    .main-layout {
+      display: flex;
+      height: calc(100vh - 50px);
+    }
+
+    .sidebar {
+      width: 220px;
+      border-left: 1px solid #fff;
+      background: #000;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      padding: 12px 15px;
+      border-bottom: 1px solid #222;
+      cursor: pointer;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .sidebar li:hover {
+      background: #111;
+    }
+
+    .sidebar .active {
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .content {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .active-panel {
+      display: block;
+    }
+
+    .panel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .box {
+      border: 1px solid #fff;
+      padding: 10px;
+      background: #000;
+    }
+
+    .half {
+      width: calc(50% - 10px);
+    }
+
+    .full {
+      width: 100%;
+    }
+
+    .third {
+      width: calc(33.33% - 10px);
+    }
+
+    .two-third {
+      width: calc(66.66% - 10px);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .data-table th, .data-table td {
+      border: 1px solid #fff;
+      padding: 5px 8px;
+      text-align: center;
+    }
+
+    .data-table th {
+      background: #111;
+    }
+
+    .logs-container {
+      height: 300px;
+      overflow-y: auto;
+      background: #000;
+      border: 1px solid #fff;
+      padding: 8px;
+      font-size: 13px;
+      white-space: pre-line;
+    }
+
+    .camera-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .camera-box {
+      border: 1px solid #fff;
+      height: 140px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .fake-map {
+      border: 1px solid #fff;
+      height: 320px;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      gap: 2px;
+    }
+
+    .map-cell {
+      border: 1px solid #222;
+      background: #000;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .map-point {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .messages-list {
+      border: 1px solid #fff;
+      height: 300px;
+      overflow-y: auto;
+      padding: 8px;
+      font-size: 13px;
+    }
+
+    .message-item {
+      border-bottom: 1px solid #222;
+      padding: 4px 0;
+    }
+
+    .status-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .system-status {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .quick-commands {
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .quick-commands li {
+      margin-bottom: 5px;
+    }
+
+    .alerts-container {
+      margin-top: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    #session-timer {
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div id="loginPage">
-  <div class="login-box">
-
-    <div class="fingerprint-wrap" id="fpWrap">
-      <svg class="fingerprint-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 8 C27 8 8 27 8 50 C8 73 27 92 50 92 C73 92 92 73 92 50" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 18 C32 18 18 32 18 50 C18 68 32 82 50 82 C68 82 82 68 82 50 C82 36 73 24 60 19" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 28 C37 28 28 37 28 50 C28 63 37 72 50 72 C63 72 72 63 72 50 C72 41 66 33 57 29" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 38 C43 38 38 43 38 50 C38 57 43 62 50 62 C57 62 62 57 62 50 C62 45 58 41 53 39" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 48 C47 48 45 50 46 52 C47 54 50 55 53 53" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </svg>
-      <div class="fingerprint-tooltip" id="fpTooltip">— مرحبا —</div>
-    </div>
-
-    <div class="fbi-title">FBI</div>
-
-    <div class="login-form">
-      <input type="text" id="loginName" placeholder="الاسم" autocomplete="off"/>
-      <input type="password" id="loginPass" placeholder="كلمة المرور"/>
-      <button class="login-btn" onclick="doLogin()">دخول</button>
-      <div class="login-error" id="loginError"></div>
-    </div>
-
-    <a class="admin-link" onclick="showAdminLogin()">القيادات</a>
-  </div>
-</div>
-
-<!-- MAIN PAGE -->
-<div id="mainPage">
-  <button class="back-btn" onclick="logout()">↩ رجوع</button>
-  <div class="page-title">FBI</div>
-  <div class="title-divider"></div>
-  <div class="files-grid" id="filesGrid"></div>
-</div>
-
-<!-- FILE PAGE -->
-<div id="filePage">
-  <button class="back-btn" onclick="backToMain()">↩ رجوع</button>
-  <div class="file-page-title" id="filePageTitle"></div>
-  <div class="file-divider"></div>
-  <div class="file-content-wrap">
-    <textarea class="file-textarea" id="fileTextarea" placeholder="اكتب هنا..."></textarea>
-    <div class="file-actions">
-      <span class="save-status" id="saveStatus"></span>
-      <button class="save-btn" onclick="saveCurrentFile()">حفظ</button>
+  <div id="fingerprint-screen" class="screen active-screen">
+    <div class="center-box">
+      <h1>نظام الدخول ببصمة الوكيل</h1>
+      <p>اضغط على منطقة البصمة لبدء التحقق</p>
+      <div id="fingerprint-area">ضع بصمتك هنا</div>
     </div>
   </div>
-</div>
 
-<!-- ADMIN PAGE -->
-<div id="adminPage">
-  <button class="back-btn" onclick="adminLogout()">↩ رجوع</button>
-  <div class="admin-header">القيادات</div>
-  <div class="admin-tabs">
-    <button class="admin-tab active" onclick="switchTab('files')">الملفات</button>
-    <button class="admin-tab" onclick="switchTab('view')">عرض الملفات</button>
-    <button class="admin-tab" onclick="switchTab('users')">سجل الدخول</button>
+  <div id="login-screen" class="screen hidden">
+    <div class="center-box">
+      <h1>تسجيل دخول الوكيل</h1>
+      <div class="login-row">
+        <label for="username">اسم المستخدم</label>
+        <input type="text" id="username" placeholder="ادخل اسم المستخدم" />
+      </div>
+      <div class="login-row">
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" placeholder="ادخل كلمة المرور" />
+      </div>
+      <button id="login-btn">دخول</button>
+      <div id="login-message" class="message"></div>
+    </div>
   </div>
 
-  <div class="admin-panel active" id="tabFiles">
-    <div class="section-label">إدارة الملفات</div>
-    <div class="files-list-admin" id="adminFilesList"></div>
-    <button class="add-file-btn" onclick="addFile()">+ إضافة ملف</button>
-  </div>
+  <div id="dashboard-screen" class="screen hidden">
+    <header class="top-bar">
+      <div class="logo">NSS Control System</div>
+      <div class="status-area">
+        <span id="agent-greeting">مرحبا يا ايها الاجنت</span>
+        <span id="session-timer">مدة الجلسة: 00:00</span>
+      </div>
+    </header>
 
-  <div class="admin-panel" id="tabView">
-    <div class="section-label">محتوى الملفات</div>
-    <div class="admin-files-viewer">
-      <div class="admin-files-sidebar" id="adminFilesSidebar"></div>
-      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-        <div style="font-size:11px;color:#555;letter-spacing:1px;" id="adminViewFileName"></div>
-        <textarea class="admin-view-file-textarea" id="adminViewTextarea" placeholder="اختر ملفاً من القائمة..."></textarea>
-        <div style="display:flex;justify-content:flex-end;">
-          <button class="save-btn" onclick="adminSaveFile()">حفظ التعديلات</button>
+    <div class="main-layout">
+      <nav class="sidebar">
+        <ul>
+          <li class="nav-item active" data-target="files-panel">إدارة الملفات</li>
+          <li class="nav-item" data-target="cameras-panel">سجل الكاميرات</li>
+          <li class="nav-item" data-target="logs-panel">سجل العمليات</li>
+          <li class="nav-item" data-target="wanted-panel">قائمة المطلوبين</li>
+          <li class="nav-item" data-target="map-panel">الخريطة الوهمية</li>
+          <li class="nav-item" data-target="messages-panel">رسائل القيادة</li>
+          <li class="nav-item" data-target="command-panel">لوحة تحكم القيادة</li>
+        </ul>
+      </nav>
+
+      <section class="content">
+        <div id="files-panel" class="panel active-panel">
+          <h2>إدارة الملفات</h2>
+          <div class="panel-row">
+            <div class="box half">
+              <h3>قائمة الملفات السرية</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>رقم</th>
+                    <th>اسم الملف</th>
+                    <th>التصنيف</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="files-table-body"></tbody>
+              </table>
+            </div>
+            <div class="box half">
+              <h3>إضافة ملف وهمي</h3>
+              <div class="form-row">
+                <label>اسم الملف</label>
+                <input type="text" id="file-name" />
+              </div>
+              <div class="form-row">
+                <label>التصنيف</label>
+                <select id="file-level">
+                  <option value="سري">سري</option>
+                  <option value="سري للغاية">سري للغاية</option>
+                  <option value="محدود">محدود</option>
+                </select>
+              </div>
+              <button id="add-file-btn">إضافة ملف وهمي</button>
+              <div id="file-action-message" class="message"></div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="admin-panel" id="tabUsers">
-    <div class="section-label">سجل تسجيلات الدخول</div>
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>الاسم</th>
-          <th>كلمة المرور</th>
-          <th>تاريخ الدخول</th>
-          <th>الوقت</th>
-        </tr>
-      </thead>
-      <tbody id="usersTableBody"></tbody>
-    </table>
-  </div>
-</div>
+        <div id="cameras-panel" class="panel hidden">
+          <h2>سجل الكاميرات</h2>
+          <div class="panel-row">
+            <div class="box half camera-grid" id="camera-grid"></div>
+            <div class="box half">
+              <h3>تفاصيل الكاميرا</h3>
+              <div id="camera-details">اختر كاميرا لعرض التفاصيل</div>
+            </div>
+          </div>
+        </div>
 
-<!-- PIN MODAL -->
-<div class="modal-overlay" id="pinModal">
-  <div class="modal-box">
-    <div class="modal-title">رمز الملف</div>
-    <div class="modal-subtitle" id="pinModalSub">أدخل الرمز السري</div>
-    <input type="password" class="modal-input" id="pinInput" placeholder="••••" maxlength="30"/>
-    <div class="modal-error" id="pinError"></div>
-    <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closePinModal()">إلغاء</button>
-      <button class="modal-btn" onclick="confirmPin()">دخول</button>
-    </div>
-  </div>
-</div>
+        <div id="logs-panel" class="panel hidden">
+          <h2>سجل العمليات</h2>
+          <div class="box full">
+            <div id="logs-container" class="logs-container"></div>
+          </div>
+        </div>
 
-<!-- NEW FILE MODAL -->
-<div class="modal-overlay" id="newFileModal">
-  <div class="modal-box">
-    <div class="modal-title">ملف جديد</div>
-    <div class="modal-subtitle">اسم الملف والرمز السري</div>
-    <input type="text" class="modal-input" id="newFileName" placeholder="اسم الملف" style="letter-spacing:1px;" maxlength="40"/>
-    <input type="text" class="modal-input" id="newFilePin" placeholder="الرمز السري" maxlength="30"/>
-    <div class="modal-error" id="newFileError"></div>
-    <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closeNewFileModal()">إلغاء</button>
-      <button class="modal-btn" onclick="confirmNewFile()">إنشاء</button>
-    </div>
-  </div>
-</div>
+        <div id="wanted-panel" class="panel hidden">
+          <h2>قائمة المطلوبين</h2>
+          <div class="box full">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>الاسم</th>
+                  <th>الرمز</th>
+                  <th>مستوى الخطورة</th>
+                  <th>آخر ظهور</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="wanted-table-body"></tbody>
+            </table>
+          </div>
+        </div>
 
-<!-- ADMIN LOGIN MODAL -->
-<div class="modal-overlay" id="adminLoginModal">
-  <div class="modal-box">
-    <div class="modal-title">القيادات</div>
-    <div class="modal-subtitle">أدخل رمز القيادات</div>
-    <input type="password" class="modal-input" id="adminPinInput" placeholder="••••" maxlength="30"/>
-    <div class="modal-error" id="adminPinError"></div>
-    <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closeAdminLogin()">إلغاء</button>
-      <button class="modal-btn" onclick="confirmAdminPin()">دخول</button>
-    </div>
-  </div>
-</div>
-
-<div class="notif" id="notif"></div>
-
-<script>
-// ── STORAGE ──────────────────────────────────────────────────
-const STORE_KEY = 'fbi_v2';
-
-function loadData() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || defaultData(); }
-  catch(e) { return defaultData(); }
-}
-
-function saveData(d) {
-  localStorage.setItem(STORE_KEY, JSON.stringify(d));
-}
-
-function defaultData() {
-  return { files: [], logins: [], nextFileId: 1 };
-}
-
-// ── FINGERPRINT ───────────────────────────────────────────────
-document.getElementById('fpWrap').addEventListener('mouseenter', () => {
-  const name = localStorage.getItem('fbi_last_user');
-  document.getElementById('fpTooltip').textContent =
-    name ? `مرحبا، ${name}` : '— مجهول —';
-});
-
-// ── CONSTANTS ─────────────────────────────────────────────────
-const MAIN_PASS  = 'soso';
-const ADMIN_PASS = 'r3d';
-
-let currentUser        = null;
-let currentFileIndex   = null;
-let adminSelFileIndex  = null;
-let pendingFileIndex   = null;
-
-// ── LOGIN ─────────────────────────────────────────────────────
-function doLogin() {
-  const name = document.getElementById('loginName').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const err  = document.getElementById('loginError');
-
-  if (!name) { err.textContent = 'أدخل اسمك'; return; }
-  if (pass !== MAIN_PASS) { err.textContent = 'كلمة المرور خاطئة'; return; }
-
-  err.textContent = '';
-  currentUser = name;
-
-  // سجل الدخول
-  const d   = loadData();
-  const now = new Date();
-  d.logins.push({
-    name : name,
-    pass : pass,
-    date : now.toLocaleDateString('ar-SA'),
-    time : now.toLocaleTimeString('ar-SA')
-  });
-  saveData(d);
-
-  localStorage.setItem('fbi_last_user', name);
-  showMain();
-}
-
-function logout() {
-  currentUser = null;
-  showPage('loginPage');
-  document.getElementById('loginName').value = '';
-  document.getElementById('loginPass').value = '';
-}
-
-function adminLogout() {
-  showPage('loginPage');
-  document.getElementById('loginName').value = '';
-  document.getElementById('loginPass').value = '';
-}
-
-// ── ADMIN LOGIN ───────────────────────────────────────────────
-function showAdminLogin() {
-  document.getElementById('adminPinInput').value  = '';
-  document.getElementById('adminPinError').textContent = '';
-  document.getElementById('adminLoginModal').classList.add('active');
-}
-
-function closeAdminLogin() {
-  document.getElementById('adminLoginModal').classList.remove('active');
-}
-
-function confirmAdminPin() {
-  const pin = document.getElementById('adminPinInput').value;
-  if (pin === ADMIN_PASS) { closeAdminLogin(); showAdminPage(); }
-  else { document.getElementById('adminPinError').textContent = 'الرمز خاطئ'; }
-}
-
-document.getElementById('adminPinInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmAdminPin();
-});
-
-// ── PAGES ─────────────────────────────────────────────────────
-function showPage(id) {
-  ['loginPage','mainPage','filePage','adminPage'].forEach(p => {
-    const el = document.getElementById(p);
-    el.style.display = 'none';
-  });
-  const target = document.getElementById(id);
-  target.style.display = id === 'loginPage' ? 'flex' : 'block';
-}
-
-function showMain()      { renderFilesGrid(); showPage('mainPage'); }
-function backToMain()    { renderFilesGrid(); showPage('mainPage'); }
-
-function showAdminPage() {
-  renderAdminFiles();
-  renderAdminSidebar();
-  renderUsersTable();
-  showPage('adminPage');
-  switchTab('files');
-}
-
-// ── FILES GRID ────────────────────────────────────────────────
-function renderFilesGrid() {
-  const d    = loadData();
-  const grid = document.getElementById('filesGrid');
-  grid.innerHTML = '';
-
-  if (!d.files.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#444;font-size:11px;letter-spacing:2px;padding:40px;">لا توجد ملفات</div>';
-    return;
-  }
-
-  d.files.forEach((file, i) => {
-    const card = document.createElement('div');
-    card.className = 'file-card';
-    card.innerHTML = `
-      <div class="file-icon">🗂</div>
-      <div class="file-name">${escHtml(file.name)}</div>
-      <div class="file-lock">🔒</div>`;
-    card.onclick = () => openFileWithPin(i);
-    grid.appendChild(card);
-  });
-}
-
-// ── PIN MODAL (user) ──────────────────────────────────────────
-function openFileWithPin(index) {
-  pendingFileIndex = index;
-  const file = loadData().files[index];
-  document.getElementById('pinModalSub').textContent = `رمز: ${escHtml(file.name)}`;
-  document.getElementById('pinInput').value           = '';
-  document.getElementById('pinError').textContent     = '';
-  document.getElementById('pinModal').classList.add('active');
-}
-
-function closePinModal() {
-  document.getElementById('pinModal').classList.remove('active');
-  pendingFileIndex = null;
-}
-
-function confirmPin() {
-  const pin  = document.getElementById('pinInput').value;
-  const file = loadData().files[pendingFileIndex];
-  if (pin === file.pin) { closePinModal(); openFile(pendingFileIndex); }
-  else { document.getElementById('pinError').textContent = 'الرمز خاطئ'; }
-}
-
-document.getElementById('pinInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmPin();
-});
-
-// ── FILE PAGE ─────────────────────────────────────────────────
-function openFile(index) {
-  currentFileIndex = index;
-  const file = loadData().files[index];
-  document.getElementById('filePageTitle').textContent  = file.name;
-  document.getElementById('fileTextarea').value         = file.content || '';
-  document.getElementById('saveStatus').textContent     = '';
-  document.getElementById('saveStatus').className       = 'save-status';
-  showPage('filePage');
-}
-
-function saveCurrentFile() {
-  if (currentFileIndex === null) return;
-  const d = loadData();
-  d.files[currentFileIndex].content = document.getElementById('fileTextarea').value;
-  saveData(d);
-  setSaveStatus('✓ تم الحفظ', true);
-  showNotif('تم الحفظ', 'green');
-  setTimeout(() => setSaveStatus('', false), 2200);
-}
-
-document.getElementById('fileTextarea').addEventListener('input', () => {
-  if (currentFileIndex === null) return;
-  const d = loadData();
-  d.files[currentFileIndex].content = document.getElementById('fileTextarea').value;
-  saveData(d);
-  setSaveStatus('↺ حفظ تلقائي...', false);
-});
-
-function setSaveStatus(msg, ok) {
-  const el = document.getElementById('saveStatus');
-  el.textContent = msg;
-  el.className   = ok ? 'save-status saved' : 'save-status';
-}
-
-// ── NEW FILE MODAL (admin) ────────────────────────────────────
-function addFile() {
-  document.getElementById('newFileName').value        = '';
-  document.getElementById('newFilePin').value         = '';
-  document.getElementById('newFileError').textContent = '';
-  document.getElementById('newFileModal').classList.add('active');
-}
-
-function closeNewFileModal() {
-  document.getElementById('newFileModal').classList.remove('active');
-}
-
-function confirmNewFile() {
-  const name = document.getElementById('newFileName').value.trim();
-  const pin  = document.getElementById('newFilePin').value.trim();
-  const err  = document.getElementById('newFileError');
-
-  if (!name) { err.textContent = 'أدخل اسم الملف'; return; }
-  if (!pin)  { err.textContent = 'أدخل الرمز السري'; return; }
-
-  const d   = loadData();
-  const num = d.nextFileId++;
-  d.files.push({ id: num, name: name, pin: pin, content: '' });
-  saveData(d);
-  closeNewFileModal();
-  renderAdminFiles();
-  renderAdminSidebar();
-  showNotif(`تم إضافة: ${name}`, 'green');
-}
-
-document.getElementById('newFilePin').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmNewFile();
-});
-
-// ── ADMIN: MANAGE FILES ───────────────────────────────────────
-function renderAdminFiles() {
-  const d    = loadData();
-  const list = document.getElementById('adminFilesList');
-  list.innerHTML = '';
-
-  d.files.forEach((file, i) => {
-    const row = document.createElement('div');
-    row.className = 'file-row';
-    row.innerHTML = `
-      <div class="file-row-name">
-        <input type="text" value="${escHtml(file.name)}"
-          onchange="renameFile(${i}, this.value)" placeholder="اسم الملف"/>
-      </div>
-      <div class="file-row-pin">رمز: ${escHtml(file.pin)}</div>
-      <button class="file-row-btn" onclick="changePin(${i})">تغيير الرمز</button>
-      <button class="file-row-btn danger" onclick="deleteFile(${i})">حذف</button>`;
-    list.appendChild(row);
-  });
-}
-
-function deleteFile(index) {
-  if (!confirm('هل تريد حذف هذا الملف؟')) return;
-  const d = loadData();
-  d.files.splice(index, 1);
-  saveData(d);
-  renderAdminFiles();
-  renderAdminSidebar();
-  adminSelFileIndex = null;
-  document.getElementById('adminViewTextarea').value  = '';
-  document.getElementById('adminViewFileName').textContent = '';
-  showNotif('تم الحذف', 'red');
-}
-
-function renameFile(index, newName) {
-  if (!newName.trim()) return;
-  const d = loadData();
-  d.files[index].name = newName.trim();
-  saveData(d);
-  renderAdminSidebar();
-}
-
-function changePin(index) {
-  const d      = loadData();
-  const newPin = prompt(`رمز جديد للملف "${d.files[index].name}":`, d.files[index].pin);
-  if (newPin === null) return;
-  if (!newPin.trim()) { showNotif('الرمز لا يمكن أن يكون فارغاً', 'red'); return; }
-  d.files[index].pin = newPin.trim();
-  saveData(d);
-  renderAdminFiles();
-  showNotif('تم تغيير الرمز', 'green');
-}
-
-// ── ADMIN: VIEW FILES ─────────────────────────────────────────
-function renderAdminSidebar() {
-  const d  = loadData();
-  const sb = document.getElementById('adminFilesSidebar');
-  sb.innerHTML = '';
-  d.files.forEach((file, i) => {
-    const item = document.createElement('div');
-    item.className = 'admin-file-item' + (adminSelFileIndex === i ? ' active' : '');
-    item.textContent = file.name;
-    item.onclick = () => adminSelectFile(i);
-    sb.appendChild(item);
-  });
-}
-
-function adminSelectFile(index) {
-  adminSelFileIndex = index;
-  const file = loadData().files[index];
-  document.getElementById('adminViewFileName').textContent = file.name;
-  document.getElementById('adminViewTextarea').value       = file.content || '';
-  renderAdminSidebar();
-}
-
-function adminSaveFile() {
-  if (adminSelFileIndex === null) { showNotif('اختر ملفاً أولاً', 'red'); return; }
-  const d = loadData();
-  d.files[adminSelFileIndex].content = document.getElementById('adminViewTextarea').value;
-  saveData(d);
-  showNotif('تم الحفظ', 'green');
-}
-
-// ── ADMIN: USERS TABLE ────────────────────────────────────────
-function renderUsersTable() {
-  const d     = loadData();
-  const tbody = document.getElementById('usersTableBody');
-  tbody.innerHTML = '';
-
-  if (!d.logins.length) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#444;padding:24px;letter-spacing:1px;">لا يوجد سجلات</td></tr>';
-    return;
-  }
-
-  [...d.logins].reverse().forEach(log => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${escHtml(log.name)}</td>
-      <td>${escHtml(log.pass)}</td>
-      <td>${escHtml(log.date)}</td>
-      <td>${escHtml(log.time)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// ── ADMIN TABS ────────────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.admin-tab').forEach(t   => t.classList.remove('active'));
-  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  const map = { files:'tabFiles', view:'tabView', users:'tabUsers' };
-  document.getElementById(map[tab]).classList.add('active');
-  const idx = Object.keys(map).indexOf(tab);
-  document.querySelectorAll('.admin-tab')[idx].classList.add('active');
-  if (tab === 'view')  renderAdminSidebar();
-  if (tab === 'users') renderUsersTable();
-}
-
-// ── NOTIF ─────────────────────────────────────────────────────
-let notifTimer = null;
-function showNotif(msg, type='') {
-  const el = document.getElementById('notif');
-  el.textContent = msg;
-  el.className   = 'notif show ' + type;
-  clearTimeout(notifTimer);
-  notifTimer = setTimeout(() => { el.className = 'notif'; }, 2200);
-}
-
-// ── UTILS ─────────────────────────────────────────────────────
-function escHtml(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── KEYBOARD ──────────────────────────────────────────────────
-document.getElementById('loginName').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('loginPass').focus();
-});
-document.getElementById('loginPass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
-
-// ── INIT ──────────────────────────────────────────────────────
-showPage('loginPage');
-</script>
-</body>
-</html>
-```
-
+        <div id="map-panel" class="panel hidden">
+          <h2>الخريطة الوهمية للعمليات</h2>
+          <div class="panel-row">
+            <div class="box two-third">
+              <div id="fake-map" class="fake-map"></div>
+      
