@@ -8,16 +8,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FBI Portal</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Tajawal:wght@300;400;700&display=swap');
 
   :root {
     --bg: #000000;
     --surface: #0a0a0a;
     --border: #2a2a2a;
     --gray: #888888;
-    --light-gray: #aaaaaa;
     --white: #e8e8e8;
-    --accent: #444444;
     --danger: #cc3333;
     --success: #33cc77;
   }
@@ -32,30 +30,16 @@
     overflow-x: hidden;
   }
 
+  /* ===== LOGIN ===== */
   #loginPage {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     background: #000;
-    position: relative;
-  }
-
-  #loginPage::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg, transparent, transparent 2px,
-      rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px
-    );
-    pointer-events: none;
-    z-index: 0;
   }
 
   .login-box {
-    position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,7 +53,6 @@
     color: #555555;
     letter-spacing: 12px;
     line-height: 1;
-    text-shadow: 0 0 60px rgba(100,100,100,0.15);
     user-select: none;
   }
 
@@ -90,7 +73,6 @@
     padding: 14px 18px;
     outline: none;
     transition: border-color 0.2s;
-    letter-spacing: 1px;
   }
 
   .login-form input:focus { border-color: #555; }
@@ -125,7 +107,6 @@
     font-size: 11px;
     cursor: pointer;
     letter-spacing: 2px;
-    text-decoration: none;
     transition: color 0.2s;
     margin-top: 8px;
   }
@@ -135,11 +116,9 @@
   .fingerprint-wrap { position: relative; cursor: pointer; }
 
   .fingerprint-svg {
-    width: 80px;
-    height: 80px;
+    width: 80px; height: 80px;
     opacity: 0.2;
     transition: opacity 0.3s;
-    filter: grayscale(1);
   }
 
   .fingerprint-wrap:hover .fingerprint-svg { opacity: 0.6; }
@@ -155,7 +134,6 @@
     font-size: 11px;
     padding: 6px 14px;
     white-space: nowrap;
-    letter-spacing: 1px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s;
@@ -164,14 +142,7 @@
 
   .fingerprint-wrap:hover .fingerprint-tooltip { opacity: 1; }
 
-  #mainPage {
-    display: none;
-    min-height: 100vh;
-    background: #000;
-    padding: 40px;
-    position: relative;
-  }
-
+  /* ===== BACK BTN ===== */
   .back-btn {
     position: fixed;
     top: 20px;
@@ -190,13 +161,80 @@
 
   .back-btn:hover { border-color: #555; color: #999; }
 
+  /* ===== WELCOME PAGE ===== */
+  #welcomePage {
+    display: none;
+    min-height: 100vh;
+    background: #000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px;
+  }
+
+  .welcome-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #555;
+    letter-spacing: 6px;
+    text-align: center;
+  }
+
+  .welcome-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: #444;
+    letter-spacing: 16px;
+  }
+
+  .welcome-subtitle {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 18px;
+    color: #666;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  .welcome-nav {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .welcome-nav-btn {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    color: #888;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 2px;
+  }
+
+  .welcome-nav-btn:hover {
+    border-color: #666;
+    color: #ddd;
+    background: #111;
+  }
+
+  /* ===== MAIN PAGE (files) ===== */
+  #mainPage {
+    display: none;
+    min-height: 100vh;
+    background: #000;
+    padding: 80px 40px 40px;
+  }
+
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 52px;
     color: #555;
     letter-spacing: 8px;
     text-align: center;
-    margin-bottom: 0;
   }
 
   .title-divider {
@@ -231,21 +269,15 @@
 
   .file-card:hover { border-color: #333; background: #0f0f0f; }
   .file-icon { font-size: 22px; opacity: 0.5; }
-  .file-name { font-size: 11px; color: #666; letter-spacing: 1px; }
+  .file-name { font-size: 11px; color: #666; letter-spacing: 1px; font-family: 'Tajawal', sans-serif; }
   .file-lock { font-size: 10px; color: #333; }
 
+  /* ===== FILE PAGE ===== */
   #filePage {
     display: none;
     min-height: 100vh;
     background: #000;
-    padding: 40px;
-  }
-
-  .file-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
+    padding: 80px 40px 40px;
   }
 
   .file-page-title {
@@ -253,15 +285,10 @@
     font-size: 36px;
     color: #555;
     letter-spacing: 6px;
+    margin-bottom: 16px;
   }
 
-  .file-divider {
-    width: 100%;
-    height: 1px;
-    background: #1e1e1e;
-    margin-bottom: 32px;
-  }
-
+  .file-divider { width: 100%; height: 1px; background: #1e1e1e; margin-bottom: 32px; }
   .file-content-wrap { max-width: 800px; margin: 0 auto; }
 
   .file-textarea {
@@ -270,14 +297,13 @@
     background: #080808;
     border: 1px solid #1c1c1c;
     color: #bbb;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
     line-height: 1.8;
     padding: 24px;
     resize: vertical;
     outline: none;
     transition: border-color 0.2s;
-    letter-spacing: 0.5px;
   }
 
   .file-textarea:focus { border-color: #333; }
@@ -303,10 +329,162 @@
   }
 
   .save-btn:hover { border-color: #444; color: #aaa; }
-
   .save-status { font-size: 11px; color: #444; letter-spacing: 1px; align-self: center; }
   .save-status.saved { color: #33cc77; }
 
+  /* ===== FBI PAGE (قوانين) ===== */
+  #fbiPage {
+    display: none;
+    min-height: 100vh;
+    background: #000;
+    padding: 80px 40px 100px;
+  }
+
+  .fbi-page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: #555;
+    letter-spacing: 12px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .laws-container {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 40px;
+  }
+
+  .law-item {
+    background: #080808;
+    border: 1px solid #1a1a1a;
+    border-right: 3px solid #333;
+    padding: 18px 22px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    color: #999;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  .law-number {
+    color: #444;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* ===== MEMBERS TABLE PAGE ===== */
+  #membersPage {
+    display: none;
+    min-height: 100vh;
+    background: #000;
+    padding: 80px 40px 100px;
+  }
+
+  .members-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: #555;
+    letter-spacing: 8px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .members-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto 0;
+    border-collapse: collapse;
+  }
+
+  .members-table th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: right;
+    border-bottom: 1px solid #1a1a1a;
+    background: #050505;
+  }
+
+  .members-table td {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    color: #888;
+    padding: 12px 16px;
+    border-bottom: 1px solid #0f0f0f;
+  }
+
+  .members-table tr:hover td { background: #080808; color: #bbb; }
+
+  .rank-badge {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: #777;
+    font-size: 11px;
+    padding: 3px 10px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== BREAKING NEWS ===== */
+  .news-ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0a0a0a;
+    border-top: 1px solid #1a1a1a;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 500;
+  }
+
+  .news-label {
+    background: #cc2222;
+    color: #fff;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .news-scroll-wrap {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .news-scroll-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scrollNews 30s linear infinite;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    color: #888;
+    padding-right: 60px;
+  }
+
+  @keyframes scrollNews {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100vw); }
+  }
+
+  /* ===== MODALS ===== */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -337,7 +515,7 @@
     letter-spacing: 4px;
   }
 
-  .modal-subtitle { font-size: 11px; color: #444; letter-spacing: 1px; }
+  .modal-subtitle { font-size: 11px; color: #444; letter-spacing: 1px; text-align: center; }
 
   .modal-input {
     width: 100%;
@@ -353,7 +531,6 @@
   }
 
   .modal-input:focus { border-color: #444; }
-
   .modal-btns { display: flex; gap: 12px; width: 100%; }
 
   .modal-btn {
@@ -374,11 +551,12 @@
   .modal-btn.cancel { color: #444; }
   .modal-error { color: #cc3333; font-size: 11px; letter-spacing: 1px; min-height: 14px; }
 
+  /* ===== ADMIN PAGE ===== */
   #adminPage {
     display: none;
     min-height: 100vh;
     background: #000;
-    padding: 40px;
+    padding: 80px 40px 100px;
   }
 
   .admin-header {
@@ -395,6 +573,7 @@
     max-width: 960px;
     margin: 32px auto 0;
     border-bottom: 1px solid #1a1a1a;
+    flex-wrap: wrap;
   }
 
   .admin-tab {
@@ -403,9 +582,9 @@
     border-bottom: none;
     color: #444;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 2px;
-    padding: 10px 20px;
+    padding: 10px 16px;
     cursor: pointer;
     transition: all 0.2s;
     text-transform: uppercase;
@@ -416,6 +595,15 @@
 
   .admin-panel { display: none; max-width: 960px; margin: 0 auto; padding-top: 28px; }
   .admin-panel.active { display: block; }
+
+  .section-label {
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-family: 'Share Tech Mono', monospace;
+  }
 
   .files-list-admin { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 
@@ -428,20 +616,20 @@
     padding: 12px 18px;
   }
 
-  .file-row-name { flex: 1; color: #888; font-size: 13px; letter-spacing: 1px; }
+  .file-row-name { flex: 1; }
 
   .file-row-name input {
     background: transparent;
     border: none;
     color: #888;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
     width: 100%;
     outline: none;
   }
 
   .file-row-name input:focus { color: #bbb; border-bottom: 1px solid #333; }
-  .file-row-pin { color: #444; font-size: 11px; letter-spacing: 1px; }
+  .file-row-pin { color: #444; font-size: 11px; letter-spacing: 1px; font-family: 'Share Tech Mono', monospace; }
 
   .file-row-btn {
     background: transparent;
@@ -485,13 +673,15 @@
     padding: 10px 14px;
     text-align: right;
     border-bottom: 1px solid #1a1a1a;
+    font-family: 'Share Tech Mono', monospace;
   }
 
   .users-table td {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
     padding: 10px 14px;
     border-bottom: 1px solid #111;
+    font-family: 'Tajawal', sans-serif;
   }
 
   .users-table tr:hover td { background: #080808; color: #999; }
@@ -510,11 +700,11 @@
     background: #080808;
     border: 1px solid #1a1a1a;
     padding: 10px 14px;
-    font-size: 11px;
+    font-size: 13px;
     color: #555;
     cursor: pointer;
     transition: all 0.2s;
-    letter-spacing: 1px;
+    font-family: 'Tajawal', sans-serif;
   }
 
   .admin-file-item:hover, .admin-file-item.active { border-color: #333; color: #999; background: #0f0f0f; }
@@ -525,20 +715,83 @@
     background: #080808;
     border: 1px solid #1c1c1c;
     color: #bbb;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
     line-height: 1.8;
     padding: 20px;
     resize: vertical;
     outline: none;
-    letter-spacing: 0.5px;
   }
 
   .admin-view-file-textarea:focus { border-color: #333; }
 
+  /* Laws admin */
+  .law-admin-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .law-admin-input {
+    flex: 1;
+    background: #080808;
+    border: 1px solid #1a1a1a;
+    color: #999;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    resize: vertical;
+    min-height: 50px;
+  }
+
+  .law-admin-input:focus { border-color: #333; }
+
+  /* Members admin */
+  .member-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #080808;
+    border: 1px solid #1a1a1a;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+  }
+
+  .member-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #888;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    outline: none;
+    padding: 4px 6px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .member-input:focus { color: #ccc; border-bottom-color: #444; }
+
+  /* News admin */
+  .news-admin-input {
+    width: 100%;
+    background: #080808;
+    border: 1px solid #1a1a1a;
+    color: #999;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    padding: 14px 18px;
+    outline: none;
+    margin-bottom: 12px;
+  }
+
+  .news-admin-input:focus { border-color: #333; }
+
+  /* NOTIF */
   .notif {
     position: fixed;
-    bottom: 24px;
+    bottom: 50px;
     right: 24px;
     background: #0d0d0d;
     border: 1px solid #222;
@@ -556,19 +809,11 @@
   .notif.show { transform: translateY(0); }
   .notif.green { border-color: #1a3326; color: #33cc77; }
   .notif.red { border-color: #330d0d; color: #cc3333; }
-
-  .section-label {
-    font-size: 10px;
-    color: #333;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
+<!-- ===== LOGIN ===== -->
 <div id="loginPage">
   <div class="login-box">
     <div class="fingerprint-wrap" id="fpWrap">
@@ -581,34 +826,46 @@
       </svg>
       <div class="fingerprint-tooltip" id="fpTooltip">— مرحبا —</div>
     </div>
-
     <div class="fbi-title">FBI</div>
-
     <div class="login-form">
       <input type="text" id="loginName" placeholder="الاسم" autocomplete="off"/>
       <input type="password" id="loginPass" placeholder="كلمة المرور"/>
       <button class="login-btn" onclick="doLogin()">دخول</button>
       <div class="login-error" id="loginError"></div>
     </div>
-
     <a class="admin-link" onclick="showAdminLogin()">القيادات</a>
   </div>
 </div>
 
-<!-- MAIN PAGE -->
-<div id="mainPage">
+<!-- ===== WELCOME PAGE ===== -->
+<div id="welcomePage" style="display:none; min-height:100vh; background:#000; flex-direction:column; align-items:center; justify-content:center; gap:50px; padding:40px;">
   <button class="back-btn" onclick="logout()">↩ رجوع</button>
-  <div class="page-title">FBI</div>
+  <div style="text-align:center;">
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:16px; color:#444; letter-spacing:6px; margin-bottom:16px;">مرحباً بك في</div>
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:90px; color:#555; letter-spacing:16px; line-height:1;">FBI</div>
+    <div style="font-family:'Tajawal',sans-serif; font-size:16px; color:#555; letter-spacing:2px; margin-top:12px;">موقع الاستخبارات الفدرالية</div>
+    <div style="width:200px; height:1px; background:#1a1a1a; margin:20px auto;"></div>
+    <div style="font-family:'Tajawal',sans-serif; font-size:14px; color:#444;" id="welcomeUserName"></div>
+  </div>
+  <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+    <button class="welcome-nav-btn" onclick="showMain()">الملفات</button>
+    <button class="welcome-nav-btn" onclick="showFbiPage()">FBI</button>
+    <button class="welcome-nav-btn" onclick="showMembersPage()">جدول الأفراد</button>
+  </div>
+</div>
+
+<!-- ===== MAIN PAGE (files) ===== -->
+<div id="mainPage">
+  <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
+  <div class="page-title">الملفات</div>
   <div class="title-divider"></div>
   <div class="files-grid" id="filesGrid"></div>
 </div>
 
-<!-- FILE PAGE -->
+<!-- ===== FILE PAGE ===== -->
 <div id="filePage">
   <button class="back-btn" onclick="backToMain()">↩ رجوع</button>
-  <div class="file-header">
-    <div class="file-page-title" id="filePageTitle">ملف 1</div>
-  </div>
+  <div class="file-page-title" id="filePageTitle"></div>
   <div class="file-divider"></div>
   <div class="file-content-wrap">
     <textarea class="file-textarea" id="fileTextarea" placeholder="اكتب هنا..."></textarea>
@@ -619,28 +876,58 @@
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
+<!-- ===== FBI PAGE ===== -->
+<div id="fbiPage">
+  <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
+  <div class="fbi-page-title">FBI</div>
+  <div class="title-divider"></div>
+  <div class="laws-container" id="lawsContainer"></div>
+</div>
+
+<!-- ===== MEMBERS PAGE ===== -->
+<div id="membersPage">
+  <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
+  <div class="members-title">جدول الأفراد</div>
+  <div class="title-divider"></div>
+  <table class="members-table">
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>الرتبة</th>
+        <th>يوزر ديسكورد</th>
+      </tr>
+    </thead>
+    <tbody id="membersTableBody"></tbody>
+  </table>
+</div>
+
+<!-- ===== ADMIN PAGE ===== -->
 <div id="adminPage">
   <button class="back-btn" onclick="adminLogout()">↩ رجوع</button>
   <div class="admin-header">القيادات</div>
   <div class="admin-tabs">
     <button class="admin-tab active" onclick="switchTab('files')">الملفات</button>
-    <button class="admin-tab" onclick="switchTab('view')">عرض الملفات</button>
+    <button class="admin-tab" onclick="switchTab('view')">محتوى الملفات</button>
+    <button class="admin-tab" onclick="switchTab('laws')">القوانين</button>
+    <button class="admin-tab" onclick="switchTab('members')">الأفراد</button>
+    <button class="admin-tab" onclick="switchTab('news')">الخبر العاجل</button>
     <button class="admin-tab" onclick="switchTab('users')">سجل الدخول</button>
   </div>
 
+  <!-- FILES TAB -->
   <div class="admin-panel active" id="tabFiles">
     <div class="section-label">إدارة الملفات</div>
     <div class="files-list-admin" id="adminFilesList"></div>
     <button class="add-file-btn" onclick="addFile()">+ إضافة ملف</button>
   </div>
 
+  <!-- VIEW TAB -->
   <div class="admin-panel" id="tabView">
     <div class="section-label">محتوى الملفات</div>
     <div class="admin-files-viewer">
       <div class="admin-files-sidebar" id="adminFilesSidebar"></div>
       <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
-        <div style="font-size:11px; color:#444; letter-spacing:1px;" id="adminViewFileName"></div>
+        <div style="font-size:11px; color:#444; letter-spacing:1px; font-family:'Share Tech Mono',monospace;" id="adminViewFileName"></div>
         <textarea class="admin-view-file-textarea" id="adminViewTextarea" placeholder="اختر ملفاً من القائمة"></textarea>
         <div style="display:flex; justify-content:flex-end;">
           <button class="save-btn" onclick="adminSaveFile()">حفظ التعديلات</button>
@@ -649,6 +936,37 @@
     </div>
   </div>
 
+  <!-- LAWS TAB -->
+  <div class="admin-panel" id="tabLaws">
+    <div class="section-label">إدارة القوانين</div>
+    <div id="adminLawsList"></div>
+    <button class="add-file-btn" onclick="addLaw()" style="margin-top:10px;">+ إضافة قانون</button>
+    <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+      <button class="save-btn" onclick="saveLaws()">حفظ القوانين</button>
+    </div>
+  </div>
+
+  <!-- MEMBERS TAB -->
+  <div class="admin-panel" id="tabMembers">
+    <div class="section-label">إدارة الأفراد</div>
+    <div id="adminMembersList"></div>
+    <button class="add-file-btn" onclick="addMember()" style="margin-top:10px;">+ إضافة فرد</button>
+    <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+      <button class="save-btn" onclick="saveMembers()">حفظ الأفراد</button>
+    </div>
+  </div>
+
+  <!-- NEWS TAB -->
+  <div class="admin-panel" id="tabNews">
+    <div class="section-label">الخبر العاجل</div>
+    <p style="font-size:11px; color:#444; letter-spacing:1px; margin-bottom:16px; font-family:'Share Tech Mono',monospace;">اكتب الخبر العاجل — يظهر في شريط متحرك للجميع</p>
+    <input type="text" class="news-admin-input" id="newsInput" placeholder="اكتب الخبر العاجل هنا..."/>
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="save-btn" onclick="saveNews()">حفظ الخبر</button>
+    </div>
+  </div>
+
+  <!-- USERS TAB -->
   <div class="admin-panel" id="tabUsers">
     <div class="section-label">سجل تسجيلات الدخول</div>
     <table class="users-table">
@@ -665,11 +983,11 @@
   </div>
 </div>
 
-<!-- PIN MODAL -->
+<!-- ===== PIN MODAL ===== -->
 <div class="modal-overlay" id="pinModal">
   <div class="modal-box">
     <div class="modal-title">رمز الملف</div>
-    <div class="modal-subtitle" id="pinModalSub">أدخل الرمز السري للملف</div>
+    <div class="modal-subtitle" id="pinModalSub">أدخل الرمز السري</div>
     <input type="password" class="modal-input" id="pinInput" placeholder="••••" maxlength="20"/>
     <div class="modal-error" id="pinError"></div>
     <div class="modal-btns">
@@ -679,7 +997,22 @@
   </div>
 </div>
 
-<!-- ADMIN LOGIN MODAL -->
+<!-- ===== NEW FILE MODAL ===== -->
+<div class="modal-overlay" id="newFileModal">
+  <div class="modal-box">
+    <div class="modal-title">ملف جديد</div>
+    <div class="modal-subtitle">اسم الملف والرمز السري</div>
+    <input type="text" class="modal-input" id="newFileName" placeholder="اسم الملف" style="letter-spacing:1px;" maxlength="40"/>
+    <input type="text" class="modal-input" id="newFilePin" placeholder="الرمز السري" maxlength="30"/>
+    <div class="modal-error" id="newFileError"></div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeNewFileModal()">إلغاء</button>
+      <button class="modal-btn" onclick="confirmNewFile()">إنشاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
 <div class="modal-overlay" id="adminLoginModal">
   <div class="modal-box">
     <div class="modal-title">القيادات</div>
@@ -693,9 +1026,18 @@
   </div>
 </div>
 
+<!-- ===== NEWS TICKER ===== -->
+<div class="news-ticker" id="newsTicker" style="display:none;">
+  <div class="news-label">🔴 خبر عاجل</div>
+  <div class="news-scroll-wrap">
+    <span class="news-scroll-text" id="newsScrollText"></span>
+  </div>
+</div>
+
 <div class="notif" id="notif"></div>
 
 <script>
+// ── STORAGE ──────────────────────────────────────────────────
 const STORE_KEY = 'fbi_data';
 
 function loadData() {
@@ -706,25 +1048,31 @@ function loadData() {
 function saveData(d) { localStorage.setItem(STORE_KEY, JSON.stringify(d)); }
 
 function defaultData() {
-  return { users: [], files: [], logins: [], nextFileId: 1 };
+  return {
+    files: [], logins: [], nextFileId: 1,
+    laws: [], members: [], news: ''
+  };
 }
 
-// Fingerprint
+// ── FINGERPRINT ───────────────────────────────────────────────
 document.getElementById('fpWrap').addEventListener('mouseenter', () => {
-  const saved = localStorage.getItem('fbi_last_user');
-  document.getElementById('fpTooltip').textContent = saved ? `مرحبا، ${saved}` : '— ضع إصبعك —';
+  const name = localStorage.getItem('fbi_last_user');
+  document.getElementById('fpTooltip').textContent = name ? `مرحبا، ${name}` : '— ضع إصبعك —';
 });
 
-const MAIN_PASS = 'soso';
+// ── CONSTANTS ─────────────────────────────────────────────────
+const MAIN_PASS  = 'soso';
 const ADMIN_PASS = 'r3d';
 let currentUser = null;
 let currentFileIndex = null;
-let adminSelectedFileIndex = null;
+let adminSelFileIndex = null;
+let pendingFileIndex = null;
 
+// ── LOGIN ─────────────────────────────────────────────────────
 function doLogin() {
   const name = document.getElementById('loginName').value.trim();
   const pass = document.getElementById('loginPass').value;
-  const err = document.getElementById('loginError');
+  const err  = document.getElementById('loginError');
   if (!name) { err.textContent = 'أدخل اسمك'; return; }
   if (pass !== MAIN_PASS) { err.textContent = 'كلمة المرور خاطئة'; return; }
   err.textContent = '';
@@ -734,7 +1082,7 @@ function doLogin() {
   d.logins.push({ name, pass, date: now.toLocaleDateString('ar-SA'), time: now.toLocaleTimeString('ar-SA') });
   saveData(d);
   localStorage.setItem('fbi_last_user', name);
-  showMain();
+  showWelcome();
 }
 
 function logout() {
@@ -750,6 +1098,7 @@ function adminLogout() {
   document.getElementById('loginPass').value = '';
 }
 
+// ── ADMIN LOGIN ───────────────────────────────────────────────
 function showAdminLogin() {
   document.getElementById('adminPinInput').value = '';
   document.getElementById('adminPinError').textContent = '';
@@ -764,27 +1113,67 @@ function confirmAdminPin() {
   else { document.getElementById('adminPinError').textContent = 'الرمز خاطئ'; }
 }
 
-document.getElementById('adminPinInput').addEventListener('keydown', e => { if (e.key==='Enter') confirmAdminPin(); });
+document.getElementById('adminPinInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmAdminPin();
+});
+
+// ── PAGES ─────────────────────────────────────────────────────
+const ALL_PAGES = ['loginPage','welcomePage','mainPage','filePage','fbiPage','membersPage','adminPage'];
 
 function showPage(id) {
-  ['loginPage','mainPage','filePage','adminPage'].forEach(p => {
-    document.getElementById(p).style.display = 'none';
+  ALL_PAGES.forEach(p => {
+    const el = document.getElementById(p);
+    if (!el) return;
+    if (p === id) {
+      el.style.display = (p === 'loginPage' || p === 'welcomePage') ? 'flex' : 'block';
+    } else {
+      el.style.display = 'none';
+    }
   });
-  document.getElementById(id).style.display = id === 'loginPage' ? 'flex' : 'block';
+  updateNewsTicker();
+}
+
+function showWelcome() {
+  document.getElementById('welcomeUserName').textContent = `مرحباً، ${currentUser}`;
+  showPage('welcomePage');
 }
 
 function showMain() { renderFilesGrid(); showPage('mainPage'); }
 function backToMain() { renderFilesGrid(); showPage('mainPage'); }
 
+function showFbiPage() { renderLaws(); showPage('fbiPage'); }
+function showMembersPage() { renderMembersTable(); showPage('membersPage'); }
+
 function showAdminPage() {
   renderAdminFiles(); renderAdminSidebar(); renderUsersTable();
+  renderAdminLaws(); renderAdminMembers();
+  const d = loadData();
+  document.getElementById('newsInput').value = d.news || '';
   showPage('adminPage'); switchTab('files');
 }
 
+// ── NEWS TICKER ───────────────────────────────────────────────
+function updateNewsTicker() {
+  const d = loadData();
+  const ticker = document.getElementById('newsTicker');
+  const text   = document.getElementById('newsScrollText');
+  if (d.news && d.news.trim()) {
+    text.textContent = d.news;
+    ticker.style.display = 'flex';
+  } else {
+    ticker.style.display = 'none';
+  }
+}
+
+// ── FILES GRID ────────────────────────────────────────────────
 function renderFilesGrid() {
   const d = loadData();
   const grid = document.getElementById('filesGrid');
   grid.innerHTML = '';
+  if (!d.files.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#444;font-size:13px;letter-spacing:2px;padding:40px;font-family:Tajawal,sans-serif;">لا توجد ملفات</div>';
+    return;
+  }
   d.files.forEach((file, i) => {
     const card = document.createElement('div');
     card.className = 'file-card';
@@ -792,13 +1181,9 @@ function renderFilesGrid() {
     card.onclick = () => openFileWithPin(i);
     grid.appendChild(card);
   });
-  if (!d.files.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#333;font-size:11px;letter-spacing:2px;padding:40px;">لا توجد ملفات</div>';
-  }
 }
 
-let pendingFileIndex = null;
-
+// ── PIN MODAL ─────────────────────────────────────────────────
 function openFileWithPin(index) {
   pendingFileIndex = index;
   const file = loadData().files[index];
@@ -808,17 +1193,23 @@ function openFileWithPin(index) {
   document.getElementById('pinModal').classList.add('active');
 }
 
-function closePinModal() { document.getElementById('pinModal').classList.remove('active'); pendingFileIndex = null; }
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('active');
+  pendingFileIndex = null;
+}
 
 function confirmPin() {
-  const pin = document.getElementById('pinInput').value;
+  const pin  = document.getElementById('pinInput').value;
   const file = loadData().files[pendingFileIndex];
   if (pin === file.pin) { closePinModal(); openFile(pendingFileIndex); }
   else { document.getElementById('pinError').textContent = 'الرمز خاطئ'; }
 }
 
-document.getElementById('pinInput').addEventListener('keydown', e => { if (e.key==='Enter') confirmPin(); });
+document.getElementById('pinInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmPin();
+});
 
+// ── FILE PAGE ─────────────────────────────────────────────────
 function openFile(index) {
   currentFileIndex = index;
   const file = loadData().files[index];
@@ -845,10 +1236,141 @@ document.getElementById('fileTextarea').addEventListener('input', () => {
   const d = loadData();
   d.files[currentFileIndex].content = document.getElementById('fileTextarea').value;
   saveData(d);
-  const st = document.getElementById('saveStatus');
-  st.textContent = '↺ حفظ تلقائي...'; st.className = 'save-status';
+  document.getElementById('saveStatus').textContent = '↺ حفظ تلقائي...';
 });
 
+// ── LAWS ──────────────────────────────────────────────────────
+function renderLaws() {
+  const d = loadData();
+  const c = document.getElementById('lawsContainer');
+  c.innerHTML = '';
+  if (!d.laws || !d.laws.length) {
+    c.innerHTML = '<div style="text-align:center;color:#444;font-family:Tajawal,sans-serif;padding:40px;">لا توجد قوانين</div>';
+    return;
+  }
+  d.laws.forEach((law, i) => {
+    const item = document.createElement('div');
+    item.className = 'law-item';
+    item.innerHTML = `<div class="law-number">المادة ${i+1}</div>${escHtml(law)}`;
+    c.appendChild(item);
+  });
+}
+
+function renderAdminLaws() {
+  const d = loadData();
+  const list = document.getElementById('adminLawsList');
+  list.innerHTML = '';
+  (d.laws || []).forEach((law, i) => {
+    const row = document.createElement('div');
+    row.className = 'law-admin-row';
+    row.innerHTML = `
+      <span style="color:#444;font-size:11px;font-family:'Share Tech Mono',monospace;padding-top:14px;">${i+1}</span>
+      <textarea class="law-admin-input" id="law_${i}">${escHtml(law)}</textarea>
+      <button class="file-row-btn danger" onclick="deleteLaw(${i})">حذف</button>`;
+    list.appendChild(row);
+  });
+}
+
+function addLaw() {
+  const d = loadData();
+  if (!d.laws) d.laws = [];
+  d.laws.push('');
+  saveData(d);
+  renderAdminLaws();
+}
+
+function deleteLaw(index) {
+  const d = loadData();
+  d.laws.splice(index, 1);
+  saveData(d);
+  renderAdminLaws();
+  showNotif('تم الحذف', 'red');
+}
+
+function saveLaws() {
+  const d = loadData();
+  const inputs = document.querySelectorAll('[id^="law_"]');
+  d.laws = [];
+  inputs.forEach(inp => { if (inp.value.trim()) d.laws.push(inp.value.trim()); });
+  saveData(d);
+  showNotif('تم حفظ القوانين', 'green');
+}
+
+// ── MEMBERS ───────────────────────────────────────────────────
+function renderMembersTable() {
+  const d = loadData();
+  const tbody = document.getElementById('membersTableBody');
+  tbody.innerHTML = '';
+  if (!d.members || !d.members.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#444;padding:30px;font-family:Tajawal,sans-serif;">لا يوجد أفراد</td></tr>';
+    return;
+  }
+  d.members.forEach(m => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escHtml(m.name)}</td>
+      <td><span class="rank-badge">${escHtml(m.rank)}</span></td>
+      <td style="color:#555;">${escHtml(m.discord)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderAdminMembers() {
+  const d = loadData();
+  const list = document.getElementById('adminMembersList');
+  list.innerHTML = '';
+  (d.members || []).forEach((m, i) => {
+    const row = document.createElement('div');
+    row.className = 'member-row';
+    row.innerHTML = `
+      <input class="member-input" placeholder="الاسم" id="m_name_${i}" value="${escHtml(m.name)}"/>
+      <input class="member-input" placeholder="الرتبة" id="m_rank_${i}" value="${escHtml(m.rank)}"/>
+      <input class="member-input" placeholder="ديسكورد" id="m_discord_${i}" value="${escHtml(m.discord)}"/>
+      <button class="file-row-btn danger" onclick="deleteMember(${i})">حذف</button>`;
+    list.appendChild(row);
+  });
+}
+
+function addMember() {
+  const d = loadData();
+  if (!d.members) d.members = [];
+  d.members.push({ name: '', rank: '', discord: '' });
+  saveData(d);
+  renderAdminMembers();
+}
+
+function deleteMember(index) {
+  const d = loadData();
+  d.members.splice(index, 1);
+  saveData(d);
+  renderAdminMembers();
+  showNotif('تم الحذف', 'red');
+}
+
+function saveMembers() {
+  const d = loadData();
+  const count = (d.members || []).length;
+  d.members = [];
+  for (let i = 0; i < count; i++) {
+    const name    = document.getElementById(`m_name_${i}`)?.value.trim() || '';
+    const rank    = document.getElementById(`m_rank_${i}`)?.value.trim() || '';
+    const discord = document.getElementById(`m_discord_${i}`)?.value.trim() || '';
+    if (name || rank || discord) d.members.push({ name, rank, discord });
+  }
+  saveData(d);
+  showNotif('تم حفظ الأفراد', 'green');
+}
+
+// ── NEWS ──────────────────────────────────────────────────────
+function saveNews() {
+  const d = loadData();
+  d.news = document.getElementById('newsInput').value.trim();
+  saveData(d);
+  updateNewsTicker();
+  showNotif('تم حفظ الخبر', 'green');
+}
+
+// ── ADMIN FILES ───────────────────────────────────────────────
 function renderAdminFiles() {
   const d = loadData();
   const list = document.getElementById('adminFilesList');
@@ -860,20 +1382,38 @@ function renderAdminFiles() {
       <div class="file-row-name"><input type="text" value="${escHtml(file.name)}" onchange="renameFile(${i}, this.value)"/></div>
       <div class="file-row-pin">رمز: ${escHtml(file.pin)}</div>
       <button class="file-row-btn" onclick="changePin(${i})">تغيير الرمز</button>
-      <button class="file-row-btn danger" onclick="deleteFile(${i})">حذف</button>
-    `;
+      <button class="file-row-btn danger" onclick="deleteFile(${i})">حذف</button>`;
     list.appendChild(row);
   });
 }
 
 function addFile() {
+  document.getElementById('newFileName').value = '';
+  document.getElementById('newFilePin').value = '';
+  document.getElementById('newFileError').textContent = '';
+  document.getElementById('newFileModal').classList.add('active');
+}
+
+function closeNewFileModal() { document.getElementById('newFileModal').classList.remove('active'); }
+
+function confirmNewFile() {
+  const name = document.getElementById('newFileName').value.trim();
+  const pin  = document.getElementById('newFilePin').value.trim();
+  const err  = document.getElementById('newFileError');
+  if (!name) { err.textContent = 'أدخل اسم الملف'; return; }
+  if (!pin)  { err.textContent = 'أدخل الرمز السري'; return; }
   const d = loadData();
   const num = d.nextFileId++;
-  d.files.push({ id: num, name: `ملف ${num}`, pin: '1234', content: '' });
+  d.files.push({ id: num, name, pin, content: '' });
   saveData(d);
+  closeNewFileModal();
   renderAdminFiles(); renderAdminSidebar();
-  showNotif(`تم إضافة ملف ${num}`, 'green');
+  showNotif(`تم إضافة: ${name}`, 'green');
 }
+
+document.getElementById('newFilePin').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmNewFile();
+});
 
 function deleteFile(index) {
   if (!confirm('هل تريد حذف هذا الملف؟')) return;
@@ -881,15 +1421,16 @@ function deleteFile(index) {
   d.files.splice(index, 1);
   saveData(d);
   renderAdminFiles(); renderAdminSidebar();
-  adminSelectedFileIndex = null;
+  adminSelFileIndex = null;
   document.getElementById('adminViewTextarea').value = '';
   document.getElementById('adminViewFileName').textContent = '';
   showNotif('تم الحذف', 'red');
 }
 
 function renameFile(index, newName) {
+  if (!newName.trim()) return;
   const d = loadData();
-  d.files[index].name = newName;
+  d.files[index].name = newName.trim();
   saveData(d);
   renderAdminSidebar();
 }
@@ -911,7 +1452,7 @@ function renderAdminSidebar() {
   sb.innerHTML = '';
   d.files.forEach((file, i) => {
     const item = document.createElement('div');
-    item.className = 'admin-file-item' + (adminSelectedFileIndex === i ? ' active' : '');
+    item.className = 'admin-file-item' + (adminSelFileIndex === i ? ' active' : '');
     item.textContent = file.name;
     item.onclick = () => adminSelectFile(i);
     sb.appendChild(item);
@@ -919,7 +1460,7 @@ function renderAdminSidebar() {
 }
 
 function adminSelectFile(index) {
-  adminSelectedFileIndex = index;
+  adminSelFileIndex = index;
   const file = loadData().files[index];
   document.getElementById('adminViewFileName').textContent = file.name;
   document.getElementById('adminViewTextarea').value = file.content || '';
@@ -927,19 +1468,20 @@ function adminSelectFile(index) {
 }
 
 function adminSaveFile() {
-  if (adminSelectedFileIndex === null) { showNotif('اختر ملفاً أولاً', 'red'); return; }
+  if (adminSelFileIndex === null) { showNotif('اختر ملفاً أولاً', 'red'); return; }
   const d = loadData();
-  d.files[adminSelectedFileIndex].content = document.getElementById('adminViewTextarea').value;
+  d.files[adminSelFileIndex].content = document.getElementById('adminViewTextarea').value;
   saveData(d);
   showNotif('تم الحفظ', 'green');
 }
 
+// ── USERS TABLE ───────────────────────────────────────────────
 function renderUsersTable() {
   const d = loadData();
   const tbody = document.getElementById('usersTableBody');
   tbody.innerHTML = '';
   if (!d.logins.length) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#333;padding:24px;">لا يوجد سجلات</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#444;padding:24px;font-family:Tajawal,sans-serif;">لا يوجد سجلات</td></tr>';
     return;
   }
   [...d.logins].reverse().forEach(log => {
@@ -949,17 +1491,21 @@ function renderUsersTable() {
   });
 }
 
+// ── ADMIN TABS ────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  const map = { files:'tabFiles', view:'tabView', users:'tabUsers' };
+  const map = { files:'tabFiles', view:'tabView', laws:'tabLaws', members:'tabMembers', news:'tabNews', users:'tabUsers' };
   document.getElementById(map[tab]).classList.add('active');
   const idx = Object.keys(map).indexOf(tab);
   document.querySelectorAll('.admin-tab')[idx].classList.add('active');
   if (tab === 'view') renderAdminSidebar();
   if (tab === 'users') renderUsersTable();
+  if (tab === 'laws') renderAdminLaws();
+  if (tab === 'members') renderAdminMembers();
 }
 
+// ── NOTIF ─────────────────────────────────────────────────────
 let notifTimer = null;
 function showNotif(msg, type='') {
   const el = document.getElementById('notif');
@@ -968,15 +1514,21 @@ function showNotif(msg, type='') {
   notifTimer = setTimeout(() => { el.className = 'notif'; }, 2200);
 }
 
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ── UTILS ─────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
-document.getElementById('loginName').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('loginPass').focus(); });
+document.getElementById('loginName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('loginPass').focus();
+});
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
 
 showPage('loginPage');
 </script>
 </body>
 </html>
 ```
+
