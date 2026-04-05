@@ -36,7 +36,7 @@
   .fbi-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 110px;
-    color: #666;
+    color: #777;
     letter-spacing: 14px;
     line-height: 1;
     user-select: none;
@@ -51,8 +51,8 @@
 
   .login-form input {
     width: 100%;
-    background: #161616;
-    border: 1px solid #2e2e2e;
+    background: #1a1a1a;
+    border: 1px solid #333;
     color: #ddd;
     font-family: 'Tajawal', sans-serif;
     font-size: 15px;
@@ -61,14 +61,14 @@
     transition: border-color 0.2s;
   }
 
-  .login-form input:focus { border-color: #666; }
-  .login-form input::placeholder { color: #444; }
+  .login-form input:focus { border-color: #777; }
+  .login-form input::placeholder { color: #555; }
 
   .login-btn {
     width: 100%;
-    background: #161616;
-    border: 1px solid #3a3a3a;
-    color: #aaa;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #bbb;
     font-family: 'Tajawal', sans-serif;
     font-size: 15px;
     letter-spacing: 3px;
@@ -77,7 +77,7 @@
     transition: all 0.2s;
   }
 
-  .login-btn:hover { background: #202020; border-color: #666; color: #ddd; }
+  .login-btn:hover { background: #222; border-color: #777; color: #eee; }
 
   .login-error {
     color: #cc4444;
@@ -87,7 +87,7 @@
   }
 
   .admin-link {
-    color: #3a3a3a;
+    color: #444;
     font-size: 12px;
     cursor: pointer;
     letter-spacing: 2px;
@@ -96,24 +96,24 @@
     font-family: 'Share Tech Mono', monospace;
   }
 
-  .admin-link:hover { color: #777; }
+  .admin-link:hover { color: #888; }
 
   .fingerprint-wrap { position: relative; cursor: pointer; }
 
   .fingerprint-svg {
     width: 72px; height: 72px;
-    opacity: 0.35;
+    opacity: 0.4;
     transition: opacity 0.3s;
   }
 
-  .fingerprint-wrap:hover .fingerprint-svg { opacity: 0.75; }
+  .fingerprint-wrap:hover .fingerprint-svg { opacity: 0.8; }
 
   .fingerprint-tooltip {
     position: absolute;
     bottom: 110%;
     left: 50%;
     transform: translateX(-50%);
-    background: #161616;
+    background: #1a1a1a;
     border: 1px solid #333;
     color: #aaa;
     font-size: 12px;
@@ -131,8 +131,8 @@
     top: 18px;
     left: 20px;
     background: #111;
-    border: 1px solid #2a2a2a;
-    color: #777;
+    border: 1px solid #333;
+    color: #888;
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     letter-spacing: 2px;
@@ -142,19 +142,7 @@
     z-index: 100;
   }
 
-  .back-btn:hover { border-color: #666; color: #ccc; }
-
-  /* WELCOME */
-  #welcomePage {
-    display: none;
-    min-height: 100vh;
-    background: #0d0d0d;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    padding: 40px;
-  }
+  .back-btn:hover { border-color: #777; color: #ccc; }
 
   .welcome-nav {
     display: flex;
@@ -164,9 +152,9 @@
   }
 
   .welcome-nav-btn {
-    background: #131313;
-    border: 1px solid #2a2a2a;
-    color: #999;
+    background: #161616;
+    border: 1px solid #333;
+    color: #aaa;
     font-family: 'Tajawal', sans-serif;
     font-size: 16px;
     padding: 14px 36px;
@@ -175,9 +163,8 @@
     letter-spacing: 1px;
   }
 
-  .welcome-nav-btn:hover { border-color: #666; color: #eee; background: #1a1a1a; }
+  .welcome-nav-btn:hover { border-color: #777; color: #eee; background: #1e1e1e; }
 
-  /* MAIN */
   #mainPage {
     display: none;
     min-height: 100vh;
@@ -188,7 +175,7 @@
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
-    color: #777;
+    color: #888;
     letter-spacing: 10px;
     text-align: center;
   }
@@ -196,7 +183,7 @@
   .title-divider {
     width: 100%;
     height: 1px;
-    background: #222;
+    background: #252525;
     margin: 14px 0 36px;
   }
 
@@ -206,14 +193,14 @@
     gap: 10px;
     max-width: 860px;
     margin: 0 auto;
-    border: 1px solid #1e1e1e;
+    border: 1px solid #222;
     padding: 24px;
-    background: #0f0f0f;
+    background: #111;
   }
 
   .file-card {
-    background: #141414;
-    border: 1px solid #252525;
+    background: #161616;
+    border: 1px solid #2a2a2a;
     padding: 18px 10px;
     text-align: center;
     cursor: pointer;
@@ -224,12 +211,11 @@
     gap: 8px;
   }
 
-  .file-card:hover { border-color: #555; background: #1a1a1a; }
+  .file-card:hover { border-color: #666; background: #1e1e1e; }
   .file-icon { font-size: 20px; }
-  .file-name { font-size: 12px; color: #999; }
+  .file-name { font-size: 12px; color: #aaa; }
   .file-lock { font-size: 10px; color: #555; }
 
-  /* FILE PAGE */
   #filePage {
     display: none;
     min-height: 100vh;
@@ -240,19 +226,19 @@
   .file-page-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 34px;
-    color: #777;
+    color: #888;
     letter-spacing: 6px;
     margin-bottom: 14px;
   }
 
-  .file-divider { width: 100%; height: 1px; background: #222; margin-bottom: 28px; }
+  .file-divider { width: 100%; height: 1px; background: #252525; margin-bottom: 28px; }
   .file-content-wrap { max-width: 780px; margin: 0 auto; }
 
   .file-textarea {
     width: 100%;
     min-height: 400px;
-    background: #111;
-    border: 1px solid #252525;
+    background: #131313;
+    border: 1px solid #2a2a2a;
     color: #ccc;
     font-family: 'Tajawal', sans-serif;
     font-size: 15px;
@@ -263,7 +249,7 @@
     transition: border-color 0.2s;
   }
 
-  .file-textarea:focus { border-color: #444; }
+  .file-textarea:focus { border-color: #555; }
 
   .file-actions {
     display: flex;
@@ -274,9 +260,9 @@
   }
 
   .save-btn {
-    background: #131313;
-    border: 1px solid #2e2e2e;
-    color: #888;
+    background: #161616;
+    border: 1px solid #333;
+    color: #999;
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     letter-spacing: 2px;
@@ -286,11 +272,10 @@
     text-transform: uppercase;
   }
 
-  .save-btn:hover { border-color: #555; color: #ccc; }
-  .save-status { font-size: 12px; color: #555; }
+  .save-btn:hover { border-color: #666; color: #ccc; }
+  .save-status { font-size: 12px; color: #666; }
   .save-status.saved { color: #44bb77; }
 
-  /* FBI PAGE */
   #fbiPage {
     display: none;
     min-height: 100vh;
@@ -301,7 +286,7 @@
   .fbi-page-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 52px;
-    color: #777;
+    color: #888;
     letter-spacing: 12px;
     text-align: center;
     margin-bottom: 16px;
@@ -316,24 +301,23 @@
   }
 
   .law-item {
-    background: #111;
-    border: 1px solid #222;
-    border-right: 3px solid #444;
+    background: #131313;
+    border: 1px solid #252525;
+    border-right: 3px solid #555;
     padding: 18px 22px;
     font-size: 15px;
-    color: #aaa;
+    color: #bbb;
     line-height: 1.7;
   }
 
   .law-number {
-    color: #555;
+    color: #666;
     font-size: 11px;
     letter-spacing: 2px;
     margin-bottom: 6px;
     font-family: 'Share Tech Mono', monospace;
   }
 
-  /* MEMBERS PAGE */
   #membersPage {
     display: none;
     min-height: 100vh;
@@ -344,7 +328,7 @@
   .members-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
-    color: #777;
+    color: #888;
     letter-spacing: 8px;
     text-align: center;
     margin-bottom: 16px;
@@ -360,40 +344,39 @@
   .members-table th {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
-    color: #666;
+    color: #777;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 12px 16px;
     text-align: right;
-    border-bottom: 1px solid #222;
-    background: #0f0f0f;
+    border-bottom: 1px solid #252525;
+    background: #111;
   }
 
   .members-table td {
     font-size: 14px;
-    color: #999;
+    color: #aaa;
     padding: 12px 16px;
-    border-bottom: 1px solid #161616;
+    border-bottom: 1px solid #1a1a1a;
   }
 
-  .members-table tr:hover td { background: #111; color: #ccc; }
+  .members-table tr:hover td { background: #131313; color: #ccc; }
 
   .rank-badge {
-    background: #141414;
+    background: #161616;
     border: 1px solid #2a2a2a;
-    color: #888;
+    color: #999;
     font-size: 12px;
     padding: 3px 10px;
   }
 
-  /* NEWS TICKER */
   .news-ticker {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: #0a0a0a;
-    border-top: 1px solid #1a1a1a;
+    border-top: 1px solid #1e1e1e;
     height: 38px;
     display: flex;
     align-items: center;
@@ -427,22 +410,21 @@
     display: inline-block;
     white-space: nowrap;
     font-size: 13px;
-    color: #aaa;
-    padding-right: 100%;
-    animation: scrollNews 25s linear infinite;
+    color: #bbb;
+    animation: scrollNews 20s linear infinite;
+    padding-left: 100%;
   }
 
   @keyframes scrollNews {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-200%); }
   }
 
-  /* MODALS */
   .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.93);
+    background: rgba(0,0,0,0.94);
     z-index: 1000;
     align-items: center;
     justify-content: center;
@@ -451,7 +433,7 @@
   .modal-overlay.active { display: flex; }
 
   .modal-box {
-    background: #0f0f0f;
+    background: #111;
     border: 1px solid #2a2a2a;
     padding: 36px;
     width: 320px;
@@ -464,16 +446,16 @@
   .modal-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 26px;
-    color: #777;
+    color: #888;
     letter-spacing: 4px;
   }
 
-  .modal-subtitle { font-size: 13px; color: #555; text-align: center; }
+  .modal-subtitle { font-size: 13px; color: #666; text-align: center; }
 
   .modal-input {
     width: 100%;
-    background: #141414;
-    border: 1px solid #2a2a2a;
+    background: #161616;
+    border: 1px solid #333;
     color: #ccc;
     font-family: 'Tajawal', sans-serif;
     font-size: 15px;
@@ -482,14 +464,14 @@
     text-align: center;
   }
 
-  .modal-input:focus { border-color: #555; }
+  .modal-input:focus { border-color: #666; }
   .modal-btns { display: flex; gap: 10px; width: 100%; }
 
   .modal-btn {
     flex: 1;
-    background: #111;
-    border: 1px solid #2a2a2a;
-    color: #777;
+    background: #161616;
+    border: 1px solid #333;
+    color: #888;
     font-family: 'Tajawal', sans-serif;
     font-size: 14px;
     padding: 10px;
@@ -497,11 +479,10 @@
     transition: all 0.2s;
   }
 
-  .modal-btn:hover { border-color: #555; color: #bbb; }
-  .modal-btn.cancel { color: #444; }
+  .modal-btn:hover { border-color: #666; color: #ccc; }
+  .modal-btn.cancel { color: #555; }
   .modal-error { color: #cc4444; font-size: 13px; min-height: 16px; }
 
-  /* ADMIN */
   #adminPage {
     display: none;
     min-height: 100vh;
@@ -512,7 +493,7 @@
   .admin-header {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
-    color: #777;
+    color: #888;
     letter-spacing: 10px;
     text-align: center;
   }
@@ -540,15 +521,15 @@
     text-transform: uppercase;
   }
 
-  .admin-tab.active { border-color: #2a2a2a; color: #999; background: #111; }
-  .admin-tab:hover:not(.active) { color: #777; }
+  .admin-tab.active { border-color: #333; color: #aaa; background: #131313; }
+  .admin-tab:hover:not(.active) { color: #888; }
 
   .admin-panel { display: none; max-width: 960px; margin: 0 auto; padding-top: 26px; }
   .admin-panel.active { display: block; }
 
   .section-label {
     font-size: 10px;
-    color: #444;
+    color: #555;
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 14px;
@@ -561,8 +542,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #111;
-    border: 1px solid #1e1e1e;
+    background: #131313;
+    border: 1px solid #222;
     padding: 11px 16px;
   }
 
@@ -571,20 +552,20 @@
   .file-row-name input {
     background: transparent;
     border: none;
-    color: #999;
+    color: #aaa;
     font-family: 'Tajawal', sans-serif;
     font-size: 14px;
     width: 100%;
     outline: none;
   }
 
-  .file-row-name input:focus { color: #ddd; border-bottom: 1px solid #444; }
-  .file-row-pin { color: #555; font-size: 11px; font-family: 'Share Tech Mono', monospace; min-width: 80px; }
+  .file-row-name input:focus { color: #eee; border-bottom: 1px solid #555; }
+  .file-row-pin { color: #666; font-size: 11px; font-family: 'Share Tech Mono', monospace; min-width: 90px; }
 
   .file-row-btn {
     background: transparent;
-    border: 1px solid #252525;
-    color: #666;
+    border: 1px solid #2a2a2a;
+    color: #777;
     font-family: 'Share Tech Mono', monospace;
     font-size: 10px;
     letter-spacing: 1px;
@@ -594,13 +575,13 @@
     text-transform: uppercase;
   }
 
-  .file-row-btn:hover { border-color: #555; color: #bbb; }
+  .file-row-btn:hover { border-color: #666; color: #ccc; }
   .file-row-btn.danger:hover { border-color: #cc4444; color: #cc4444; }
 
   .add-file-btn {
     background: #0d0d0d;
-    border: 1px dashed #2a2a2a;
-    color: #555;
+    border: 1px dashed #333;
+    color: #666;
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     letter-spacing: 2px;
@@ -611,30 +592,30 @@
     text-transform: uppercase;
   }
 
-  .add-file-btn:hover { border-color: #555; color: #999; }
+  .add-file-btn:hover { border-color: #666; color: #aaa; }
 
   .users-table { width: 100%; border-collapse: collapse; }
 
   .users-table th {
     font-size: 10px;
-    color: #555;
+    color: #666;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 10px 14px;
     text-align: right;
-    border-bottom: 1px solid #1e1e1e;
+    border-bottom: 1px solid #222;
     background: #0d0d0d;
     font-family: 'Share Tech Mono', monospace;
   }
 
   .users-table td {
     font-size: 13px;
-    color: #888;
+    color: #999;
     padding: 11px 14px;
-    border-bottom: 1px solid #161616;
+    border-bottom: 1px solid #1a1a1a;
   }
 
-  .users-table tr:hover td { background: #111; color: #bbb; }
+  .users-table tr:hover td { background: #131313; color: #ccc; }
 
   .admin-files-viewer { display: flex; gap: 14px; }
 
@@ -647,22 +628,22 @@
   }
 
   .admin-file-item {
-    background: #111;
-    border: 1px solid #1e1e1e;
+    background: #131313;
+    border: 1px solid #222;
     padding: 9px 13px;
     font-size: 13px;
-    color: #666;
+    color: #777;
     cursor: pointer;
     transition: all 0.2s;
   }
 
-  .admin-file-item:hover, .admin-file-item.active { border-color: #444; color: #bbb; background: #181818; }
+  .admin-file-item:hover, .admin-file-item.active { border-color: #555; color: #ccc; background: #1a1a1a; }
 
   .admin-view-file-textarea {
     width: 100%;
     min-height: 360px;
-    background: #111;
-    border: 1px solid #1e1e1e;
+    background: #131313;
+    border: 1px solid #222;
     color: #ccc;
     font-family: 'Tajawal', sans-serif;
     font-size: 14px;
@@ -672,7 +653,7 @@
     outline: none;
   }
 
-  .admin-view-file-textarea:focus { border-color: #444; }
+  .admin-view-file-textarea:focus { border-color: #555; }
 
   .law-admin-row {
     display: flex;
@@ -683,9 +664,9 @@
 
   .law-admin-input {
     flex: 1;
-    background: #111;
-    border: 1px solid #1a1a1a;
-    color: #999;
+    background: #131313;
+    border: 1px solid #222;
+    color: #aaa;
     font-family: 'Tajawal', sans-serif;
     font-size: 14px;
     padding: 12px 16px;
@@ -694,14 +675,14 @@
     min-height: 50px;
   }
 
-  .law-admin-input:focus { border-color: #444; }
+  .law-admin-input:focus { border-color: #555; }
 
   .member-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #111;
-    border: 1px solid #1a1a1a;
+    background: #131313;
+    border: 1px solid #222;
     padding: 10px 14px;
     margin-bottom: 6px;
   }
@@ -710,22 +691,22 @@
     flex: 1;
     background: transparent;
     border: none;
-    color: #999;
+    color: #aaa;
     font-family: 'Tajawal', sans-serif;
     font-size: 13px;
     outline: none;
     padding: 4px 6px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #2a2a2a;
     min-width: 0;
   }
 
-  .member-input:focus { color: #ccc; border-bottom-color: #555; }
+  .member-input:focus { color: #eee; border-bottom-color: #666; }
 
   .news-admin-input {
     width: 100%;
-    background: #111;
-    border: 1px solid #1a1a1a;
-    color: #999;
+    background: #131313;
+    border: 1px solid #222;
+    color: #aaa;
     font-family: 'Tajawal', sans-serif;
     font-size: 14px;
     padding: 14px 18px;
@@ -733,15 +714,15 @@
     margin-bottom: 12px;
   }
 
-  .news-admin-input:focus { border-color: #444; }
+  .news-admin-input:focus { border-color: #555; }
 
   .notif {
     position: fixed;
     bottom: 50px;
     right: 22px;
-    background: #111;
+    background: #131313;
     border: 1px solid #2a2a2a;
-    color: #999;
+    color: #aaa;
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     letter-spacing: 2px;
@@ -771,7 +752,7 @@
   .loading-text {
     font-family: 'Share Tech Mono', monospace;
     font-size: 12px;
-    color: #444;
+    color: #555;
     letter-spacing: 3px;
     animation: blink 1.2s infinite;
   }
@@ -781,22 +762,20 @@
 </head>
 <body>
 
-<!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay">
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:#333;letter-spacing:14px;">FBI</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:#444;letter-spacing:14px;">FBI</div>
   <div class="loading-text">LOADING...</div>
 </div>
 
-<!-- LOGIN -->
 <div id="loginPage" style="display:none;">
   <div class="login-box">
     <div class="fingerprint-wrap" id="fpWrap">
       <svg class="fingerprint-svg" viewBox="0 0 100 100">
-        <path d="M50 8 C27 8 8 27 8 50 C8 73 27 92 50 92 C73 92 92 73 92 50" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 18 C32 18 18 32 18 50 C18 68 32 82 50 82 C68 82 82 68 82 50 C82 36 73 24 60 19" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 28 C37 28 28 37 28 50 C28 63 37 72 50 72 C63 72 72 63 72 50 C72 41 66 33 57 29" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 38 C43 38 38 43 38 50 C38 57 43 62 50 62 C57 62 62 57 62 50 C62 45 58 41 53 39" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M50 48 C47 48 45 50 46 52 C47 54 50 55 53 53" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 8 C27 8 8 27 8 50 C8 73 27 92 50 92 C73 92 92 73 92 50" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 18 C32 18 18 32 18 50 C18 68 32 82 50 82 C68 82 82 68 82 50 C82 36 73 24 60 19" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 28 C37 28 28 37 28 50 C28 63 37 72 50 72 C63 72 72 63 72 50 C72 41 66 33 57 29" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 38 C43 38 38 43 38 50 C38 57 43 62 50 62 C57 62 62 57 62 50 C62 45 58 41 53 39" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 48 C47 48 45 50 46 52 C47 54 50 55 53 53" stroke="#999" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       </svg>
       <div class="fingerprint-tooltip" id="fpTooltip">— مرحبا —</div>
     </div>
@@ -811,15 +790,14 @@
   </div>
 </div>
 
-<!-- WELCOME -->
-<div id="welcomePage" style="display:none; min-height:100vh; background:#0d0d0d; flex-direction:column; align-items:center; justify-content:center; gap:50px; padding:40px;">
+<div id="welcomePage" style="display:none;min-height:100vh;background:#0d0d0d;flex-direction:column;align-items:center;justify-content:center;gap:50px;padding:40px;">
   <button class="back-btn" onclick="logout()">↩ رجوع</button>
   <div style="text-align:center;">
-    <div style="font-family:'Share Tech Mono',monospace; font-size:12px; color:#444; letter-spacing:6px; margin-bottom:16px;">مرحباً بك في</div>
-    <div style="font-family:'Bebas Neue',sans-serif; font-size:90px; color:#666; letter-spacing:16px; line-height:1;">FBI</div>
-    <div style="font-size:15px; color:#666; letter-spacing:2px; margin-top:12px;">موقع الاستخبارات الفدرالية</div>
-    <div style="width:200px; height:1px; background:#1a1a1a; margin:20px auto;"></div>
-    <div style="font-size:14px; color:#555;" id="welcomeUserName"></div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#555;letter-spacing:6px;margin-bottom:16px;">مرحباً بك في</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:90px;color:#777;letter-spacing:16px;line-height:1;">FBI</div>
+    <div style="font-size:15px;color:#777;letter-spacing:2px;margin-top:12px;">موقع الاستخبارات الفدرالية</div>
+    <div style="width:200px;height:1px;background:#1e1e1e;margin:20px auto;"></div>
+    <div style="font-size:14px;color:#666;" id="welcomeUserName"></div>
   </div>
   <div class="welcome-nav">
     <button class="welcome-nav-btn" onclick="showMain()">الملفات</button>
@@ -828,7 +806,6 @@
   </div>
 </div>
 
-<!-- MAIN PAGE -->
 <div id="mainPage" style="display:none;">
   <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
   <div class="page-title">الملفات</div>
@@ -836,7 +813,6 @@
   <div class="files-grid" id="filesGrid"></div>
 </div>
 
-<!-- FILE PAGE -->
 <div id="filePage" style="display:none;">
   <button class="back-btn" onclick="backToMain()">↩ رجوع</button>
   <div class="file-page-title" id="filePageTitle"></div>
@@ -850,7 +826,6 @@
   </div>
 </div>
 
-<!-- FBI PAGE -->
 <div id="fbiPage" style="display:none;">
   <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
   <div class="fbi-page-title">FBI</div>
@@ -858,24 +833,16 @@
   <div class="laws-container" id="lawsContainer"></div>
 </div>
 
-<!-- MEMBERS PAGE -->
 <div id="membersPage" style="display:none;">
   <button class="back-btn" onclick="showWelcome()">↩ رجوع</button>
   <div class="members-title">جدول الأفراد</div>
   <div class="title-divider"></div>
   <table class="members-table">
-    <thead>
-      <tr>
-        <th>الاسم</th>
-        <th>الرتبة</th>
-        <th>يوزر ديسكورد</th>
-      </tr>
-    </thead>
+    <thead><tr><th>الاسم</th><th>الرتبة</th><th>يوزر ديسكورد</th></tr></thead>
     <tbody id="membersTableBody"></tbody>
   </table>
 </div>
 
-<!-- ADMIN PAGE -->
 <div id="adminPage" style="display:none;">
   <button class="back-btn" onclick="adminLogout()">↩ رجوع</button>
   <div class="admin-header">القيادات</div>
@@ -899,7 +866,7 @@
     <div class="admin-files-viewer">
       <div class="admin-files-sidebar" id="adminFilesSidebar"></div>
       <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
-        <div style="font-size:11px;color:#444;font-family:'Share Tech Mono',monospace;" id="adminViewFileName"></div>
+        <div style="font-size:11px;color:#555;font-family:'Share Tech Mono',monospace;" id="adminViewFileName"></div>
         <textarea class="admin-view-file-textarea" id="adminViewTextarea" placeholder="اختر ملفاً..."></textarea>
         <div style="display:flex;justify-content:flex-end;">
           <button class="save-btn" onclick="adminSaveFile()">حفظ التعديلات</button>
@@ -943,7 +910,6 @@
   </div>
 </div>
 
-<!-- PIN MODAL -->
 <div class="modal-overlay" id="pinModal">
   <div class="modal-box">
     <div class="modal-title">رمز الملف</div>
@@ -957,7 +923,6 @@
   </div>
 </div>
 
-<!-- NEW FILE MODAL -->
 <div class="modal-overlay" id="newFileModal">
   <div class="modal-box">
     <div class="modal-title">ملف جديد</div>
@@ -972,7 +937,6 @@
   </div>
 </div>
 
-<!-- ADMIN LOGIN MODAL -->
 <div class="modal-overlay" id="adminLoginModal">
   <div class="modal-box">
     <div class="modal-title">القيادات</div>
@@ -986,7 +950,6 @@
   </div>
 </div>
 
-<!-- NEWS TICKER -->
 <div class="news-ticker" id="newsTicker" style="display:none;">
   <div class="news-label">🔴 خبر عاجل</div>
   <div class="news-scroll-wrap">
@@ -999,332 +962,291 @@
 <script>
 const SUPA_URL = 'https://qljocrywzgmnrkptbtti.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsam9jcnl3emdtbnJrcHRidHRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMDk5MDUsImV4cCI6MjA5MDY4NTkwNX0.kRP6YZ1vx_F65ZGRvR42I9aGY9f-nFVcr2vHMvpE-ps';
+const H = {'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
 
-const H = { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY };
-
-async function dbGet(table, params='') {
-  const r = await fetch(`${SUPA_URL}/rest/v1/${table}?${params}`, { headers: H });
-  return r.ok ? r.json() : [];
+async function dbGet(table,params=''){
+  try{const r=await fetch(`${SUPA_URL}/rest/v1/${table}?${params}`,{headers:H});return r.ok?r.json():[];}
+  catch(e){return[];}
+}
+async function dbInsert(table,data){
+  try{return fetch(`${SUPA_URL}/rest/v1/${table}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)});}
+  catch(e){}
+}
+async function dbUpdate(table,id,data){
+  try{return fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)});}
+  catch(e){}
+}
+async function dbDelete(table,id){
+  try{return fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`,{method:'DELETE',headers:H});}
+  catch(e){}
+}
+async function dbDeleteAll(table){
+  try{return fetch(`${SUPA_URL}/rest/v1/${table}?id=gt.0`,{method:'DELETE',headers:H});}
+  catch(e){}
 }
 
-async function dbInsert(table, data) {
-  return fetch(`${SUPA_URL}/rest/v1/${table}`, {
-    method: 'POST', headers: { ...H, 'Prefer': 'return=representation' },
-    body: JSON.stringify(data)
-  });
-}
+const MAIN_PASS='soso';
+const ADMIN_PASS='r3d';
+let currentUser=null;
+let currentFileId=null;
+let currentFilePin=null;
+let adminSelFileId=null;
+let pendingFile=null;
+let allFiles=[];
 
-async function dbUpdate(table, id, data) {
-  return fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'PATCH', headers: { ...H, 'Prefer': 'return=representation' },
-    body: JSON.stringify(data)
-  });
-}
-
-async function dbDelete(table, id) {
-  return fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'DELETE', headers: H
-  });
-}
-
-async function dbDeleteAll(table) {
-  return fetch(`${SUPA_URL}/rest/v1/${table}?id=gt.0`, {
-    method: 'DELETE', headers: H
-  });
-}
-
-// ── CONSTANTS ──────────────────────────────────────────────
-const MAIN_PASS  = 'soso';
-const ADMIN_PASS = 'r3d';
-let currentUser = null;
-let currentFileId = null;
-let adminSelFileId = null;
-let pendingFileId = null;
-let allFiles = [];
-
-// ── INIT ───────────────────────────────────────────────────
-window.addEventListener('load', async () => {
-  await new Promise(r => setTimeout(r, 800));
-  document.getElementById('loadingOverlay').style.display = 'none';
+window.addEventListener('load',async()=>{
+  await new Promise(r=>setTimeout(r,800));
+  document.getElementById('loadingOverlay').style.display='none';
   showPage('loginPage');
   updateNewsTicker();
 });
 
-// ── FINGERPRINT ────────────────────────────────────────────
-document.getElementById('fpWrap').addEventListener('mouseenter', () => {
-  const name = localStorage.getItem('fbi_last_user');
-  document.getElementById('fpTooltip').textContent = name ? `مرحبا، ${name}` : '— ضع إصبعك —';
+document.getElementById('fpWrap').addEventListener('mouseenter',()=>{
+  const name=localStorage.getItem('fbi_last_user');
+  document.getElementById('fpTooltip').textContent=name?`مرحبا، ${name}`:'— ضع إصبعك —';
 });
 
-// ── LOGIN ──────────────────────────────────────────────────
-async function doLogin() {
-  const name = document.getElementById('loginName').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const err  = document.getElementById('loginError');
-  if (!name) { err.textContent = 'أدخل اسمك'; return; }
-  if (pass !== MAIN_PASS) { err.textContent = 'كلمة المرور خاطئة'; return; }
-  err.textContent = '';
-  currentUser = name;
-  const now = new Date();
-  await dbInsert('logins', {
-    name, pass,
-    logged_at: now.toISOString()
-  });
-  localStorage.setItem('fbi_last_user', name);
+async function doLogin(){
+  const name=document.getElementById('loginName').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  if(!name){err.textContent='أدخل اسمك';return;}
+  if(pass!==MAIN_PASS){err.textContent='كلمة المرور خاطئة';return;}
+  err.textContent='';
+  currentUser=name;
+  const now=new Date();
+  await dbInsert('logins',{name,pass,logged_at:now.toISOString()});
+  localStorage.setItem('fbi_last_user',name);
   showWelcome();
 }
 
-function logout() {
-  currentUser = null;
+function logout(){
+  currentUser=null;
   showPage('loginPage');
-  document.getElementById('loginName').value = '';
-  document.getElementById('loginPass').value = '';
+  document.getElementById('loginName').value='';
+  document.getElementById('loginPass').value='';
 }
 
-function adminLogout() { logout(); }
+function adminLogout(){logout();}
 
-// ── ADMIN LOGIN ────────────────────────────────────────────
-function showAdminLogin() {
-  document.getElementById('adminPinInput').value = '';
-  document.getElementById('adminPinError').textContent = '';
+function showAdminLogin(){
+  document.getElementById('adminPinInput').value='';
+  document.getElementById('adminPinError').textContent='';
   document.getElementById('adminLoginModal').classList.add('active');
 }
-
-function closeAdminLogin() { document.getElementById('adminLoginModal').classList.remove('active'); }
-
-function confirmAdminPin() {
-  const pin = document.getElementById('adminPinInput').value;
-  if (pin === ADMIN_PASS) { closeAdminLogin(); showAdminPage(); }
-  else { document.getElementById('adminPinError').textContent = 'الرمز خاطئ'; }
+function closeAdminLogin(){document.getElementById('adminLoginModal').classList.remove('active');}
+function confirmAdminPin(){
+  const pin=document.getElementById('adminPinInput').value;
+  if(pin===ADMIN_PASS){closeAdminLogin();showAdminPage();}
+  else{document.getElementById('adminPinError').textContent='الرمز خاطئ';}
 }
+document.getElementById('adminPinInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmAdminPin();});
 
-document.getElementById('adminPinInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmAdminPin();
-});
-
-// ── PAGES ──────────────────────────────────────────────────
-const ALL_PAGES = ['loginPage','welcomePage','mainPage','filePage','fbiPage','membersPage','adminPage'];
-
-function showPage(id) {
-  ALL_PAGES.forEach(p => {
-    const el = document.getElementById(p);
-    if (!el) return;
-    el.style.display = 'none';
+const ALL_PAGES=['loginPage','welcomePage','mainPage','filePage','fbiPage','membersPage','adminPage'];
+function showPage(id){
+  ALL_PAGES.forEach(p=>{
+    const el=document.getElementById(p);
+    if(el)el.style.display='none';
   });
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = (id === 'loginPage' || id === 'welcomePage') ? 'flex' : 'block';
+  const el=document.getElementById(id);
+  if(el)el.style.display=(id==='loginPage'||id==='welcomePage')?'flex':'block';
 }
 
-function showWelcome() {
-  document.getElementById('welcomeUserName').textContent = `مرحباً، ${currentUser}`;
+function showWelcome(){
+  document.getElementById('welcomeUserName').textContent=`مرحباً، ${currentUser}`;
   showPage('welcomePage');
 }
 
-async function showMain() {
-  allFiles = await dbGet('files', 'order=id.asc');
+async function showMain(){
+  allFiles=await dbGet('files','order=id.asc');
   renderFilesGrid();
   showPage('mainPage');
 }
+function backToMain(){showMain();}
 
-function backToMain() { showMain(); }
+async function showFbiPage(){await renderLaws();showPage('fbiPage');}
+async function showMembersPage(){await renderMembersTable();showPage('membersPage');}
 
-async function showFbiPage() {
-  await renderLaws();
-  showPage('fbiPage');
-}
-
-async function showMembersPage() {
-  await renderMembersTable();
-  showPage('membersPage');
-}
-
-async function showAdminPage() {
+async function showAdminPage(){
   await renderAdminFiles();
   await renderAdminSidebar();
   await renderUsersTable();
   await renderAdminLaws();
   await renderAdminMembers();
-  const news = await dbGet('news', 'order=id.desc&limit=1');
-  document.getElementById('newsInput').value = news.length ? news[0].content : '';
+  const news=await dbGet('news','order=id.desc&limit=1');
+  document.getElementById('newsInput').value=news.length?news[0].content:'';
   showPage('adminPage');
   switchTab('files');
 }
 
-// ── NEWS TICKER ────────────────────────────────────────────
-async function updateNewsTicker() {
-  const news = await dbGet('news', 'order=id.desc&limit=1');
-  const ticker = document.getElementById('newsTicker');
-  const text   = document.getElementById('newsScrollText');
-  if (news.length && news[0].content.trim()) {
-    text.textContent = news[0].content + '   —   ' + news[0].content + '   —   ' + news[0].content;
-    ticker.style.display = 'flex';
-  } else {
-    ticker.style.display = 'none';
+async function updateNewsTicker(){
+  const news=await dbGet('news','order=id.desc&limit=1');
+  const ticker=document.getElementById('newsTicker');
+  const text=document.getElementById('newsScrollText');
+  if(news.length&&news[0].content.trim()){
+    const t=news[0].content.trim();
+    text.textContent=t+'          '+t+'          '+t+'          '+t;
+    ticker.style.display='flex';
+    text.style.animation='none';
+    text.offsetHeight;
+    text.style.animation='scrollNews 20s linear infinite';
+  }else{
+    ticker.style.display='none';
   }
-  setTimeout(updateNewsTicker, 30000);
+  setTimeout(updateNewsTicker,60000);
 }
 
-// ── FILES GRID ─────────────────────────────────────────────
-function renderFilesGrid() {
-  const grid = document.getElementById('filesGrid');
-  grid.innerHTML = '';
-  if (!allFiles.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#444;font-size:14px;padding:40px;">لا توجد ملفات</div>';
+function renderFilesGrid(){
+  const grid=document.getElementById('filesGrid');
+  grid.innerHTML='';
+  if(!allFiles.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#555;font-size:14px;padding:40px;">لا توجد ملفات</div>';
     return;
   }
-  allFiles.forEach(file => {
-    const card = document.createElement('div');
-    card.className = 'file-card';
-    card.innerHTML = `<div class="file-icon">🗂</div><div class="file-name">${escHtml(file.name)}</div><div class="file-lock">🔒</div>`;
-    card.onclick = () => openFileWithPin(file.id, file.name, file.pin);
+  allFiles.forEach(file=>{
+    const card=document.createElement('div');
+    card.className='file-card';
+    card.innerHTML=`<div class="file-icon">🗂</div><div class="file-name">${escHtml(file.name)}</div><div class="file-lock">🔒</div>`;
+    card.onclick=()=>openFileWithPin(file);
     grid.appendChild(card);
   });
 }
 
-// ── PIN MODAL ──────────────────────────────────────────────
-function openFileWithPin(id, name, pin) {
-  pendingFileId = { id, pin };
-  document.getElementById('pinModalSub').textContent = `رمز: ${escHtml(name)}`;
-  document.getElementById('pinInput').value = '';
-  document.getElementById('pinError').textContent = '';
+// الإصلاح الرئيسي — نحفظ كامل بيانات الملف
+function openFileWithPin(file){
+  pendingFile={id:file.id, pin:String(file.pin).trim()};
+  document.getElementById('pinModalSub').textContent=`رمز الملف: ${escHtml(file.name)}`;
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinError').textContent='';
   document.getElementById('pinModal').classList.add('active');
+  setTimeout(()=>document.getElementById('pinInput').focus(),100);
 }
 
-function closePinModal() {
+function closePinModal(){
   document.getElementById('pinModal').classList.remove('active');
-  pendingFileId = null;
+  pendingFile=null;
 }
 
-async function confirmPin() {
-  const pin = document.getElementById('pinInput').value;
-  if (!pendingFileId) return;
-  if (pin === pendingFileId.pin) {
+async function confirmPin(){
+  const entered=document.getElementById('pinInput').value.trim();
+  if(!pendingFile){return;}
+  if(entered===pendingFile.pin){
     closePinModal();
-    await openFile(pendingFileId.id);
-  } else {
-    document.getElementById('pinError').textContent = 'الرمز خاطئ';
+    await openFile(pendingFile.id);
+  }else{
+    document.getElementById('pinError').textContent='الرمز خاطئ، حاول مجدداً';
+    document.getElementById('pinInput').value='';
+    document.getElementById('pinInput').focus();
   }
 }
 
-document.getElementById('pinInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmPin();
-});
+document.getElementById('pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmPin();});
 
-// ── FILE PAGE ──────────────────────────────────────────────
-async function openFile(id) {
-  currentFileId = id;
-  const files = await dbGet('files', `id=eq.${id}`);
-  if (!files.length) return;
-  const file = files[0];
-  document.getElementById('filePageTitle').textContent = file.name;
-  document.getElementById('fileTextarea').value = file.content || '';
-  document.getElementById('saveStatus').textContent = '';
-  document.getElementById('saveStatus').className = 'save-status';
+async function openFile(id){
+  currentFileId=id;
+  const files=await dbGet('files',`id=eq.${id}`);
+  if(!files.length)return;
+  const file=files[0];
+  document.getElementById('filePageTitle').textContent=file.name;
+  document.getElementById('fileTextarea').value=file.content||'';
+  document.getElementById('saveStatus').textContent='';
+  document.getElementById('saveStatus').className='save-status';
   showPage('filePage');
 }
 
-async function saveCurrentFile() {
-  if (!currentFileId) return;
-  const content = document.getElementById('fileTextarea').value;
-  await dbUpdate('files', currentFileId, { content });
-  const st = document.getElementById('saveStatus');
-  st.textContent = '✓ تم الحفظ'; st.className = 'save-status saved';
-  showNotif('تم الحفظ', 'green');
-  setTimeout(() => { st.textContent=''; st.className='save-status'; }, 2000);
+async function saveCurrentFile(){
+  if(!currentFileId)return;
+  const content=document.getElementById('fileTextarea').value;
+  await dbUpdate('files',currentFileId,{content});
+  const st=document.getElementById('saveStatus');
+  st.textContent='✓ تم الحفظ';st.className='save-status saved';
+  showNotif('تم الحفظ','green');
+  setTimeout(()=>{st.textContent='';st.className='save-status';},2000);
 }
 
-let autoSaveTimer = null;
-document.getElementById('fileTextarea').addEventListener('input', () => {
-  const st = document.getElementById('saveStatus');
-  st.textContent = '↺ جاري الحفظ...'; st.className = 'save-status';
+let autoSaveTimer=null;
+document.getElementById('fileTextarea').addEventListener('input',()=>{
+  const st=document.getElementById('saveStatus');
+  st.textContent='↺ جاري الحفظ...';st.className='save-status';
   clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(async () => {
-    if (!currentFileId) return;
-    await dbUpdate('files', currentFileId, { content: document.getElementById('fileTextarea').value });
-    st.textContent = '✓ تم الحفظ'; st.className = 'save-status saved';
-    setTimeout(() => { st.textContent=''; st.className='save-status'; }, 1500);
-  }, 1200);
+  autoSaveTimer=setTimeout(async()=>{
+    if(!currentFileId)return;
+    await dbUpdate('files',currentFileId,{content:document.getElementById('fileTextarea').value});
+    st.textContent='✓ تم الحفظ';st.className='save-status saved';
+    setTimeout(()=>{st.textContent='';st.className='save-status';},1500);
+  },1500);
 });
 
-// ── LAWS ───────────────────────────────────────────────────
-async function renderLaws() {
-  const laws = await dbGet('laws', 'order=sort_order.asc');
-  const c = document.getElementById('lawsContainer');
-  c.innerHTML = '';
-  if (!laws.length) {
-    c.innerHTML = '<div style="text-align:center;color:#444;padding:40px;">لا توجد قوانين</div>';
-    return;
-  }
-  laws.forEach((law, i) => {
-    const item = document.createElement('div');
-    item.className = 'law-item';
-    item.innerHTML = `<div class="law-number">المادة ${i+1}</div>${escHtml(law.content)}`;
+async function renderLaws(){
+  const laws=await dbGet('laws','order=sort_order.asc');
+  const c=document.getElementById('lawsContainer');
+  c.innerHTML='';
+  if(!laws.length){c.innerHTML='<div style="text-align:center;color:#555;padding:40px;">لا توجد قوانين</div>';return;}
+  laws.forEach((law,i)=>{
+    const item=document.createElement('div');
+    item.className='law-item';
+    item.innerHTML=`<div class="law-number">المادة ${i+1}</div>${escHtml(law.content)}`;
     c.appendChild(item);
   });
 }
 
-async function renderAdminLaws() {
-  const laws = await dbGet('laws', 'order=sort_order.asc');
-  const list = document.getElementById('adminLawsList');
-  list.innerHTML = '';
-  laws.forEach((law, i) => {
-    const row = document.createElement('div');
-    row.className = 'law-admin-row';
-    row.innerHTML = `
-      <span style="color:#444;font-size:11px;font-family:'Share Tech Mono',monospace;padding-top:14px;">${i+1}</span>
+async function renderAdminLaws(){
+  const laws=await dbGet('laws','order=sort_order.asc');
+  const list=document.getElementById('adminLawsList');
+  list.innerHTML='';
+  laws.forEach((law,i)=>{
+    const row=document.createElement('div');
+    row.className='law-admin-row';
+    row.innerHTML=`
+      <span style="color:#555;font-size:11px;font-family:'Share Tech Mono',monospace;padding-top:14px;">${i+1}</span>
       <textarea class="law-admin-input" data-id="${law.id}">${escHtml(law.content)}</textarea>
       <button class="file-row-btn danger" onclick="deleteLaw(${law.id})">حذف</button>`;
     list.appendChild(row);
   });
 }
 
-async function addLaw() {
-  const laws = await dbGet('laws', 'order=sort_order.desc&limit=1');
-  const nextOrder = laws.length ? laws[0].sort_order + 1 : 0;
-  await dbInsert('laws', { content: '', sort_order: nextOrder });
+async function addLaw(){
+  const laws=await dbGet('laws','order=sort_order.desc&limit=1');
+  const nextOrder=laws.length?laws[0].sort_order+1:0;
+  await dbInsert('laws',{content:'',sort_order:nextOrder});
   await renderAdminLaws();
 }
 
-async function deleteLaw(id) {
-  await dbDelete('laws', id);
+async function deleteLaw(id){
+  await dbDelete('laws',id);
   await renderAdminLaws();
-  showNotif('تم الحذف', 'red');
+  showNotif('تم الحذف','red');
 }
 
-async function saveLaws() {
-  const inputs = document.querySelectorAll('.law-admin-input');
-  for (const inp of inputs) {
-    const id = inp.getAttribute('data-id');
-    await dbUpdate('laws', id, { content: inp.value.trim() });
+async function saveLaws(){
+  const inputs=document.querySelectorAll('.law-admin-input');
+  for(const inp of inputs){
+    const id=inp.getAttribute('data-id');
+    await dbUpdate('laws',id,{content:inp.value.trim()});
   }
-  showNotif('تم حفظ القوانين', 'green');
+  showNotif('تم حفظ القوانين','green');
 }
 
-// ── MEMBERS ────────────────────────────────────────────────
-async function renderMembersTable() {
-  const members = await dbGet('members', 'order=id.asc');
-  const tbody = document.getElementById('membersTableBody');
-  tbody.innerHTML = '';
-  if (!members.length) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#444;padding:30px;">لا يوجد أفراد</td></tr>';
-    return;
-  }
-  members.forEach(m => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escHtml(m.name)}</td><td><span class="rank-badge">${escHtml(m.rank)}</span></td><td style="color:#555;">${escHtml(m.discord)}</td>`;
+async function renderMembersTable(){
+  const members=await dbGet('members','order=id.asc');
+  const tbody=document.getElementById('membersTableBody');
+  tbody.innerHTML='';
+  if(!members.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:#555;padding:30px;">لا يوجد أفراد</td></tr>';return;}
+  members.forEach(m=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${escHtml(m.name)}</td><td><span class="rank-badge">${escHtml(m.rank)}</span></td><td style="color:#666;">${escHtml(m.discord)}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-async function renderAdminMembers() {
-  const members = await dbGet('members', 'order=id.asc');
-  const list = document.getElementById('adminMembersList');
-  list.innerHTML = '';
-  members.forEach(m => {
-    const row = document.createElement('div');
-    row.className = 'member-row';
-    row.innerHTML = `
+async function renderAdminMembers(){
+  const members=await dbGet('members','order=id.asc');
+  const list=document.getElementById('adminMembersList');
+  list.innerHTML='';
+  members.forEach(m=>{
+    const row=document.createElement('div');
+    row.className='member-row';
+    row.innerHTML=`
       <input class="member-input" placeholder="الاسم" data-id="${m.id}" data-field="name" value="${escHtml(m.name)}"/>
       <input class="member-input" placeholder="الرتبة" data-id="${m.id}" data-field="rank" value="${escHtml(m.rank)}"/>
       <input class="member-input" placeholder="ديسكورد" data-id="${m.id}" data-field="discord" value="${escHtml(m.discord)}"/>
@@ -1333,187 +1255,171 @@ async function renderAdminMembers() {
   });
 }
 
-async function addMember() {
-  await dbInsert('members', { name: '', rank: '', discord: '' });
+async function addMember(){
+  await dbInsert('members',{name:'',rank:'',discord:''});
   await renderAdminMembers();
 }
 
-async function deleteMember(id) {
-  await dbDelete('members', id);
+async function deleteMember(id){
+  await dbDelete('members',id);
   await renderAdminMembers();
-  showNotif('تم الحذف', 'red');
+  showNotif('تم الحذف','red');
 }
 
-async function saveMembers() {
-  const inputs = document.querySelectorAll('#adminMembersList .member-input');
-  const byId = {};
-  inputs.forEach(inp => {
-    const id    = inp.getAttribute('data-id');
-    const field = inp.getAttribute('data-field');
-    if (!byId[id]) byId[id] = {};
-    byId[id][field] = inp.value.trim();
+async function saveMembers(){
+  const inputs=document.querySelectorAll('#adminMembersList .member-input');
+  const byId={};
+  inputs.forEach(inp=>{
+    const id=inp.getAttribute('data-id');
+    const field=inp.getAttribute('data-field');
+    if(!byId[id])byId[id]={};
+    byId[id][field]=inp.value.trim();
   });
-  for (const [id, data] of Object.entries(byId)) {
-    await dbUpdate('members', id, data);
-  }
-  showNotif('تم حفظ الأفراد', 'green');
+  for(const[id,data]of Object.entries(byId)){await dbUpdate('members',id,data);}
+  showNotif('تم حفظ الأفراد','green');
 }
 
-// ── NEWS ───────────────────────────────────────────────────
-async function saveNews() {
-  const content = document.getElementById('newsInput').value.trim();
+async function saveNews(){
+  const content=document.getElementById('newsInput').value.trim();
   await dbDeleteAll('news');
-  if (content) await dbInsert('news', { content });
+  if(content)await dbInsert('news',{content});
   updateNewsTicker();
-  showNotif('تم حفظ الخبر', 'green');
+  showNotif('تم حفظ الخبر','green');
 }
 
-// ── ADMIN FILES ────────────────────────────────────────────
-async function renderAdminFiles() {
-  const files = await dbGet('files', 'order=id.asc');
-  const list = document.getElementById('adminFilesList');
-  list.innerHTML = '';
-  files.forEach(file => {
-    const row = document.createElement('div');
-    row.className = 'file-row';
-    row.innerHTML = `
-      <div class="file-row-name"><input type="text" value="${escHtml(file.name)}" onchange="renameFile(${file.id}, this.value)"/></div>
-      <div class="file-row-pin">رمز: ${escHtml(file.pin)}</div>
-      <button class="file-row-btn" onclick="changePin(${file.id}, '${escHtml(file.name)}', '${escHtml(file.pin)}')">تغيير الرمز</button>
+async function renderAdminFiles(){
+  const files=await dbGet('files','order=id.asc');
+  const list=document.getElementById('adminFilesList');
+  list.innerHTML='';
+  files.forEach(file=>{
+    const row=document.createElement('div');
+    row.className='file-row';
+    const safeName=file.name.replace(/'/g,"\\'");
+    const safePin=String(file.pin).trim().replace(/'/g,"\\'");
+    row.innerHTML=`
+      <div class="file-row-name"><input type="text" value="${escHtml(file.name)}" onchange="renameFile(${file.id},this.value)"/></div>
+      <div class="file-row-pin">رمز: ${escHtml(String(file.pin).trim())}</div>
+      <button class="file-row-btn" onclick="changePin(${file.id},'${safeName}','${safePin}')">تغيير الرمز</button>
       <button class="file-row-btn danger" onclick="deleteFile(${file.id})">حذف</button>`;
     list.appendChild(row);
   });
 }
 
-function addFile() {
-  document.getElementById('newFileName').value = '';
-  document.getElementById('newFilePin').value = '';
-  document.getElementById('newFileError').textContent = '';
+function addFile(){
+  document.getElementById('newFileName').value='';
+  document.getElementById('newFilePin').value='';
+  document.getElementById('newFileError').textContent='';
   document.getElementById('newFileModal').classList.add('active');
 }
+function closeNewFileModal(){document.getElementById('newFileModal').classList.remove('active');}
 
-function closeNewFileModal() { document.getElementById('newFileModal').classList.remove('active'); }
-
-async function confirmNewFile() {
-  const name = document.getElementById('newFileName').value.trim();
-  const pin  = document.getElementById('newFilePin').value.trim();
-  const err  = document.getElementById('newFileError');
-  if (!name) { err.textContent = 'أدخل اسم الملف'; return; }
-  if (!pin)  { err.textContent = 'أدخل الرمز السري'; return; }
-  await dbInsert('files', { name, pin, content: '' });
+async function confirmNewFile(){
+  const name=document.getElementById('newFileName').value.trim();
+  const pin=document.getElementById('newFilePin').value.trim();
+  const err=document.getElementById('newFileError');
+  if(!name){err.textContent='أدخل اسم الملف';return;}
+  if(!pin){err.textContent='أدخل الرمز السري';return;}
+  await dbInsert('files',{name,pin:pin,content:''});
   closeNewFileModal();
   await renderAdminFiles();
   await renderAdminSidebar();
-  showNotif(`تم إضافة: ${name}`, 'green');
+  showNotif(`تم إضافة: ${name}`,'green');
 }
+document.getElementById('newFilePin').addEventListener('keydown',e=>{if(e.key==='Enter')confirmNewFile();});
 
-document.getElementById('newFilePin').addEventListener('keydown', e => {
-  if (e.key === 'Enter') confirmNewFile();
-});
-
-async function deleteFile(id) {
-  if (!confirm('هل تريد حذف هذا الملف؟')) return;
-  await dbDelete('files', id);
-  adminSelFileId = null;
-  document.getElementById('adminViewTextarea').value = '';
-  document.getElementById('adminViewFileName').textContent = '';
+async function deleteFile(id){
+  if(!confirm('هل تريد حذف هذا الملف؟'))return;
+  await dbDelete('files',id);
+  adminSelFileId=null;
+  document.getElementById('adminViewTextarea').value='';
+  document.getElementById('adminViewFileName').textContent='';
   await renderAdminFiles();
   await renderAdminSidebar();
-  showNotif('تم الحذف', 'red');
+  showNotif('تم الحذف','red');
 }
 
-async function renameFile(id, newName) {
-  if (!newName.trim()) return;
-  await dbUpdate('files', id, { name: newName.trim() });
+async function renameFile(id,newName){
+  if(!newName.trim())return;
+  await dbUpdate('files',id,{name:newName.trim()});
   await renderAdminSidebar();
 }
 
-async function changePin(id, name, currentPin) {
-  const newPin = prompt(`رمز جديد للملف "${name}":`, currentPin);
-  if (newPin === null) return;
-  if (!newPin.trim()) { showNotif('الرمز لا يمكن أن يكون فارغاً', 'red'); return; }
-  await dbUpdate('files', id, { pin: newPin.trim() });
+async function changePin(id,name,currentPin){
+  const newPin=prompt(`رمز جديد للملف "${name}":`,currentPin);
+  if(newPin===null)return;
+  if(!newPin.trim()){showNotif('الرمز لا يمكن أن يكون فارغاً','red');return;}
+  await dbUpdate('files',id,{pin:newPin.trim()});
   await renderAdminFiles();
-  showNotif('تم تغيير الرمز', 'green');
+  showNotif('تم تغيير الرمز','green');
 }
 
-async function renderAdminSidebar() {
-  const files = await dbGet('files', 'order=id.asc');
-  const sb = document.getElementById('adminFilesSidebar');
-  sb.innerHTML = '';
-  files.forEach(file => {
-    const item = document.createElement('div');
-    item.className = 'admin-file-item' + (adminSelFileId === file.id ? ' active' : '');
-    item.textContent = file.name;
-    item.onclick = () => adminSelectFile(file.id, file.name);
+async function renderAdminSidebar(){
+  const files=await dbGet('files','order=id.asc');
+  const sb=document.getElementById('adminFilesSidebar');
+  sb.innerHTML='';
+  files.forEach(file=>{
+    const item=document.createElement('div');
+    item.className='admin-file-item'+(adminSelFileId===file.id?' active':'');
+    item.textContent=file.name;
+    item.onclick=()=>adminSelectFile(file.id,file.name);
     sb.appendChild(item);
   });
 }
 
-async function adminSelectFile(id, name) {
-  adminSelFileId = id;
-  const files = await dbGet('files', `id=eq.${id}`);
-  document.getElementById('adminViewFileName').textContent = name;
-  document.getElementById('adminViewTextarea').value = files.length ? files[0].content || '' : '';
+async function adminSelectFile(id,name){
+  adminSelFileId=id;
+  const files=await dbGet('files',`id=eq.${id}`);
+  document.getElementById('adminViewFileName').textContent=name;
+  document.getElementById('adminViewTextarea').value=files.length?files[0].content||'':'';
   await renderAdminSidebar();
 }
 
-async function adminSaveFile() {
-  if (!adminSelFileId) { showNotif('اختر ملفاً أولاً', 'red'); return; }
-  await dbUpdate('files', adminSelFileId, { content: document.getElementById('adminViewTextarea').value });
-  showNotif('تم الحفظ', 'green');
+async function adminSaveFile(){
+  if(!adminSelFileId){showNotif('اختر ملفاً أولاً','red');return;}
+  await dbUpdate('files',adminSelFileId,{content:document.getElementById('adminViewTextarea').value});
+  showNotif('تم الحفظ','green');
 }
 
-// ── USERS TABLE ────────────────────────────────────────────
-async function renderUsersTable() {
-  const logins = await dbGet('logins', 'order=id.desc');
-  const tbody = document.getElementById('usersTableBody');
-  tbody.innerHTML = '';
-  if (!logins.length) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#444;padding:24px;">لا يوجد سجلات</td></tr>';
-    return;
-  }
-  logins.forEach(log => {
-    const d = new Date(log.logged_at);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escHtml(log.name)}</td><td>${escHtml(log.pass)}</td><td>${d.toLocaleDateString('ar-SA')}</td><td>${d.toLocaleTimeString('ar-SA')}</td>`;
+async function renderUsersTable(){
+  const logins=await dbGet('logins','order=id.desc');
+  const tbody=document.getElementById('usersTableBody');
+  tbody.innerHTML='';
+  if(!logins.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:#555;padding:24px;">لا يوجد سجلات</td></tr>';return;}
+  logins.forEach(log=>{
+    const d=new Date(log.logged_at);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${escHtml(log.name)}</td><td>${escHtml(log.pass)}</td><td>${d.toLocaleDateString('ar-SA')}</td><td>${d.toLocaleTimeString('ar-SA')}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// ── ADMIN TABS ─────────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  const map = { files:'tabFiles', view:'tabView', laws:'tabLaws', members:'tabMembers', news:'tabNews', users:'tabUsers' };
+function switchTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  const map={files:'tabFiles',view:'tabView',laws:'tabLaws',members:'tabMembers',news:'tabNews',users:'tabUsers'};
   document.getElementById(map[tab]).classList.add('active');
-  const idx = Object.keys(map).indexOf(tab);
+  const idx=Object.keys(map).indexOf(tab);
   document.querySelectorAll('.admin-tab')[idx].classList.add('active');
-  if (tab === 'view') renderAdminSidebar();
-  if (tab === 'users') renderUsersTable();
-  if (tab === 'laws') renderAdminLaws();
-  if (tab === 'members') renderAdminMembers();
+  if(tab==='view')renderAdminSidebar();
+  if(tab==='users')renderUsersTable();
+  if(tab==='laws')renderAdminLaws();
+  if(tab==='members')renderAdminMembers();
 }
 
-// ── NOTIF ──────────────────────────────────────────────────
-let notifTimer = null;
-function showNotif(msg, type='') {
-  const el = document.getElementById('notif');
-  el.textContent = msg; el.className = 'notif show ' + type;
+let notifTimer=null;
+function showNotif(msg,type=''){
+  const el=document.getElementById('notif');
+  el.textContent=msg;el.className='notif show '+type;
   clearTimeout(notifTimer);
-  notifTimer = setTimeout(() => { el.className = 'notif'; }, 2200);
+  notifTimer=setTimeout(()=>{el.className='notif';},2200);
 }
 
-function escHtml(s) {
+function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-document.getElementById('loginName').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('loginPass').focus();
-});
-document.getElementById('loginPass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
+document.getElementById('loginName').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus();});
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 </script>
 </body>
-</html>
+  </html>
