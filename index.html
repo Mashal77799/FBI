@@ -213,4 +213,478 @@
 </div>
 <div class="notif" id="notif"></div>
 </body>
+  <script>
+const SUPA_URL='https://qljocrywzgmnrkptbtti.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsam9jcnl3emdtbnJrcHRidHRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMDk5MDUsImV4cCI6MjA5MDY4NTkwNX0.kRP6YZ1vx_F65ZGRvR42I9aGY9f-nFVcr2vHMvpE-ps';
+const H={'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
+async function dbGet(t,p=''){try{const r=await fetch(`${SUPA_URL}/rest/v1/${t}?${p}`,{headers:H});return r.ok?r.json():[];}catch(e){return[];}}
+async function dbInsert(t,d){try{return await fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(d)});}catch(e){}}
+async function dbUpdate(t,id,d){try{return await fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(d)});}catch(e){}}
+async function dbDelete(t,id){try{return await fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});}catch(e){}}
+async function dbDeleteAll(t){try{return await fetch(`${SUPA_URL}/rest/v1/${t}?id=gt.0`,{method:'DELETE',headers:H});}catch(e){}}
+function escHtml(t){const e=document.createElement('div');e.textContent=t;return e.innerHTML;}
+function showNotif(t,e=''){const o=document.getElementById('notif');o.textContent=t;o.className='notif show '+e;clearTimeout(notifTimer);notifTimer=setTimeout(()=>{o.classList.remove('show');},3000);}
+const MAIN_PASS='FBI1234';
+const ADMIN_PASS='AASS';
+let currentUser=null;
+let currentFileId=null;
+let currentFileType=null;
+let adminSelFileId=null;
+let pendingFile=null;
+let allFiles=[];
+let notifTimer=null;
+window.addEventListener('load',async()=>{
+  setTimeout(()=>{
+    document.getElementById('splashPage').style.display='none';
+    showPage('loginPage');
+    updateNewsTicker();
+  },2000);
+});
+document.getElementById('fpWrap').addEventListener('mouseenter',()=>{
+  const lastUser=localStorage.getItem('fbi_last_user');
+  document.getElementById('fpTooltip').textContent=lastUser?`مرحباً ${lastUser}`:'— مسح البصمة —';
+});
+async function doLogin(){
+  const name=document.getElementById('loginName').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  if(!name){err.textContent='⚠️ يجب إدخال اسم المستخدم';return;}
+  if(!pass){err.textContent='⚠️ يجب إدخال كلمة المرور';return;}
+  if(pass!==MAIN_PASS){err.textContent='❌ كلمة المرور غير صحيحة';return;}
+  err.textContent='';
+  currentUser=name;
+  await dbInsert('logins',{name,pass,logged_at:new Date().toISOString()});
+  localStorage.setItem('fbi_last_user',name);
+  showWelcome();
+}
+function logout(){
+  currentUser=null;
+  showPage('loginPage');
+  document.getElementById('loginName').value='';
+  document.getElementById('loginPass').value='';
+}
+function adminLogout(){logout();}
+function showAdminLogin(){
+  document.getElementById('adminPinInput').value='';
+  document.getElementById('adminPinError').textContent='';
+  document.getElementById('adminLoginModal').classList.add('active');
+}
+function closeAdminLogin(){
+  document.getElementById('adminLoginModal').classList.remove('active');
+}
+function confirmAdminPin(){
+  const p=document.getElementById('adminPinInput').value;
+  if(p===ADMIN_PASS){
+    closeAdminLogin();
+    showAdminPage();
+  }else{
+    document.getElementById('adminPinError').textContent='❌ الرمز غير صحيح';
+  }
+}
+document.getElementById('adminPinInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmAdminPin();});
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+const ALL_PAGES=['loginPage','welcomePage','mainPage','filePage','fbiPage','membersPage','adminPage'];
+function showPage(id){
+  ALL_PAGES.forEach(p=>{
+    const el=document.getElementById(p);
+    if(el)el.style.display='none';
+  });
+  const el=document.getElementById(id);
+  if(el){
+    if(id==='welcomePage'){el.classList.add('active');}
+    el.style.display=(id==='loginPage'||id==='welcomePage')?'flex':'block';
+  }
+}
+function showWelcome(){
+  document.getElementById('welcomeUserName').textContent=`مرحباً، ${currentUser}`;
+  showPage('welcomePage');
+}
+async function showMain(){
+  allFiles=await dbGet('files','order=id.asc');
+  renderFilesGrid();
+  showPage('mainPage');
+}
+function backToMain(){showMain();}
+async function showFbiPage(){
+  await renderLaws();
+  showPage('fbiPage');
+}
+async function showMembersPage(){
+  await renderMembersTable();
+  showPage('membersPage');
+}
+async function showAdminPage(){
+  await renderUsersTable();
+  await renderAdminFiles();
+  await renderAdminSidebar();
+  await renderAdminLaws();
+  await renderAdminMembers();
+  const news=await dbGet('news','order=id.desc&limit=1');
+  document.getElementById('newsInput').value=news.length?news[0].content:'';
+  showPage('adminPage');
+  switchTab('logs');
+}
+async function updateNewsTicker(){
+  const news=await dbGet('news','order=id.desc&limit=1');
+  const ticker=document.getElementById('newsTicker');
+  const text=document.getElementById('newsScrollText');
+  if(news.length&&news[0].content.trim()){
+    const t=news[0].content.trim();
+    text.textContent=t+'     —     '+t+'     —     '+t+'     —     '+t+'     —     '+t;
+    ticker.style.display='flex';
+    text.style.animation='none';
+    text.offsetHeight;
+    text.style.animation='scrollNews 20s linear infinite';
+  }else{
+    ticker.style.display='none';
+  }
+  setTimeout(updateNewsTicker,60000);
+}
+function renderFilesGrid(){
+  const publicGrid=document.getElementById('publicFilesGrid');
+  const privateGrid=document.getElementById('privateFilesGrid');
+  publicGrid.innerHTML='';
+  privateGrid.innerHTML='';
+  if(!allFiles.length){
+    publicGrid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#555;font-size:13px;padding:30px;">لا توجد ملفات عامة</div>';
+    privateGrid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#555;font-size:13px;padding:30px;">لا توجد ملفات خاصة</div>';
+    return;
+  }
+  const publicFiles=allFiles.filter(f=>f.type==='public');
+  const privateFiles=allFiles.filter(f=>f.type==='private');
+  if(!publicFiles.length){
+    publicGrid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#555;font-size:13px;padding:30px;">لا توجد ملفات عامة</div>';
+  }else{
+    publicFiles.forEach(file=>{createFileCard(file,publicGrid);});
+  }
+  if(!privateFiles.length){
+    privateGrid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#555;font-size:13px;padding:30px;">لا توجد ملفات خاصة</div>';
+  }else{
+    privateFiles.forEach(file=>{createFileCard(file,privateGrid);});
+  }
+}
+function createFileCard(file,gridEl){
+  const card=document.createElement('div');
+  card.className='file-card';
+  const typeLabel=file.type==='public'?'🔓':'🔐';
+  card.innerHTML=`<div class="file-icon">📄</div><div class="file-name">${escHtml(file.name)}</div><div class="file-type">${typeLabel}</div>`;
+  card.onclick=()=>{
+    if(file.type==='public'){
+      openPublicFile(file);
+    }else{
+      openFileWithPin(file);
+    }
+  };
+  gridEl.appendChild(card);
+}
+async function openPublicFile(file){
+  currentFileId=file.id;
+  currentFileType='public';
+  const files=await dbGet('files',`id=eq.${file.id}`);
+  if(!files.length)return;
+  const f=files[0];
+  document.getElementById('filePageTitle').textContent=f.name+' (قراءة فقط)';
+  const container=document.getElementById('fileViewContainer');
+  container.innerHTML=`<div class="file-view-only">${escHtml(f.content||'')}</div><div class="file-actions"><span class="save-status" style="color:#666;">ملف عام - عرض فقط</span></div>`;
+  showPage('filePage');
+}
+function openFileWithPin(file){
+  pendingFile={id:file.id,pin:String(file.pin||'').trim(),name:file.name};
+  document.getElementById('pinModalSub').textContent=`رمز الملف: ${escHtml(file.name)}`;
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinError').textContent='';
+  document.getElementById('pinModal').classList.add('active');
+  setTimeout(()=>document.getElementById('pinInput').focus(),150);
+}
+function closePinModal(){
+  document.getElementById('pinModal').classList.remove('active');
+  pendingFile=null;
+}
+async function confirmPin(){
+  const entered=String(document.getElementById('pinInput').value||'').trim();
+  if(!pendingFile)return;
+  if(entered===pendingFile.pin){
+    closePinModal();
+    await openPrivateFile(pendingFile.id);
+  }else{
+    document.getElementById('pinError').textContent='❌ الرمز خاطئ، حاول مجدداً';
+    document.getElementById('pinInput').value='';
+    document.getElementById('pinInput').focus();
+  }
+}
+document.getElementById('pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmPin();});
+async function openPrivateFile(id){
+  currentFileId=id;
+  currentFileType='private';
+  const files=await dbGet('files',`id=eq.${id}`);
+  if(!files.length)return;
+  const file=files[0];
+  document.getElementById('filePageTitle').textContent=file.name;
+  const container=document.getElementById('fileViewContainer');
+  container.innerHTML=`<textarea class="file-textarea" id="fileTextarea" placeholder="اكتب هنا...">${escHtml(file.content||'')}</textarea><div class="file-image-upload"><label>📸 إضافة صورة:</label><input type="file" id="fileImageInput" accept="image/*" onchange="handleImageUpload()"/><div id="imagePreview" class="image-preview"></div></div><div class="file-actions"><span class="save-status" id="saveStatus"></span><button class="save-btn" onclick="saveCurrentFile()">💾 حفظ</button></div>`;
+  showPage('filePage');
+}
+function handleImageUpload(){
+  const input=document.getElementById('fileImageInput');
+  if(!input.files.length)return;
+  const file=input.files[0];
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const preview=document.getElementById('imagePreview');
+    const img=document.createElement('img');
+    img.src=e.target.result;
+    preview.innerHTML='';
+    preview.appendChild(img);
+    const textarea=document.getElementById('fileTextarea');
+    textarea.value+='[صورة: '+file.name+']\n'+e.target.result+'\n';
+    showNotif('✅ تم إضافة الصورة','green');
+  };
+  reader.readAsDataURL(file);
+}
+async function saveCurrentFile(){
+  if(!currentFileId)return;
+  const ta=document.getElementById('fileTextarea');
+  if(!ta)return;
+  await dbUpdate('files',currentFileId,{content:ta.value});
+  const st=document.getElementById('saveStatus');
+  st.textContent='✓ تم الحفظ';
+  st.className='save-status saved';
+  showNotif('✅ تم الحفظ بنجاح','green');
+  setTimeout(()=>{st.textContent='';st.className='save-status';},2000);
+}
+let autoSaveTimer=null;
+document.addEventListener('input',(e)=>{
+  if(e.target.id!=='fileTextarea')return;
+  const st=document.getElementById('saveStatus');
+  st.textContent='↺ جاري الحفظ...';
+  st.className='save-status';
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(async()=>{
+    if(!currentFileId)return;
+    const ta=document.getElementById('fileTextarea');
+    if(!ta)return;
+    await dbUpdate('files',currentFileId,{content:ta.value});
+    st.textContent='✓ تم الحفظ';
+    st.className='save-status saved';
+    setTimeout(()=>{st.textContent='';st.className='save-status';},1500);
+  },1500);
+});
+async function renderLaws(){
+  const laws=await dbGet('laws','order=sort_order.asc');
+  const c=document.getElementById('lawsContainer');
+  c.innerHTML='';
+  if(!laws.length){
+    c.innerHTML='<div style="text-align:center;color:#555;padding:40px;">لا توجد قوانين</div>';
+    return;
+  }
+  laws.forEach((law,i)=>{
+    const item=document.createElement('div');
+    item.className='law-item';
+    item.innerHTML=`<div class="law-number">المادة ${i+1}</div>${escHtml(law.content)}`;
+    c.appendChild(item);
+  });
+}
+async function renderAdminLaws(){
+  const laws=await dbGet('laws','order=sort_order.asc');
+  const list=document.getElementById('adminLawsList');
+  list.innerHTML='';
+  laws.forEach((law,i)=>{
+    const row=document.createElement('div');
+    row.className='law-admin-row';
+    row.innerHTML=`<span style="color:#555;font-size:11px;font-family:'Share Tech Mono',monospace;padding-top:14px;">${i+1}</span><textarea class="law-admin-input" data-id="${law.id}">${escHtml(law.content)}</textarea><button class="file-row-btn danger" onclick="deleteLaw(${law.id})">🗑️ حذف</button>`;
+    list.appendChild(row);
+  });
+}
+async function addLaw(){
+  const laws=await dbGet('laws','order=sort_order.desc&limit=1');
+  const nextOrder=laws.length?laws[0].sort_order+1:0;
+  await dbInsert('laws',{content:'',sort_order:nextOrder});
+  await renderAdminLaws();
+  showNotif('✅ تم إضافة قانون جديد','green');
+}
+async function deleteLaw(id){
+  await dbDelete('laws',id);
+  await renderAdminLaws();
+  showNotif('✅ تم حذف القانون','red');
+}
+async function saveLaws(){
+  const inputs=document.querySelectorAll('.law-admin-input');
+  for(const inp of inputs){
+    const id=inp.getAttribute('data-id');
+    await dbUpdate('laws',id,{content:inp.value.trim()});
+  }
+  showNotif('✅ تم حفظ جميع القوانين','green');
+}
+async function renderMembersTable(){
+  const members=await dbGet('members','order=id.asc');
+  const tbody=document.getElementById('membersTableBody');
+  tbody.innerHTML='';
+  if(!members.length){
+    tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:#555;padding:30px;">لا يوجد أفراد</td></tr>';
+    return;
+  }
+  members.forEach(m=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${escHtml(m.name)}</td><td><span class="rank-badge">${escHtml(m.rank)}</span></td><td style="color:#666;">${escHtml(m.discord)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function renderAdminMembers(){
+  const members=await dbGet('members','order=id.asc');
+  const list=document.getElementById('adminMembersList');
+  list.innerHTML='';
+  members.forEach(m=>{
+    const row=document.createElement('div');
+    row.className='member-row';
+    row.innerHTML=`<input class="member-input" placeholder="الاسم" data-id="${m.id}" data-field="name" value="${escHtml(m.name)}"/><input class="member-input" placeholder="الرتبة" data-id="${m.id}" data-field="rank" value="${escHtml(m.rank)}"/><input class="member-input" placeholder="ديسكورد" data-id="${m.id}" data-field="discord" value="${escHtml(m.discord)}"/><button class="file-row-btn danger" onclick="deleteMember(${m.id})">🗑️ حذف</button>`;
+    list.appendChild(row);
+  });
+}
+async function addMember(){
+  await dbInsert('members',{name:'',rank:'',discord:''});
+  await renderAdminMembers();
+  showNotif('✅ تم إضافة فرد جديد','green');
+}
+async function deleteMember(id){
+  await dbDelete('members',id);
+  await renderAdminMembers();
+  showNotif('✅ تم حذف الفرد','red');
+}
+async function saveMembers(){
+  const inputs=document.querySelectorAll('#adminMembersList .member-input');
+  const byId={};
+  inputs.forEach(inp=>{
+    const id=inp.getAttribute('data-id');
+    const field=inp.getAttribute('data-field');
+    if(!byId[id])byId[id]={};
+    byId[id][field]=inp.value.trim();
+  });
+  for(const[id,data]of Object.entries(byId)){
+    await dbUpdate('members',id,data);
+  }
+  showNotif('✅ تم حفظ جميع الأفراد','green');
+}
+async function saveNews(){
+  const content=document.getElementById('newsInput').value.trim();
+  await dbDeleteAll('news');
+  if(content)await dbInsert('news',{content});
+  updateNewsTicker();
+  showNotif('✅ تم حفظ الخبر العاجل','green');
+}
+async function renderAdminFiles(){
+  const files=await dbGet('files','order=id.asc');
+  const list=document.getElementById('adminFilesList');
+  list.innerHTML='';
+  files.forEach(file=>{
+    const row=document.createElement('div');
+    row.className='file-row';
+    row.innerHTML=`<div class="file-row-name"><input type="text" value="${escHtml(file.name)}" onchange="renameFile(${file.id},this.value)"/></div><div class="file-row-type">${escHtml(file.type||'private')}</div><div class="file-row-pin">رمز: ${escHtml(String(file.pin||'').trim())}</div><button class="file-row-btn" onclick="changePin(${file.id},'${file.name}')">🔑 تغيير</button><button class="file-row-btn danger" onclick="deleteFile(${file.id})">🗑️ حذف</button>`;
+    list.appendChild(row);
+  });
+}
+function addFile(){
+  document.getElementById('newFileName').value='';
+  document.getElementById('newFileType').value='private';
+  document.getElementById('newFilePin').value='';
+  document.getElementById('newFileError').textContent='';
+  document.getElementById('newFileModal').classList.add('active');
+  setTimeout(()=>document.getElementById('newFileName').focus(),150);
+}
+function closeNewFileModal(){
+  document.getElementById('newFileModal').classList.remove('active');
+}
+async function confirmNewFile(){
+  const name=document.getElementById('newFileName').value.trim();
+  const type=document.getElementById('newFileType').value.trim().toLowerCase();
+  const pin=document.getElementById('newFilePin').value.trim();
+  const err=document.getElementById('newFileError');
+  if(!name){err.textContent='⚠️ أدخل اسم الملف';return;}
+  if(type!=='public'&&type!=='private'){err.textContent='⚠️ النوع: public أو private';return;}
+  if(type==='private'&&!pin){err.textContent='⚠️ أدخل الرمز السري';return;}
+  await dbInsert('files',{name,type:type||'private',pin:type==='public'?'':pin,content:''});
+  closeNewFileModal();
+  await renderAdminFiles();
+  await renderAdminSidebar();
+  showNotif(`✅ تم إضافة ملف: ${name}`,'green');
+}
+document.getElementById('newFilePin').addEventListener('keydown',e=>{if(e.key==='Enter')confirmNewFile();});
+async function deleteFile(id){
+  if(!confirm('هل تريد حذف هذا الملف؟'))return;
+  await dbDelete('files',id);
+  adminSelFileId=null;
+  document.getElementById('adminViewTextarea').value='';
+  document.getElementById('adminViewFileName').textContent='';
+  await renderAdminFiles();
+  await renderAdminSidebar();
+  showNotif('✅ تم حذف الملف','red');
+}
+async function renameFile(id,newName){
+  if(!newName.trim())return;
+  await dbUpdate('files',id,{name:newName.trim()});
+  await renderAdminSidebar();
+  showNotif('✅ تم تغيير الاسم','green');
+}
+async function changePin(id,name){
+  const files=await dbGet('files',`id=eq.${id}`);
+  if(!files.length)return;
+  const currentPin=files[0].pin||'';
+  const newPin=prompt(`رمز جديد للملف "${name}":`,currentPin);
+  if(newPin===null)return;
+  if(!newPin.trim()){showNotif('❌ الرمز لا يمكن أن يكون فارغاً','red');return;}
+  await dbUpdate('files',id,{pin:newPin.trim()});
+  await renderAdminFiles();
+  showNotif('✅ تم تغيير الرمز','green');
+}
+async function renderAdminSidebar(){
+  const files=await dbGet('files','order=id.asc');
+  const sb=document.getElementById('adminFilesSidebar');
+  sb.innerHTML='';
+  files.forEach(file=>{
+    const item=document.createElement('div');
+    item.className='admin-file-item'+(adminSelFileId===file.id?' active':'');
+    item.textContent=file.name;
+    item.onclick=()=>adminSelectFile(file.id,file.name);
+    sb.appendChild(item);
+  });
+}
+async function adminSelectFile(id,name){
+  adminSelFileId=id;
+  const files=await dbGet('files',`id=eq.${id}`);
+  document.getElementById('adminViewFileName').textContent=name;
+  document.getElementById('adminViewTextarea').value=files.length?files[0].content||'':'';
+  await renderAdminSidebar();
+}
+async function adminSaveFile(){
+  if(!adminSelFileId){showNotif('⚠️ اختر ملفاً أولاً','red');return;}
+  await dbUpdate('files',adminSelFileId,{content:document.getElementById('adminViewTextarea').value});
+  showNotif('✅ تم الحفظ','green');
+}
+async function renderUsersTable(){
+  const logins=await dbGet('logins','order=id.desc');
+  const tbody=document.getElementById('usersTableBody');
+  tbody.innerHTML='';
+  if(!logins.length){
+    tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:#555;padding:24px;">لا يوجد سجلات</td></tr>';
+    return;
+  }
+  logins.forEach(log=>{
+    const d=new Date(log.logged_at);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${escHtml(log.name)}</td><td>${'•'.repeat(log.pass.length)}</td><td>${d.toLocaleDateString('ar-SA')}</td><td>${d.toLocaleTimeString('ar-SA')}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+function switchTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  const map={logs:'tabLogs',files:'tabFiles',view:'tabView',laws:'tabLaws',members:'tabMembers',news:'tabNews'};
+  document.getElementById(map[tab]).classList.add('active');
+  const idx=Object.keys(map).indexOf(tab);
+  document.querySelectorAll('.admin-tab')[idx].classList.add('active');
+  if(tab==='view')renderAdminSidebar();
+  if(tab==='logs')renderUsersTable();
+  if(tab==='laws')renderAdminLaws();
+  if(tab==='members')renderAdminMembers();
+}
+  </script>
   </html>
